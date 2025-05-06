@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ThemeProvider } from './src/store/themeContext';
 import { MainStackNavigator, AuthStackNavigator } from './src/navigation/stacks';
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   return (
     <SafeAreaProvider>
       <ThemeProvider>

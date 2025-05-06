@@ -6,5 +6,6 @@ export interface InputProps {
     value: string
     onChange: (text: string) => void
     onBlur: () => void
+    secureTextEntry?: boolean
   }
   

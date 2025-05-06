@@ -1,10 +1,14 @@
-import { View, ScrollView, Text, Button, Pressable, StyleSheet } from "react-native"
+import { View, Text, Pressable} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../molecules/InputWithLabel/InputWithLabel"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { LoginSchema } from "../../../schema/LoginSchema"
 import type { LoginField } from "../../../schema/LoginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { loginStyles as styles } from "./Login.style"
+import { Logo } from "./Logo"
+import LinearGradient from "react-native-linear-gradient"
+import { Link } from "@react-navigation/native"
 const Login = () => {
     const insets = useSafeAreaInsets()
     const {
@@ -19,7 +23,18 @@ const Login = () => {
         console.log(data)
     }
   return (
-    <View style={{paddingTop : insets.top, paddingBottom: insets.bottom}}>
+    <LinearGradient
+    colors={['#fde6d5', '#dfd4ff']} // Adjust to your gradient
+    style={styles.container}
+  >
+    <View style={[
+      {paddingTop : insets.top, paddingBottom: insets.bottom}, 
+      styles.card
+    ]}>
+      <View style={styles.logoContainer}>
+        <Logo />
+      </View>
+      <Text style={styles.title}>Login</Text>
       <Controller
         name="email"
         control={control}
@@ -28,7 +43,6 @@ const Login = () => {
           <InputWithLabel
             {...field}
             label="Email"
-            placeholder="Enter your email"
           />
         )}
       />
@@ -41,7 +55,7 @@ const Login = () => {
           <InputWithLabel   
             {...field}
             label="Password" 
-            placeholder="Password" 
+            secureTextEntry={true}
         />
         )}
       />
@@ -56,33 +70,10 @@ const Login = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
+        <Text style={styles.signupText}>Don't have an account? <Link action={{type: 'navigate'}}>Sign up</Link></Text>
       </View>
+    </LinearGradient>
   )
 }
-const styles = StyleSheet.create({
-    input: {
-        height: 48,
-        borderColor: '#ccc',   
-        borderWidth: 1,      
-        marginBottom: 16,
-        paddingHorizontal: 12,
-        borderRadius: 4,
-        marginHorizontal: 5
-      },
-    button: {
-        height: 48,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 16,
-        width:200,
-        alignSelf: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-        letterSpacing: 1,
-    },
-})
+
 export {Login}
