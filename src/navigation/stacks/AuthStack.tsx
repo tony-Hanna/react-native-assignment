@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Login } from '../../components/organisms/LoginForm/Login';
+import { Login } from '../../screens/LoginForm/Login';
 import { Signup } from '../../screens/Signup/Signup';
 const AuthStack = createNativeStackNavigator()
 export const AuthStackNavigator = () => {

@@ -1,16 +1,26 @@
 import { View, Text, Pressable} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import {InputWithLabel} from "../../molecules/InputWithLabel/InputWithLabel"
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import { LoginSchema } from "../../../schema/LoginSchema"
-import type { LoginField } from "../../../schema/LoginSchema"
+import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
+import { useForm, SubmitHandler, Controller, set } from "react-hook-form"
+import { LoginSchema } from "../../schema/LoginSchema"
+import type { LoginField } from "../../schema/LoginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginStyles as styles } from "./Login.style"
-import { Logo } from "./Logo"
+import { Logo } from "../../assets/Logo"
 import LinearGradient from "react-native-linear-gradient"
-import { Link } from "@react-navigation/native"
+import { PasswordInput } from "../../components/atoms/passwordInput/PasswordInput"
+import {Label} from "../../components/atoms/Label/Label"
+import { useAuth } from "../../store/AuthContext"
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 const Login = () => {
     const insets = useSafeAreaInsets()
+    const { setIsAuthenticated } = useAuth();
+    type AuthStackParamList = {
+      Login: undefined;
+      Signup: undefined;
+    }
+    const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
     const {
       handleSubmit,
       control,
@@ -19,12 +29,14 @@ const Login = () => {
       resolver: zodResolver(LoginSchema)
     })
     const onSubmit = (data: any) => {
-      if(isValid)
-        console.log(data)
+        if(data.email === 'eurisko@gmail.com'&& data.password === 'academy2025'){
+          console.log('success')
+          setIsAuthenticated(true)
+      }
     }
   return (
     <LinearGradient
-    colors={['#fde6d5', '#dfd4ff']} // Adjust to your gradient
+    colors={['#fde6d5', '#dfd4ff']} 
     style={styles.container}
   >
     <View style={[
@@ -47,20 +59,20 @@ const Login = () => {
         )}
       />
       {errors.email && <Text>{errors.email.message}</Text>}
+      <Label label="Password"/>
       <Controller 
         name="password"
         control={control}
         defaultValue=""
         render={({field}) => (
-          <InputWithLabel   
+          <PasswordInput  
             {...field}
-            label="Password" 
-            secureTextEntry={true}
         />
         )}
+        
       />
+
       {errors.password && <Text>{errors.password.message}</Text>}
-       
         <Pressable
           style={({ pressed }) => [
             styles.button,
@@ -70,7 +82,13 @@ const Login = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-        <Text style={styles.signupText}>Don't have an account? <Link action={{type: 'navigate'}}>Sign up</Link></Text>
+        <Text style={styles.signupText}>
+          Don't have an account?{' '}
+          <Text style={{ color: 'blue' }} onPress={() => navigation.navigate('Signup')}>
+            Sign up
+          </Text>
+        </Text>
+
       </View>
     </LinearGradient>
   )

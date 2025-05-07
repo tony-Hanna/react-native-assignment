@@ -33,7 +33,7 @@ export const loginStyles = StyleSheet.create({
         marginBottom: 16,
         paddingHorizontal: 12,
         borderRadius: 10,
-        marginHorizontal: 5
+        marginHorizontal: 5,
       },
     button: {
         height: 48,
