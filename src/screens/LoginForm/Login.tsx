@@ -1,24 +1,29 @@
-import { View, Text, Pressable} from "react-native"
+import { View, Text, Pressable, StatusBar} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
-import { useForm, SubmitHandler, Controller, set } from "react-hook-form"
+import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { LoginSchema } from "../../schema/LoginSchema"
 import type { LoginField } from "../../schema/LoginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { loginStyles as styles } from "./Login.style"
+import { createStyles } from "./Login.style"
 import { Logo } from "../../assets/Logo"
 import LinearGradient from "react-native-linear-gradient"
 import { PasswordInput } from "../../components/atoms/passwordInput/PasswordInput"
 import {Label} from "../../components/atoms/Label/Label"
-import { useAuth } from "../../store/AuthContext"
+import AlertTriangleIcon from "../../assets/AlertTriangle"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { useTheme } from "../../store/themeContext"
+import { errorStyles } from "../../globalStyles/error.style"
+import { CustomText } from "../../components/atoms/CustomText/CustomText"
 const Login = () => {
     const insets = useSafeAreaInsets()
-    const { setIsAuthenticated } = useAuth();
+    const {isDark, theme} = useTheme()
+    const styles = createStyles(theme, isDark)
     type AuthStackParamList = {
       Login: undefined;
       Signup: undefined;
+      Verification: undefined
     }
     const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
     const {
@@ -31,14 +36,20 @@ const Login = () => {
     const onSubmit = (data: any) => {
         if(data.email === 'eurisko@gmail.com'&& data.password === 'academy2025'){
           console.log('success')
-          setIsAuthenticated(true)
+          navigation.navigate('Verification')
       }
     }
   return (
     <LinearGradient
-    colors={['#fde6d5', '#dfd4ff']} 
+    colors={theme.gradient} 
     style={styles.container}
   >
+    <StatusBar
+      barStyle={isDark ? 'light-content' : 'dark-content'}
+      backgroundColor="transparent"
+      translucent
+    />
+
     <View style={[
       {paddingTop : insets.top, paddingBottom: insets.bottom}, 
       styles.card
@@ -58,7 +69,9 @@ const Login = () => {
           />
         )}
       />
-      {errors.email && <Text>{errors.email.message}</Text>}
+      <View style={errorStyles.container}>
+          {errors.email && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.email.message}</Text></View>}
+      </View>
       <Label label="Password"/>
       <Controller 
         name="password"
@@ -71,8 +84,12 @@ const Login = () => {
         )}
         
       />
-
-      {errors.password && <Text>{errors.password.message}</Text>}
+    
+    <View style={errorStyles.container}>
+          {errors.password && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.password.message}</Text></View>}
+      </View>
+    
+      
         <Pressable
           style={({ pressed }) => [
             styles.button,
@@ -82,12 +99,12 @@ const Login = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
-        <Text style={styles.signupText}>
+        <CustomText style={styles.signupText}>
           Don't have an account?{' '}
-          <Text style={{ color: 'blue' }} onPress={() => navigation.navigate('Signup')}>
+          <CustomText style={{ color: 'blue' }} onPress={() => navigation.navigate('Signup')}>
             Sign up
-          </Text>
-        </Text>
+          </CustomText>
+        </CustomText>
 
       </View>
     </LinearGradient>

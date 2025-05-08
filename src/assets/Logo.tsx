@@ -1,7 +1,7 @@
 import Svg, { Defs, LinearGradient, Stop, Path } from 'react-native-svg'
-export const Logo = () => {
+export const Logo = ({w=60, h=60}) => {
     return (
-        <Svg width="60" height="60" viewBox="0 0 100 100">
+        <Svg width={w} height={h} viewBox="0 0 100 100">
           <Defs>
             <LinearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
               <Stop offset="0%" stopColor="#6E8AFC" />

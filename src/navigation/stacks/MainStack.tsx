@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Products, Details, Signup } from '../../screens';
+import { Products, Details } from '../../screens';
 
 const MainStack = createNativeStackNavigator()
 export const MainStackNavigator = () => {
@@ -9,7 +9,6 @@ export const MainStackNavigator = () => {
     }}>
           <MainStack.Screen name="Products" component={Products} />
           <MainStack.Screen name="Details" component={Details} />
-          <MainStack.Screen name="Signup" component={Signup} />
     </MainStack.Navigator>
   )
 }

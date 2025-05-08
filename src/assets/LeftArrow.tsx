@@ -1,12 +1,14 @@
-import { Touchable, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-
+import { useTheme } from '../store/themeContext';
+//import { normalizeWidth, normalizeHeight } from '../utils/scale';
 const ArrowLeftIcon = () => {
+    const {theme} = useTheme()
     const navigation = useNavigation();
     return (
     <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Svg viewBox="0 0 24 24" fill="currentColor" width={24} height={24}  style={{ padding: 16, marginLeft: 18, marginBottom: 15 }}>
+        <Svg viewBox="0 0 24 24" fill={theme.text} width={24} height={24}  style={{ padding: 16}}>
             <Path
             fillRule="evenodd"
             clipRule="evenodd"

@@ -9,7 +9,6 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({ label, placeholder, sec
             <Label label={label}  style={styles.label}/>
             <Input 
                 placeholder={placeholder}
-                secureTextEntry={secureTextEntry}
                 {...props}
             />
         </View>

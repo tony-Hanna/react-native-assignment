@@ -1,9 +1,9 @@
 import { TextInput, TouchableOpacity, View, StyleSheet, Text } from "react-native"
 import { InputProps } from "../Input/Input.type"
-import { inputStyles } from "../Input/Input.style"
 import { useState } from "react"
 import Svg, { Path } from 'react-native-svg'
-import { passwordStyles as styles } from "./PasswordInput.style"  
+import { passwordStyles } from "./PasswordInput.style" 
+import { useTheme } from "../../../store/themeContext" 
 const PasswordInput: React.FC<InputProps> = ({
   placeholder,  
   style,
@@ -12,8 +12,8 @@ const PasswordInput: React.FC<InputProps> = ({
   value
 }) => {
   const [showPassword, setShowPassword] = useState(false)
-
-
+  const {theme} = useTheme()
+  const styles = passwordStyles(theme)
   return (
     <View style={styles.inputWrapper}>
       <TextInput
@@ -23,7 +23,7 @@ const PasswordInput: React.FC<InputProps> = ({
         value={value}
         onChangeText={onChange}
         onBlur={onBlur}
-        placeholderTextColor="#888"
+        placeholderTextColor={theme.text}
       />
         <TouchableOpacity
           style={styles.icon}

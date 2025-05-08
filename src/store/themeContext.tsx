@@ -3,6 +3,7 @@ import { useState, useContext, createContext } from "react";
 export interface Theme {
   background: string;
   text: string;
+  gradient: string[]
 }
 
 interface ThemeContextType {
@@ -16,11 +17,13 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
 const lightTheme: Theme = {
   background: "#ffffff",
   text: "#000000",
+  gradient : ['#fde6d5', '#dfd4ff']
 };
 
 const darkTheme: Theme = {
   background: "#000000",
   text: "#ffffff",
+  gradient : ['#0f2027', '#243B55']
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
