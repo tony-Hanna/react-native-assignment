@@ -1,4 +1,4 @@
-import { View, Text, Pressable, KeyboardAvoidingView, Platform,ScrollView,TouchableWithoutFeedback,Keyboard} from "react-native"
+import { View, Text, Pressable, KeyboardAvoidingView,ScrollView,TouchableWithoutFeedback,Keyboard} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
@@ -35,6 +35,7 @@ const Signup = () => {
       resolver: zodResolver(SignupSchema)
     })
     const onSubmit = (data: any) => {
+        console.log(data)
           navigation.navigate('Verification')
       }
     
@@ -93,6 +94,7 @@ const Signup = () => {
       <Controller
         name="phone"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <InputWithLabel
             {...field}

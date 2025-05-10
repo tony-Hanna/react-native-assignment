@@ -31,7 +31,7 @@ const Product = ({ item }: { item: productProp }) => {
             
 
             <CustomText numberOfLines={1} ellipsizeMode="tail" style={styles.details}>
-                {item.description || 'Product details...'}
+                {item.description}
             </CustomText>
 
         </Pressable>

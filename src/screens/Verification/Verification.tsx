@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../store/AuthContext';
@@ -59,7 +59,7 @@ const Verification = () => {
   return (
     <LinearGradient
         colors={theme.gradient} 
-        style={{flex: 1}}
+        style={{flexGrow: 1}}
     >
     <View style={styles.container}>
       <Text style={styles.title}>Enter 4-digit Code</Text>

@@ -96,7 +96,7 @@ const Login = () => {
     
     <View style={errorStyles.container}>
           {errors.password && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.password.message}</Text></View>}
-          {errors.root && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.root.message}</Text></View>}
+          {!errors.password && errors.root && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.root.message}</Text></View>}
       </View>
     
       

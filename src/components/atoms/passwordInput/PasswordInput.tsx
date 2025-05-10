@@ -1,4 +1,4 @@
-import { TextInput, TouchableOpacity, View, StyleSheet, Text } from "react-native"
+import { TextInput, TouchableOpacity, View, Text } from "react-native"
 import { InputProps } from "../Input/Input.type"
 import { useState } from "react"
 import Svg, { Path } from 'react-native-svg'

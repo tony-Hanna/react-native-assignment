@@ -26,6 +26,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
         title: {
             fontSize: 20,
             fontWeight: '600',
+            width: '50%',
             color: theme.text,
             marginBottom: 4,
 

@@ -7,17 +7,12 @@ export const detailsStyles = StyleSheet.create({
     padding: normalizeWidth(20),
     flex: 1,
   },
-  // image: {
-  //   width: "100%",
-  //   height: SCREEN_HEIGHT * 0.35, // Responsive image height
-  //   borderRadius: 12,
-  //   marginBottom: normalizeHeight(20),
-  // },
   image: {
-    width: '100%',
+    width: SCREEN_WIDTH < 375 ? '59%' : '100%',
     aspectRatio: 1, // 1 means square; adjust to your image's natural ratio (e.g., 0.6 for portrait)
     borderRadius: 12,
     marginBottom: normalizeHeight(20),
+    alignSelf: 'center',
   },
   title: {
     fontSize: normalizeWidth(24),

@@ -18,8 +18,7 @@ const Products = () => {
     return (
         <LinearGradient
             colors={theme.gradient} 
-          >
-            
+          >    
         <StatusBar
               barStyle={isDark ? 'light-content' : 'dark-content'}
               backgroundColor="transparent"
