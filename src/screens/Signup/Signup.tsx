@@ -6,21 +6,21 @@ import { SignupSchema } from "../../schema/SignupSchema"
 import type { SignupField } from "../../schema/SignupSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createStyles } from "./Signup.style"
-import { Logo } from "../../assets/Logo"
+import { Logo } from "../../assets/icons/Logo"
 import LinearGradient from "react-native-linear-gradient"
 import { PasswordInput } from "../../components/atoms/passwordInput/PasswordInput"
 import {Label} from "../../components/atoms/Label/Label"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import ArrowLeftIcon from "../../assets/LeftArrow"
+import ArrowLeftIcon from "../../assets/icons/LeftArrow"
 import { useTheme } from "../../store/themeContext"
 import { errorStyles } from "../../globalStyles/error.style"
-import AlertTriangleIcon from "../../assets/AlertTriangle"
+import AlertTriangleIcon from "../../assets/icons/AlertTriangle"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
 const Signup = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme} = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = createStyles(theme, isDark, insets)
     type AuthStackParamList = {
       Login: undefined;
       Signup: undefined;
@@ -39,27 +39,27 @@ const Signup = () => {
       }
     
   return (
-    <KeyboardAvoidingView 
-      behavior="height"
-      style={{flex:1}}
-    >
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <LinearGradient
       colors={theme.gradient} 
       style={[styles.container]}
     >
-      <View style={{marginLeft:20,paddingTop : insets.top}}>
-        <ArrowLeftIcon />
-      </View>
+      
      
-    <ScrollView contentContainerStyle={{alignItems: 'center', flexGrow: 1, paddingBottom: insets.bottom}} keyboardShouldPersistTaps="handled">
+    <ScrollView contentContainerStyle={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: insets.bottom, flexGrow: 1}} keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView 
+        behavior="position"
+      >
+        <Pressable style={styles.arrowContainer}>
+        <ArrowLeftIcon />
+      </Pressable>
       <View style={[
         styles.card
       ]}>
       <View style={styles.logoContainer}>
         <Logo />
+        <Text style={styles.title}>Sign Up</Text>
       </View>
-      <Text style={styles.title}>Sign Up</Text>
       <Controller
         name="name"
         control={control}
@@ -68,6 +68,7 @@ const Signup = () => {
           <InputWithLabel
             {...field}
             label="Name"
+            style={styles.input}
           />
         )}
       />
@@ -82,6 +83,7 @@ const Signup = () => {
           <InputWithLabel
             {...field}
             label="Email"
+            style={styles.input}
           />
         )}
       />
@@ -95,6 +97,7 @@ const Signup = () => {
           <InputWithLabel
             {...field}
             label="Phone Number"
+            style={styles.input}
           />
         )}
       />
@@ -131,10 +134,10 @@ const Signup = () => {
           </CustomText>
         </CustomText>
       </View>
+    </KeyboardAvoidingView>
     </ScrollView>
     </LinearGradient>
     </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
   )
 }
 

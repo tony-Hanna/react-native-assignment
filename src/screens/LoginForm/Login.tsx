@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StatusBar} from "react-native"
+import { View, Text, Pressable, StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
@@ -6,11 +6,11 @@ import { LoginSchema } from "../../schema/LoginSchema"
 import type { LoginField } from "../../schema/LoginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createStyles } from "./Login.style"
-import { Logo } from "../../assets/Logo"
+import { Logo } from "../../assets/icons/Logo"
 import LinearGradient from "react-native-linear-gradient"
 import { PasswordInput } from "../../components/atoms/passwordInput/PasswordInput"
 import {Label} from "../../components/atoms/Label/Label"
-import AlertTriangleIcon from "../../assets/AlertTriangle"
+import AlertTriangleIcon from "../../assets/icons/AlertTriangle"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useTheme } from "../../store/themeContext"
@@ -29,6 +29,7 @@ const Login = () => {
     const {
       handleSubmit,
       control,
+      setError,
       formState: {isValid, errors, isSubmitting}
     } = useForm<LoginField>({
       resolver: zodResolver(LoginSchema)
@@ -37,6 +38,9 @@ const Login = () => {
         if(data.email === 'eurisko@gmail.com'&& data.password === 'academy2025'){
           console.log('success')
           navigation.navigate('Verification')
+      }
+      else{
+        setError("root", { message: "Invalid email or password" })
       }
     }
   return (
@@ -49,6 +53,10 @@ const Login = () => {
       backgroundColor="transparent"
       translucent
     />
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+  <KeyboardAvoidingView
+    behavior="position"
+  >
 
     <View style={[
       {paddingTop : insets.top, paddingBottom: insets.bottom}, 
@@ -66,6 +74,7 @@ const Login = () => {
           <InputWithLabel
             {...field}
             label="Email"
+            style={styles.input}
           />
         )}
       />
@@ -87,6 +96,7 @@ const Login = () => {
     
     <View style={errorStyles.container}>
           {errors.password && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.password.message}</Text></View>}
+          {errors.root && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.root.message}</Text></View>}
       </View>
     
       
@@ -107,6 +117,8 @@ const Login = () => {
         </CustomText>
 
       </View>
+    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
     </LinearGradient>
   )
 }

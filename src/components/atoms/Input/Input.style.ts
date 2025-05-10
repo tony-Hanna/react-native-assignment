@@ -23,8 +23,8 @@ export const inputStyles = (theme: Theme) =>
   StyleSheet.create({
     input: {
       backgroundColor: 'rgba(255, 255, 255, 0.25)',
-      padding: normalizeWidth(14),
-      borderRadius: normalizeWidth(10),
+      padding: normalizeWidth(8),
+      borderRadius: normalizeWidth(16),
       marginBottom: normalizeHeight(12),
       color: 'white',
       fontSize: normalizeWidth(16),

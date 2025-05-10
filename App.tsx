@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from './src/store/themeContext';
-import { MainStackNavigator, AuthStackNavigator } from './src/navigation/stacks';
-import { AuthProvider, useAuth } from './src/store/AuthContext';
+import {RootNavigator} from './src/navigation/navigator/RootNavigator'
+import { AuthProvider } from './src/store/AuthContext';
 const App = () => {
   return (
     <SafeAreaProvider>
@@ -15,12 +14,5 @@ const App = () => {
     </SafeAreaProvider>
   )
 }
-const RootNavigator = () => {
-  const { isAuthenticated } = useAuth();
-  return (
-    <NavigationContainer>
-      {isAuthenticated ? <MainStackNavigator /> : <AuthStackNavigator />}
-    </NavigationContainer>
-  );
-};
+
 export default App

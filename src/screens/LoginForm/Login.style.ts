@@ -92,12 +92,11 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
     },
     input: {
       height: normalizeHeight(48),
-      borderColor: '#ccc',
       borderWidth: 1,
       marginBottom: normalizeHeight(16),
       paddingHorizontal: normalizeWidth(12),
       borderRadius: normalizeWidth(10),
-      marginHorizontal: normalizeWidth(5),
+      
     },
     button: {
       height: normalizeHeight(52),

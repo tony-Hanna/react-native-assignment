@@ -61,7 +61,7 @@ import { View, Image, Pressable, ScrollView } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { data } from "../../../Products.json";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
-import ArrowLeftIcon from "../../assets/LeftArrow";
+import ArrowLeftIcon from "../../assets/icons/LeftArrow";
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from "../../store/themeContext";
 import { detailsStyles as styles } from "./Details.style";

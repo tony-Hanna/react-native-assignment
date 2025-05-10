@@ -6,8 +6,10 @@ import { createStyles } from "./Products.style"
 import { productProp } from "../../components/organisms/Product/Product.type"
 import {Product} from '../../components/organisms/Product/Product'
 import LinearGradient from "react-native-linear-gradient"
-import { Logo } from "../../assets/Logo"
+import { Logo } from "../../assets/icons/Logo"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
+import { MoonIcon } from "../../assets/icons/moon"
+import { SunIcon } from "../../assets/icons/sun"
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
@@ -17,6 +19,7 @@ const Products = () => {
         <LinearGradient
             colors={theme.gradient} 
           >
+            
         <StatusBar
               barStyle={isDark ? 'light-content' : 'dark-content'}
               backgroundColor="transparent"
@@ -33,7 +36,7 @@ const Products = () => {
                     <CustomText style={{fontSize:20}}>Products</CustomText>
                 </View>
             <Pressable style={styles.toggleButton} onPress={toggleTheme}>
-                <Text style={styles.toggleText}>{isDark ? '🌞' : '🌙'}</Text>
+                <Text style={styles.toggleText}>{isDark ? <SunIcon /> : <MoonIcon />}</Text>
             </Pressable>
             </View>
             <FlatList

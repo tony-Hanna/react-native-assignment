@@ -2,14 +2,13 @@ import { TextInput } from "react-native"
 import { InputProps } from "./Input.type"
 import { inputStyles } from "./Input.style"
 import { useTheme } from "../../../store/themeContext"
-const Input: React.FC<InputProps> = ({ placeholder, style, secureTextEntry, onChange, onBlur, value}) => {
+const Input: React.FC<InputProps> = ({ placeholder, style, onChange, onBlur, value}) => {
     const {theme} = useTheme()
     const styles = inputStyles(theme)
     return (
         <TextInput 
             placeholder={placeholder}
             style={[styles.input, style]}
-            secureTextEntry={secureTextEntry}
             value={value}
             onChangeText={onChange} 
             onBlur={onBlur}

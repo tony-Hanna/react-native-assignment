@@ -1,7 +1,7 @@
 import { TouchableOpacity } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../store/themeContext';
+import { useTheme } from '../../store/themeContext';
 //import { normalizeWidth, normalizeHeight } from '../utils/scale';
 const ArrowLeftIcon = () => {
     const {theme} = useTheme()
