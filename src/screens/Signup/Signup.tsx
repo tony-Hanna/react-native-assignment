@@ -41,104 +41,105 @@ const Signup = () => {
     
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <LinearGradient
-      colors={theme.gradient} 
-      style={[styles.container]}
-    >
-      
-     
-    <ScrollView contentContainerStyle={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: insets.bottom, flexGrow: 1}} keyboardShouldPersistTaps="handled">
-      <KeyboardAvoidingView 
-        behavior="position"
+      <LinearGradient
+        colors={theme.gradient} 
+        style={[styles.container]}
+        
       >
-        <Pressable style={styles.arrowContainer}>
-        <ArrowLeftIcon />
-      </Pressable>
-      <View style={[
-        styles.card
-      ]}>
-      <View style={styles.logoContainer}>
-        <Logo />
-        <Text style={styles.title}>Sign Up</Text>
-      </View>
-      <Controller
-        name="name"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <InputWithLabel
-            {...field}
-            label="Name"
-            style={styles.input}
-          />
-        )}
-      />
-      <View style={errorStyles.container}>
-          {errors.name && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.name.message}</Text></View>}
-      </View>
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <InputWithLabel
-            {...field}
-            label="Email"
-            style={styles.input}
-          />
-        )}
-      />
-      <View style={errorStyles.container}>
-          {errors.email && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.email.message}</Text></View>}
-      </View>
-      <Controller
-        name="phone"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <InputWithLabel
-            {...field}
-            label="Phone Number"
-            style={styles.input}
-          />
-        )}
-      />
-      <View style={errorStyles.container}>
-          {errors.phone && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.phone.message}</Text></View>}
-      </View>
-      <Label label="Password"/>
-      <Controller 
-        name="password"
-        control={control}
-        defaultValue=""
-        render={({field}) => (
-          <PasswordInput  
-            {...field}
-        />
-        )}
-      />
-      <View style={errorStyles.container}>
-          {errors.password && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.password.message}</Text></View>}
-      </View>
-        <Pressable
-          style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: pressed ? '#0057b7' : '#007bff' }
-          ]}
-          onPress={handleSubmit(onSubmit)}
+        <KeyboardAvoidingView 
+          behavior="height"
+          keyboardVerticalOffset={20} 
+          style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flex:1, paddingTop: insets.top}}
         >
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-        <CustomText style={styles.signupText}>
-          Already have an account?{' '}
-          <CustomText style={{ color: 'blue' }} onPress={() => navigation.navigate('Login')}>
-            Login
-          </CustomText>
-        </CustomText>
-      </View>
-    </KeyboardAvoidingView>
-    </ScrollView>
-    </LinearGradient>
+        <ScrollView keyboardShouldPersistTaps="handled">
+            <Pressable style={[styles.arrowContainer,{ paddingTop: insets.top}]}>
+            <ArrowLeftIcon />
+          </Pressable>
+          <View style={[
+            styles.card
+          ]}>
+          <View style={styles.logoContainer}>
+            <Logo />
+            <Text style={styles.title}>Sign Up</Text>
+          </View>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="Name"
+                style={styles.input}
+              />
+            )}
+          />
+          <View style={errorStyles.container}>
+              {errors.name && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.name.message}</Text></View>}
+          </View>
+          <Controller
+            name="email"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="Email"
+                style={styles.input}
+              />
+            )}
+          />
+          <View style={errorStyles.container}>
+              {errors.email && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.email.message}</Text></View>}
+          </View>
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="Phone Number"
+                style={styles.input}
+              />
+            )}
+          />
+          <View style={errorStyles.container}>
+              {errors.phone && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.phone.message}</Text></View>}
+          </View>
+          <Label label="Password"/>
+          <Controller 
+            name="password"
+            control={control}
+            defaultValue=""
+            render={({field}) => (
+              <PasswordInput  
+                {...field}
+            />
+            )}
+          />
+              <View style={errorStyles.container}>
+                  {errors.password && <View style={errorStyles.wrap}><AlertTriangleIcon /><Text style={errorStyles.message}>{errors.password.message}</Text></View>}
+              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  { backgroundColor: pressed ? '#0057b7' : '#007bff' }
+                ]}
+                onPress={handleSubmit(onSubmit)}
+              >
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </Pressable>
+              <CustomText style={styles.signupText}>
+                Already have an account?{' '}
+                <CustomText style={{ color: 'blue' }} onPress={() => navigation.navigate('Login')}>
+                  Login
+                </CustomText>
+              </CustomText>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   )
 }

@@ -5,7 +5,7 @@ const nameRegex = /^[A-Za-z\s]+$/
 
 const SignupSchema = z.object({
     email: z.string().min(1, 'Email is required').regex(emailRegex,'Invalid email'),
-    password: z.string().min(1, 'Password is required').regex(passwordRegex, 'Password at least 6 characters include letter/number'),
+    password: z.string().min(1, 'Password is required').regex(passwordRegex, 'Password min 6 charachter (letter/num)'),
     name: z.string().min(1, 'Name is required').regex(nameRegex, 'Name must not contain numbers or symbols'),
     phone: z.string().min(1, 'Phone is required').regex(/^[0-9]+$/, "Phone must contain only numbers"),
 })
