@@ -9,7 +9,7 @@ export const detailsStyles = StyleSheet.create({
   },
   image: {
     width: SCREEN_WIDTH < 375 ? '59%' : '100%',
-    aspectRatio: 1, // 1 means square; adjust to your image's natural ratio (e.g., 0.6 for portrait)
+    aspectRatio: 1, 
     borderRadius: 12,
     marginBottom: normalizeHeight(20),
     alignSelf: 'center',
