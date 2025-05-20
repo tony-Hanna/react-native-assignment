@@ -18,5 +18,17 @@ export const createStyles = (theme: Theme, isDark: boolean) => StyleSheet.create
     },
     logo: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:7},
     header: {display:'flex',flexDirection:'row', justifyContent:'space-between'},
-    flatlist: { paddingBottom: 110 }
+    flatlist: { paddingBottom: 110 },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    errorContainer: {
+        flex: 1,
+        color: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+    
 })

@@ -1,15 +1,15 @@
-import {z} from 'zod'
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
-const nameRegex = /^[A-Za-z\s]+$/
+import { z } from "zod"
 
-const SignupSchema = z.object({
-    email: z.string().min(1, 'Email is required').regex(emailRegex,'Invalid email'),
-    password: z.string().min(1, 'Password is required').regex(passwordRegex, 'Password min 6 charachter (letter/num)'),
-    name: z.string().min(1, 'Name is required').regex(nameRegex, 'Name must not contain numbers or symbols'),
-    phone: z.string().min(1, 'Phone is required').regex(/^[0-9]+$/, "Phone must contain only numbers"),
+export const SignupSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  profileImage: z.object({
+    uri: z.string(),
+    type: z.string(),
+    name: z.string(),
+  }).optional(),
 })
 
-type SignupField = z.infer<typeof SignupSchema>
-export {SignupSchema}
-export type {SignupField}
+export type SignupField = z.infer<typeof SignupSchema>

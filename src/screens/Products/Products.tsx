@@ -1,6 +1,5 @@
-import { View, Text, FlatList, Pressable, StatusBar, Switch } from "react-native"
+import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import {data} from '../../../Products.json' 
 import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./Products.style"
 import { productProp } from "../../components/organisms/Product/Product.type"
@@ -10,16 +9,72 @@ import { Logo } from "../../assets/icons/Logo"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
 import { MoonIcon } from "../../assets/icons/moon"
 import { SunIcon } from "../../assets/icons/sun"
+import { useAuthStore } from "../../store/AuthStore"
+import { useInfiniteQuery } from "@tanstack/react-query"
+import { QueryKeys } from "../../constants/QueryKeys"
+import { getProducts } from "../../api/getProducts"
+
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
     const styles = createStyles(theme, isDark)
+    const {clearTokens} = useAuthStore()
+
+    const {
+        data,
+        isLoading,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        refetch,
+        isRefetching,
+    } = useInfiniteQuery({
+        queryKey: [QueryKeys.PRODUCTS],
+        queryFn: ({ pageParam }) => getProducts({ pageParam: pageParam as number }),
+        getNextPageParam: (lastPage) => {
+            if (lastPage?.data?.pagination?.hasNextPage) {
+                return lastPage.data.pagination.currentPage + 1;
+            } 
+            return undefined;
+        },
+        initialPageParam: 0,
+
+        select: (data) => data.pages.flatMap(page => page.data)
+    })
+    console.log('products', data)
+    
     const renderItem = ({item} : {item: productProp}) => <Product item={item}/>
+
+    
+
+    const handleLoadMore = () => {
+        if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View style={styles.errorContainer}>
+                <CustomText>Error loading products: {error.message}</CustomText>
+            </View>
+        );
+    }
+
     return (
         <LinearGradient
             colors={theme.gradient} 
           >    
-        <StatusBar
+        <StatusBar 
               barStyle={isDark ? 'light-content' : 'dark-content'}
               backgroundColor="transparent"
               translucent
@@ -34,6 +89,8 @@ const Products = () => {
                     />
                     <CustomText style={{fontSize:20}}>Products</CustomText>
                 </View>
+            <Pressable onPress={clearTokens}><Text>Clear Tokens</Text></Pressable>
+
             <Pressable style={styles.toggleButton} onPress={toggleTheme}>
                 <Text style={styles.toggleText}>{isDark ? <SunIcon /> : <MoonIcon />}</Text>
             </Pressable>
@@ -43,6 +100,15 @@ const Products = () => {
                 renderItem={renderItem}
                 keyExtractor={item => item._id}
                 contentContainerStyle={styles.flatlist} 
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={() => 
+                    isFetchingNextPage ? (
+                        <ActivityIndicator size="small"/>
+                    ) : null
+                }
+                refreshing={isRefetching}
+                onRefresh={refetch}
             />
         </View>
         </LinearGradient>

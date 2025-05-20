@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { LoginSchema } from "../../schema/LoginSchema"
+import { useMutation } from "@tanstack/react-query"
 import type { LoginField } from "../../schema/LoginSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createStyles } from "./Login.style"
@@ -16,32 +17,35 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useTheme } from "../../store/themeContext"
 import { errorStyles } from "../../globalStyles/error.style"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
+import { AuthStackParamList } from "../../navigation/stacks/types"
+import { loginUser } from "../../api/loginUser"
+import { useAuthStore } from "../../store/AuthStore"
 const Login = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme} = useTheme()
     const styles = createStyles(theme, isDark)
-    type AuthStackParamList = {
-      Login: undefined;
-      Signup: undefined;
-      Verification: undefined
-    }
+    const {setTokens} = useAuthStore()
     const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
     const {
       handleSubmit,
       control,
       setError,
-      formState: {isValid, errors, isSubmitting}
+      formState: {isValid, errors }
     } = useForm<LoginField>({
       resolver: zodResolver(LoginSchema)
     })
-    const onSubmit = (data: any) => {
-        if(data.email === 'eurisko@gmail.com'&& data.password === 'academy2025'){
-          console.log('success')
-          navigation.navigate('Verification')
+
+    const {mutate, isPending} = useMutation({
+      mutationFn: (data: LoginField) => loginUser(data),
+      onSuccess: ({accessToken,refreshToken}) => {
+        setTokens(accessToken,refreshToken)
+      },
+      onError: (error) => {
+        console.log(error)
       }
-      else{
-        setError("root", { message: "Invalid email or password" })
-      }
+    })
+    const onSubmit = (data: LoginField) => {
+      mutate(data)
     }
   return (
     <LinearGradient
@@ -107,7 +111,7 @@ const Login = () => {
           ]}
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>{isPending ? 'Logging in...' : 'Login'}</Text>
         </Pressable>
         <CustomText style={styles.signupText}>
           Don't have an account?{' '}

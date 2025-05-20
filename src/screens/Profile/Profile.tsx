@@ -1,0 +1,225 @@
+import React, { useState } from 'react';
+import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from 'react-native';
+import { useTheme } from '../../store/themeContext';
+import { CustomText } from '../../components/atoms/CustomText/CustomText';
+import { InputWithLabel } from '../../components/molecules/InputWithLabel/InputWithLabel';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useAuthStore } from '../../store/AuthStore';
+import { createStyles } from './Profile.style';
+import { updateProfile } from '../../api/updateProfile';
+import { getProfile } from '../../api/getProfile';
+import { ProfileField, ProfileSchema } from '../../schema/profileSchema';
+import { useEffect } from 'react';
+import { launchImageLibrary } from 'react-native-image-picker';
+
+const Profile = () => {
+  const insets = useSafeAreaInsets();
+  const { theme, isDark } = useTheme();
+  const styles = createStyles(theme, isDark);
+  const { clearTokens } = useAuthStore();
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const { data: userData, isLoading: isLoadingProfile, error: profileError } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+  });
+  
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm<ProfileField>({
+    resolver: zodResolver(ProfileSchema),
+    defaultValues: {
+      firstName: userData?.firstName || '',
+      lastName: userData?.lastName || '',
+      email: userData?.email || '',
+      profileImage: userData?.profileImage?.url || ''
+    },
+  });
+
+  // Update form values when user data is loaded
+  useEffect(() => {
+    if (userData) {
+      reset({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+      });
+      if (userData.profileImage?.url) {
+        setProfileImage(userData.profileImage.url);
+      }
+    }
+  }, [userData, reset, profileImage]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: ProfileField) => {
+      const response = await updateProfile({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        profileImage: data.profileImage,
+      });
+      return response;
+    },
+    onSuccess: (data) => {
+      Alert.alert('Success', 'Profile updated successfully');
+      // Update local state with new user data
+      if (data.data?.user?.profileImage?.url) {
+        setProfileImage(data.data.user.profileImage.url);
+      }
+    },
+    onError: (error) => {
+      console.error('Profile update error:', error);
+      Alert.alert('Error', 'Failed to update profile. Please try again.');
+    },
+  });
+
+  const onSubmit = (data: ProfileField) => {
+    mutate(data);
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: clearTokens,
+          style: 'destructive',
+        },
+      ],
+    );
+  };
+
+  const handleImagePicker = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        quality: 0.8,
+      });
+ 
+      if (result.assets && result.assets[0]?.uri) {
+        setProfileImage(result.assets[0].uri);
+        
+        const imageObject = {
+          uri: result.assets[0].uri,
+          type: result.assets[0].type || 'image/jpeg',
+          name: result.assets[0].fileName || 'profile.jpg',
+        };
+        
+        mutate({
+          firstName: userData?.firstName || '',
+          lastName: userData?.lastName || '',
+          email: userData?.email || '',
+          profileImage: imageObject,
+        });
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    }
+  };
+
+  if (isLoadingProfile) {
+    return (
+      <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
+        <View style={[styles.container, { paddingTop: insets.top, justifyContent: 'center', alignItems: 'center' }]}>
+          <ActivityIndicator size="large" />
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
+      <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.header}>
+          <CustomText style={styles.title}>Profile</CustomText>
+          <Pressable onPress={handleLogout}>
+            <CustomText style={styles.logoutText}>Logout</CustomText>
+          </Pressable>
+        </View>
+
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={{ uri: `https://backend-practice.eurisko.me${profileImage}` || 'https://via.placeholder.com/150' }}
+            style={styles.profileImage}
+          />
+          <Pressable style={styles.editImageButton} onPress={handleImagePicker}>
+            <CustomText style={styles.editImageText}>Change Photo</CustomText>
+          </Pressable>
+        </View>
+
+        <View style={styles.form}>
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="First Name"
+                style={styles.input}
+              />
+            )}
+          />
+          {errors.firstName && (
+            <CustomText style={styles.errorText}>{errors.firstName.message}</CustomText>
+          )}
+
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="Last Name"
+                style={styles.input}
+              />
+            )}
+          />
+          {errors.lastName && (
+            <CustomText style={styles.errorText}>{errors.lastName.message}</CustomText>
+          )}
+
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <InputWithLabel
+                {...field}
+                label="Email"
+                style={styles.input}
+                editable={false} // Email shouldn't be editable
+              />
+            )}
+          />
+          {errors.email && (
+            <CustomText style={styles.errorText}>{errors.email.message}</CustomText>
+          )}
+
+          <Pressable
+            style={[styles.button, !isValid && styles.buttonDisabled]}
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isValid || isPending}
+          >
+            <CustomText style={styles.buttonText}>
+              {isPending ? 'Saving...' : 'Save Changes'}
+            </CustomText>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </LinearGradient>
+  );
+};
+
+export { Profile }; 

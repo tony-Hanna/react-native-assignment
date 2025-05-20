@@ -70,6 +70,29 @@ export const createStyles = (theme: Theme, isDark: boolean, insets: { top: numbe
         marginBottom: normalizeHeight(28),
         width: 40,
         height: 40,
-      
-      }
+      },
+      imageSelectionContainer: {
+        alignItems: 'center',
+        marginVertical: normalizeHeight(10),
+        paddingVertical: normalizeHeight(5),
+      },
+      imageStatusText: {
+        color: '#000',
+        fontSize: normalizeWidth(16),
+        marginBottom: normalizeHeight(8),
+        fontWeight: '500',
+      },
+      editImageButton: {
+        paddingHorizontal: normalizeWidth(15),
+        paddingVertical: normalizeHeight(8),
+        borderRadius: normalizeWidth(20),
+        backgroundColor: '#007bff',
+        minWidth: normalizeWidth(120),
+        alignItems: 'center',
+      },
+      editImageText: {
+        color: '#fff',
+        fontSize: normalizeWidth(14),
+        fontWeight: '500',
+      },
     })

@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Image, Pressable, ScrollView } from "react-native";
+import { View, Image, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
-import { data } from "../../../Products.json";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import ArrowLeftIcon from "../../assets/icons/LeftArrow";
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from "../../store/themeContext";
 import { detailsStyles as styles } from "./Details.style";
+import { useQuery } from "@tanstack/react-query";
+import { getProduct } from "../../api/getProduct";
 
 type MainStackParamList = {
   Details: { id: string };
@@ -17,12 +18,23 @@ const Details = () => {
   const { id } = route.params;
   const { theme } = useTheme();
 
-  const product = data.find((item) => item._id === id);
+  const {data: product, isLoading, error} = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => getProduct(id)
+  })
 
-  if (!product) {
+  if (isLoading) {
     return (
       <View style={styles.centered}>
-        <CustomText style={styles.errorText}>Product not found.</CustomText>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <CustomText style={styles.errorText}>Error loading product.</CustomText>
       </View>
     );
   }
@@ -35,7 +47,7 @@ const Details = () => {
         </View>
 
         <Image
-          source={{ uri: product.images[0].url }}
+          source={{ uri: `https://backend-practice.eurisko.me${product.images[0].url}` }}
           style={styles.image}
           resizeMode="contain" 
         />

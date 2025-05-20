@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Login } from '../../screens/LoginForm/Login';
 import { Signup } from '../../screens/Signup/Signup';
 import { Verification } from '../../screens/Verification/Verification';
-const AuthStack = createNativeStackNavigator()
+import { AuthStackParamList } from './types';
+const AuthStack = createNativeStackNavigator<AuthStackParamList>()
 export const AuthStackNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>

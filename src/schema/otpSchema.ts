@@ -11,7 +11,9 @@ const otpSchema = z.object({
   d2: digitSchema,
   d3: digitSchema,
   d4: digitSchema,
-});
+  d5: digitSchema,
+  d6: digitSchema,
+  });
 
 type otpField = z.infer<typeof otpSchema>;
 
