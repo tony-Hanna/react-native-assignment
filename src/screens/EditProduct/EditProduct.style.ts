@@ -36,6 +36,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             borderRadius: normalizeWidth(10),
             alignItems: "center",
             marginTop: normalizeHeight(20),
+            backgroundColor: "#2e8b57",
         },
         buttonDisabled: {
             opacity: 0.5,
@@ -69,21 +70,28 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             padding: normalizeWidth(10),
             borderRadius: normalizeWidth(8),
             alignItems: "center",
+            backgroundColor: "#2e8b57",
         },
         imageButtonText: {
             color: "#fff",
             fontSize: normalizeWidth(14),
+        },
+        loadingContainer: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+        
         },
         thumbnailWrapper: {
             position: 'relative',
             marginRight: 10,
             marginBottom: 10,
           },
-        imageThumbnail: {
+          imageThumbnail: {
             width: 100,
             height: 100,
             borderRadius: 8,
-        },
+          },
           removeButton: {
             position: 'absolute',
             top: -5,
@@ -102,6 +110,5 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             fontWeight: 'bold',
             lineHeight: 18,
           },
-        
           
-    }) 
+    })

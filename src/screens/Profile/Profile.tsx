@@ -7,7 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../../store/AuthStore';
 import { createStyles } from './Profile.style';
 import { updateProfile } from '../../api/updateProfile';
@@ -15,12 +15,14 @@ import { getProfile } from '../../api/getProfile';
 import { ProfileField, ProfileSchema } from '../../schema/profileSchema';
 import { useEffect } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { QueryKeys } from '../../constants/QueryKeys';
 
 const Profile = () => {
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const styles = createStyles(theme, isDark);
   const { clearTokens } = useAuthStore();
+  const queryClient = useQueryClient();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const { data: userData, isLoading: isLoadingProfile, error: profileError } = useQuery({
@@ -69,6 +71,7 @@ const Profile = () => {
     onSuccess: (data) => {
       Alert.alert('Success', 'Profile updated successfully');
       // Update local state with new user data
+      queryClient.invalidateQueries({ queryKey: QueryKeys.PROFILE });
       if (data.data?.user?.profileImage?.url) {
         setProfileImage(data.data.user.profileImage.url);
       }

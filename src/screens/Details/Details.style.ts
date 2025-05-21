@@ -7,13 +7,18 @@ export const detailsStyles = StyleSheet.create({
     padding: normalizeWidth(20),
     flex: 1,
   },
-  image: {
-    width: SCREEN_WIDTH < 375 ? '59%' : '100%',
-    aspectRatio: 1, 
-    borderRadius: 12,
+  imageContainer: {
+    width: SCREEN_WIDTH - normalizeWidth(40),
+    height: SCREEN_WIDTH - normalizeWidth(40),
     marginBottom: normalizeHeight(20),
     alignSelf: 'center',
   },
+  image: {
+    width: SCREEN_WIDTH - normalizeWidth(40), // Match FlatList item width
+    height: SCREEN_WIDTH - normalizeWidth(40),
+    borderRadius: 12,
+  },
+  
   title: {
     fontSize: normalizeWidth(24),
     fontWeight: "700",
@@ -63,6 +68,14 @@ export const detailsStyles = StyleSheet.create({
   },
   cartButton: {
     backgroundColor: "#2e8b57",
+    marginRight: 0,
+  },
+  editButton: {
+    backgroundColor: "#2e8b57",
+    marginRight: 0,
+  },
+  deleteButton: {
+    backgroundColor: "#ff4444",
     marginRight: 0,
   },
   buttonText: {

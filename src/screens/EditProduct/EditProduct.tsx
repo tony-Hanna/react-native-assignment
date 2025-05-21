@@ -1,34 +1,46 @@
-import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator,Text } from "react-native"
+ import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from "react-native"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
 import { InputWithLabel } from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AddProductField, AddProductSchema } from "./AddProduct.type"
+import { EditProductField, EditProductSchema } from "./EditProduct.type"
 import { useTheme } from "../../store/themeContext"
-import { createStyles } from "./AddProduct.style"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createProduct } from "../../api/createProduct"
-import { useState } from "react"
+import { createStyles } from "./EditProduct.style"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { updateProduct } from "../../api/updateProduct"
+import { getProduct } from "../../api/getProduct"
+import { useState, useEffect } from "react"
 import { launchImageLibrary } from "react-native-image-picker"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useNavigation } from "@react-navigation/native"
-import MapView from 'react-native-maps';
-const AddProduct = () => {
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native"
+import ArrowLeftIcon from "../../assets/icons/LeftArrow"
+type MainStackParamList = {
+  EditProduct: { id: string };
+};
+
+const EditProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = createStyles(theme, isDark)
     const navigation = useNavigation()
     const queryClient = useQueryClient()
+    const route = useRoute<RouteProp<MainStackParamList, "EditProduct">>()
+    const { id } = route.params
     const [selectedImages, setSelectedImages] = useState<{ uri: string; type: string; name: string }[]>([])
+
+    const { data: product, isLoading: isLoadingProduct } = useQuery({
+        queryKey: ['product', id],
+        queryFn: () => getProduct(id)
+    })
 
     const {
         control,
         handleSubmit,
         formState: { errors, isValid },
-        reset
-    } = useForm<AddProductField>({
-        resolver: zodResolver(AddProductSchema),
+        reset,
+    } = useForm<EditProductField>({
+        resolver: zodResolver(EditProductSchema),
         defaultValues: {
             title: "",
             description: "",
@@ -41,20 +53,36 @@ const AddProduct = () => {
         },
     })
 
+    useEffect(() => {
+        if (product) {
+            reset({
+                title: product.title,
+                description: product.description,
+                price: product.price.toString(),
+                location: product.location,
+            })
+            if (product.images?.length > 0) {
+                setSelectedImages(product.images.map((img: any) => ({
+                    uri: `https://backend-practice.eurisko.me${img.url}`,
+                    type: 'image/jpeg',
+                    name: 'image.jpg'
+                })))
+            }
+        }
+    }, [product, reset])
+
     const { mutate, isPending } = useMutation({
-        mutationFn: async (data: AddProductField) => {
-          const formData = new FormData();
-          formData.append('title', data.title);
-          formData.append('description', data.description);
-          formData.append('price', data.price);
-          formData.append('location', JSON.stringify({
-            name: 'Dummy Place',
-            longitude: 35.12345,
-            latitude: 33.56789
-          }));
-          
-          
-          
+        mutationFn: async (data: EditProductField) => {
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('description', data.description);
+            formData.append('price', data.price);
+            formData.append('location', JSON.stringify({
+                name: 'Dummy Place',
+                longitude: 35.12345,
+                latitude: 33.56789
+            }));
+        
           selectedImages.forEach((image, index) => {
             formData.append('images', {
               uri: image.uri,
@@ -62,18 +90,17 @@ const AddProduct = () => {
               name: image.name,
             });
           });
-          return createProduct(formData);  
+            return updateProduct(id, formData);
         },
         onSuccess: () => {
-            Alert.alert("Success", "Product created successfully")
-            queryClient.invalidateQueries({ queryKey: ['products']})
-            reset()
-            setSelectedImages([])
+            Alert.alert("Success", "Product updated successfully")
+            queryClient.invalidateQueries({ queryKey: ['product', id] });
+            queryClient.invalidateQueries({ queryKey: ['products']});
             navigation.goBack()
         },
         onError: (error) => {
-            console.error("Create product error:", error)
-            Alert.alert("Error", "Failed to create product. Please try again.")
+            console.error("Update product error:", error)
+            Alert.alert("Error", "Failed to update product. Please try again.")
         },
     })
 
@@ -99,7 +126,7 @@ const AddProduct = () => {
         }
     }
 
-    const onSubmit = (data: AddProductField) => {
+    const onSubmit = (data: EditProductField) => {
         if (selectedImages.length === 0) {
             Alert.alert("Error", "Please select at least one image")
             return
@@ -107,13 +134,22 @@ const AddProduct = () => {
         mutate(data)
     }
 
+    if (isLoadingProduct) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
     return (
         <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
             <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
+            <ArrowLeftIcon />
                 <View style={styles.header}>
-                    <CustomText style={styles.title}>Add Product</CustomText>
-                </View>
 
+                    <CustomText style={styles.title}>Edit Product</CustomText>
+                </View>
                 <View style={styles.form}>
                     <Controller
                         name="title"
@@ -222,7 +258,7 @@ const AddProduct = () => {
                         disabled={!isValid || isPending}
                     >
                         <CustomText style={styles.buttonText}>
-                            {isPending ? "Creating..." : "Create Product"}
+                            {isPending ? "Updating..." : "Update Product"}
                         </CustomText>
                     </Pressable>
                 </View>
@@ -231,4 +267,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct
+export default EditProduct 

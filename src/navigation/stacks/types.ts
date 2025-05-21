@@ -17,9 +17,11 @@ export type AuthStackParamList = {
 export type MainStackParamList = {
     MainTabs: undefined;
     Details: { id: string };
+    EditProduct: { id: string };
 };
 export type TabParamList = {
     Home: undefined;
     AddProduct: undefined;
     Profile: undefined;
+    MyAds: undefined;
   };

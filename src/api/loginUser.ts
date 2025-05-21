@@ -14,6 +14,7 @@ export const loginUser = async (data: LoginField) => {
     ...data,
     token_expires_in: "1y"
   })
+
   return response.data.data
 }
 

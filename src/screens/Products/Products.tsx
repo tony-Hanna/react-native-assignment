@@ -9,16 +9,13 @@ import { Logo } from "../../assets/icons/Logo"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
 import { MoonIcon } from "../../assets/icons/moon"
 import { SunIcon } from "../../assets/icons/sun"
-import { useAuthStore } from "../../store/AuthStore"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { QueryKeys } from "../../constants/QueryKeys"
 import { getProducts } from "../../api/getProducts"
 
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
     const styles = createStyles(theme, isDark)
-    const {clearTokens} = useAuthStore()
 
     const {
         data,
@@ -30,7 +27,7 @@ const Products = () => {
         refetch,
         isRefetching,
     } = useInfiniteQuery({
-        queryKey: [QueryKeys.PRODUCTS],
+        queryKey: ['products'],
         queryFn: ({ pageParam }) => getProducts({ pageParam: pageParam as number }),
         getNextPageParam: (lastPage) => {
             if (lastPage?.data?.pagination?.hasNextPage) {
@@ -45,8 +42,6 @@ const Products = () => {
     console.log('products', data)
     
     const renderItem = ({item} : {item: productProp}) => <Product item={item}/>
-
-    
 
     const handleLoadMore = () => {
         if (hasNextPage && !isFetchingNextPage) {
@@ -89,7 +84,6 @@ const Products = () => {
                     />
                     <CustomText style={{fontSize:20}}>Products</CustomText>
                 </View>
-            <Pressable onPress={clearTokens}><Text>Clear Tokens</Text></Pressable>
 
             <Pressable style={styles.toggleButton} onPress={toggleTheme}>
                 <Text style={styles.toggleText}>{isDark ? <SunIcon /> : <MoonIcon />}</Text>

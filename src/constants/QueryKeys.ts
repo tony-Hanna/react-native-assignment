@@ -1,3 +1,4 @@
-export enum QueryKeys {
-    PRODUCTS = 'products',
-}    
+export const QueryKeys = {
+    PRODUCTS: ['products'],
+    PROFILE: ['profile']
+} as const;    

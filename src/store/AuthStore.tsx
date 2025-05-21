@@ -33,12 +33,14 @@ const SecureStorage: StateStorage = {
 };
 
 type AuthState = {
+  userId: string | null;
   accessToken: string | null;
   refreshToken: string | null;
   setTokens: (accessToken: string, refreshToken: string) => void;
   clearTokens: () => void;
   hasStoreLoaded: boolean;
   setHasStoreLoaded: () => void;
+  setUserId: (userId: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -46,11 +48,13 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       accessToken: null,
       refreshToken: null,
+      userId: null,
       hasStoreLoaded: false,
       setHasStoreLoaded: () => set({ hasStoreLoaded: true }),
       setTokens: (accessToken, refreshToken) =>
         set({ accessToken, refreshToken }),
       clearTokens: () => set({ accessToken: null, refreshToken: null }),
+      setUserId: (userId: string) => set({ userId }),
     }),
     {
       name: 'auth-storage',

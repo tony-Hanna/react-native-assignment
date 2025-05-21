@@ -43,6 +43,16 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen 
+        name="MyAds" 
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color }) => <ProfileIcon color={color} />,
+          tabBarLabel: ({ color }) => (
+            <CustomText style={{ color, fontSize: 12 }}>My Ads</CustomText>
+          ),
+        }}
+      />
+      <Tab.Screen 
         name="Profile" 
         component={Profile}
         options={{
