@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from 'react-native';
 import { useTheme } from '../../store/themeContext';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
@@ -13,9 +13,13 @@ import { createStyles } from './Profile.style';
 import { updateProfile } from '../../api/updateProfile';
 import { getProfile } from '../../api/getProfile';
 import { ProfileField, ProfileSchema } from '../../schema/profileSchema';
-import { useEffect } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { QueryKeys } from '../../constants/QueryKeys';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../navigation/stacks/types';
+import { usePhotoStore } from '../../store/photoStore';
+type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const Profile = () => {
   const insets = useSafeAreaInsets();
@@ -24,12 +28,14 @@ const Profile = () => {
   const { clearTokens } = useAuthStore();
   const queryClient = useQueryClient();
   const [profileImage, setProfileImage] = useState<string | null>(null);
-
+  const [showImageOptions, setShowImageOptions] = useState(false);
+  const navigation = useNavigation<NavigationProp>();
+  const { photo } = usePhotoStore()
   const { data: userData, isLoading: isLoadingProfile, error: profileError } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   });
-  
+  console.log(photo)
   const {
     control,
     handleSubmit,
@@ -44,7 +50,7 @@ const Profile = () => {
       profileImage: userData?.profileImage?.url || ''
     },
   });
-
+  console.log('photo from profile', photo)
   // Update form values when user data is loaded
   useEffect(() => {
     if (userData) {
@@ -58,6 +64,24 @@ const Profile = () => {
       }
     }
   }, [userData, reset, profileImage]);
+
+  // Handle photo from camera
+  useEffect(() => {
+    if (photo) {
+      const imageObject = {
+        uri: photo,
+        type: 'image/jpeg',
+        name: 'camera_photo.jpg',
+      };
+      
+      mutate({
+        firstName: userData?.firstName || '',
+        lastName: userData?.lastName || '',
+        email: userData?.email || '',
+        profileImage: imageObject,
+      });
+    }
+  }, [photo]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: ProfileField) => {
@@ -113,7 +137,7 @@ const Profile = () => {
  
       if (result.assets && result.assets[0]?.uri) {
         setProfileImage(result.assets[0].uri);
-        
+        console.log('result.assets[0].uri', result.assets[0].uri)
         const imageObject = {
           uri: result.assets[0].uri,
           type: result.assets[0].type || 'image/jpeg',
@@ -154,11 +178,13 @@ const Profile = () => {
         </View>
 
         <View style={styles.profileImageContainer}>
-          <Image
-            source={{ uri: `https://backend-practice.eurisko.me${profileImage}` || 'https://via.placeholder.com/150' }}
-            style={styles.profileImage}
-          />
-          <Pressable style={styles.editImageButton} onPress={handleImagePicker}>
+          <Pressable style={styles.editImageButton} onPress={() => setShowImageOptions(true)}>
+            <Image
+              source={{ uri: `https://backend-practice.eurisko.me${profileImage}` || 'https://via.placeholder.com/150' }}
+              style={styles.profileImage}
+            />
+          </Pressable>
+          <Pressable style={styles.editImageButton} onPress={() => setShowImageOptions(true)}>
             <CustomText style={styles.editImageText}>Change Photo</CustomText>
           </Pressable>
         </View>
@@ -202,7 +228,7 @@ const Profile = () => {
                 {...field}
                 label="Email"
                 style={styles.input}
-                editable={false} // Email shouldn't be editable
+                editable={false}
               />
             )}
           />
@@ -221,6 +247,46 @@ const Profile = () => {
           </Pressable>
         </View>
       </ScrollView>
+
+      {showImageOptions && (
+        <View style={styles.modalOverlay}>
+          <Pressable 
+            style={{ flex: 1, width: '100%', height: '100%' }}
+            onPress={() => setShowImageOptions(false)}
+          >
+            <Pressable
+              style={styles.modalContent}
+              onPress={(e) => e.stopPropagation()}
+            >
+              <CustomText style={styles.modalTitle}>Select Image Option</CustomText>
+
+              <Pressable
+                style={styles.modalButton}
+                onPress={() => {
+                  setShowImageOptions(false);
+                  handleImagePicker();
+                }}
+              >
+                <CustomText style={styles.modalButtonText}>Choose from Gallery</CustomText>
+              </Pressable>
+
+              <Pressable
+                style={styles.modalButton}
+                onPress={() => {
+                  setShowImageOptions(false);
+                  navigation.navigate('CameraScreen');
+                }}
+              >
+                <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
+              </Pressable>
+
+              <Pressable onPress={() => setShowImageOptions(false)}>
+                <CustomText style={styles.cancelText}>Cancel</CustomText>
+              </Pressable>
+            </Pressable>
+          </Pressable>
+        </View>
+      )}
     </LinearGradient>
   );
 };

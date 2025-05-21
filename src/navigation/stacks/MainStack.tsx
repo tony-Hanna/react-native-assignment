@@ -3,7 +3,7 @@ import { Details } from '../../screens';
 import { MainStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
 import EditProduct from '../../screens/EditProduct/EditProduct';
-
+import { CameraScreen } from '../../screens/Camera/CameraScreen';
 const MainStack = createNativeStackNavigator<MainStackParamList>()
 
 export const MainStackNavigator = () => {
@@ -14,6 +14,7 @@ export const MainStackNavigator = () => {
       <MainStack.Screen name="MainTabs" component={TabNavigator} />
       <MainStack.Screen name="Details" component={Details} />
       <MainStack.Screen name="EditProduct" component={EditProduct} />
+      <MainStack.Screen name="CameraScreen" component={CameraScreen} />
     </MainStack.Navigator>
   )
 }

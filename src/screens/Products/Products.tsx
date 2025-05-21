@@ -74,7 +74,7 @@ const Products = () => {
               backgroundColor="transparent"
               translucent
             />
-            
+ 
         <View style={{paddingTop : insets.top, paddingBottom: insets.bottom}}>
             <View style={styles.header}>
                 <View style={styles.logo}>

@@ -13,15 +13,22 @@ import { launchImageLibrary } from "react-native-image-picker"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { MainStackParamList } from "../../navigation/stacks/types"
+import { usePhotoStore } from "../../store/photoStore"
 import MapView from 'react-native-maps';
+
+type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
+
 const AddProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = createStyles(theme, isDark)
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp>()
+    const { photo } = usePhotoStore()
     const queryClient = useQueryClient()
     const [selectedImages, setSelectedImages] = useState<{ uri: string; type: string; name: string }[]>([])
-
+    const [showImageOptions, setShowImageOptions] = useState(false)
     const {
         control,
         handleSubmit,
@@ -98,7 +105,7 @@ const AddProduct = () => {
             Alert.alert("Error", "Failed to pick images. Please try again.")
         }
     }
-
+    
     const onSubmit = (data: AddProductField) => {
         if (selectedImages.length === 0) {
             Alert.alert("Error", "Please select at least one image")
@@ -205,7 +212,7 @@ const AddProduct = () => {
                         </View>
                         <Pressable
                             style={styles.imageButton}
-                            onPress={handleImagePicker}
+                            onPress={() => setShowImageOptions(true)}
                             disabled={selectedImages.length >= 5}
                         >
                             <CustomText style={styles.imageButtonText}>
@@ -227,6 +234,45 @@ const AddProduct = () => {
                     </Pressable>
                 </View>
             </ScrollView>
+            {showImageOptions && (
+                <View style={styles.modalOverlay}>
+                    <Pressable 
+                        style={{ flex: 1, width: '100%', height: '100%' }}
+                        onPress={() => setShowImageOptions(false)}
+                    >
+                        <Pressable
+                            style={styles.modalContent}
+                            onPress={(e) => e.stopPropagation()}
+                        >
+                            <CustomText style={styles.modalTitle}>Select Image Option</CustomText>
+
+                            <Pressable
+                                style={styles.modalButton}
+                                onPress={() => {
+                                setShowImageOptions(false);
+                                handleImagePicker();
+                                }}
+                            >
+                                <CustomText style={styles.modalButtonText}>Choose from Gallery</CustomText>
+                            </Pressable>
+
+                            <Pressable
+                                style={styles.modalButton}
+                                onPress={() => {
+                                setShowImageOptions(false);
+                                navigation.navigate('CameraScreen');
+                                }}
+                            >
+                                <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
+                            </Pressable>
+
+                            <Pressable onPress={() => setShowImageOptions(false)}>
+                                <CustomText style={styles.cancelText}>Cancel</CustomText>
+                            </Pressable>
+                        </Pressable>
+                    </Pressable>
+                </View>
+            )}
         </LinearGradient>
     )
 }

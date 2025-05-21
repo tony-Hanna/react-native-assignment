@@ -42,6 +42,7 @@ const Login = () => {
       },
       onError: (error) => {
         console.log(error)
+        setError('root', {message: 'Invalid email or password'})
       }
     })
     const onSubmit = (data: LoginField) => {
