@@ -18,7 +18,8 @@ export type MainStackParamList = {
     MainTabs: undefined;
     Details: { id: string };
     EditProduct: { id: string };
-    CameraScreen: undefined;
+    CameraScreen: { type: 'profile' | 'product' | 'editProduct' };
+    Location: undefined;
     Profile: { photo: any };
 };
 export type TabParamList = {

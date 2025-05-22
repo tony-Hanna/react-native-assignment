@@ -19,9 +19,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details'>;
 
-interface User {
-  id: string;
-}
 
 const Details = () => {
   const route = useRoute<RouteProp<MainStackParamList, "Details">>();
@@ -32,18 +29,18 @@ const Details = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   
   console.log('userId', userId)
-  const {data: product, isLoading, error} = useQuery({
+  const {data: product, isLoading, error, refetch} = useQuery({
     queryKey: ['product', id],
-    queryFn: () => getProduct(id)
+    queryFn: () => getProduct(id),
   })
-console.log('product images', product?.images[0].url)
+console.log('product images', product)
 
-  const { data: userData, isLoading: isLoadingProfile } = useQuery<User>({
-    queryKey: QueryKeys.PROFILE,
-    queryFn: getProfile
-  });
+  // const { data: userData, isLoading: isLoadingProfile } = useQuery<User>({
+  //   queryKey: QueryKeys.PROFILE,
+  //   queryFn: getProfile
+  // });
 
-  const isProductOwner = product?.user?._id === userData?.id;
+  const isProductOwner = product?.user?._id === userId;
 
   const { mutate: deleteProductMutation } = useMutation({
     mutationFn: () => deleteProduct(id),
@@ -54,7 +51,7 @@ console.log('product images', product?.images[0].url)
       console.error('Error deleting product:', error);
     },
   });
-  if (isLoading || isLoadingProfile) {
+  if (isLoading) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" />
@@ -64,8 +61,18 @@ console.log('product images', product?.images[0].url)
 
   if (error) {
     return (
-      <View style={styles.centered}>
-        <CustomText style={styles.errorText}>Error loading product.</CustomText>
+      <View style={[styles.centered, { padding: 20 }]}>
+        <CustomText style={[styles.errorText, { marginBottom: 16 }]}>
+          {error instanceof Error 
+            ? `Error: ${error.message}`
+            : 'Failed to load product. Please try again.'}
+        </CustomText>
+        <Pressable 
+          style={[styles.button, { backgroundColor: '#2e8b57' }]} 
+          onPress={() => refetch()}
+        >
+          <CustomText style={styles.buttonText}>Retry</CustomText>
+        </Pressable>
       </View>
     );
   }
@@ -123,6 +130,7 @@ console.log('product images', product?.images[0].url)
         <CustomText style={styles.price}>${product.price}</CustomText>
 
         <CustomText style={styles.sectionTitle}>Description</CustomText>
+        <CustomText style={styles.sectionTitle}>{product.location.name}</CustomText>
         <CustomText style={styles.description}>{product.description}</CustomText>
   
             

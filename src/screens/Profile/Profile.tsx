@@ -30,12 +30,12 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showImageOptions, setShowImageOptions] = useState(false);
   const navigation = useNavigation<NavigationProp>();
-  const { photo } = usePhotoStore()
+  const { profilePhoto } = usePhotoStore()
   const { data: userData, isLoading: isLoadingProfile, error: profileError } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   });
-  console.log(photo)
+  console.log('profilePhoto', profilePhoto)
   const {
     control,
     handleSubmit,
@@ -50,7 +50,7 @@ const Profile = () => {
       profileImage: userData?.profileImage?.url || ''
     },
   });
-  console.log('photo from profile', photo)
+  console.log('profilePhoto from profile', profilePhoto)
   // Update form values when user data is loaded
   useEffect(() => {
     if (userData) {
@@ -67,9 +67,9 @@ const Profile = () => {
 
   // Handle photo from camera
   useEffect(() => {
-    if (photo) {
+    if (profilePhoto) {
       const imageObject = {
-        uri: photo,
+        uri: profilePhoto,
         type: 'image/jpeg',
         name: 'camera_photo.jpg',
       };
@@ -81,7 +81,7 @@ const Profile = () => {
         profileImage: imageObject,
       });
     }
-  }, [photo]);
+  }, [profilePhoto]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: ProfileField) => {
@@ -274,7 +274,9 @@ const Profile = () => {
                 style={styles.modalButton}
                 onPress={() => {
                   setShowImageOptions(false);
-                  navigation.navigate('CameraScreen');
+                  navigation.navigate('CameraScreen', {
+                    type: 'profile'
+                  });
                 }}
               >
                 <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>

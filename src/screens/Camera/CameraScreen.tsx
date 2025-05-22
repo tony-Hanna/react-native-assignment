@@ -4,12 +4,15 @@ import { useCameraPermission, useCameraDevice, Camera } from 'react-native-visio
 import { useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { usePhotoStore } from '../../store/photoStore';
+import { useRoute } from '@react-navigation/native';
 const CameraScreen = () => {
     const { hasPermission, requestPermission } = useCameraPermission()
-    const { setPhoto } = usePhotoStore()
+    const { setProfilePhoto, setProductPhoto, setEditProductPhoto } = usePhotoStore()
     const navigation = useNavigation()
     const device = useCameraDevice('back')
     const camera = useRef<Camera>(null)
+    const route = useRoute()
+    const { type } = route.params as { type: 'profile' | 'product' | 'editProduct' }
     const handleCameraPermission = useCallback( async() => {
         if (hasPermission) {
             return
@@ -30,7 +33,15 @@ const CameraScreen = () => {
         const photo = await camera.current?.takePhoto({enableShutterSound: true})
         navigation.goBack()
         console.log(photo)
-        setPhoto(photo?.path || '')
+        if(type === 'profile') {
+            setProfilePhoto(photo?.path || '')
+        } else if(type === 'product'){
+            setProductPhoto(photo?.path || '')
+        } else if(type === 'editProduct'){
+            setEditProductPhoto(photo?.path || '')
+        } else {
+            console.log('No type found')
+        }
     }
     if(!hasPermission) {
         return <CustomText>No permission to use camera <CustomText onPress={openSettings}>Click here to grant permission</CustomText></CustomText>

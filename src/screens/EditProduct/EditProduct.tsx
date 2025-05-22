@@ -1,4 +1,4 @@
- import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from "react-native"
+import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from "react-native"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
 import { InputWithLabel } from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, Controller } from "react-hook-form"
@@ -15,20 +15,26 @@ import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native"
 import ArrowLeftIcon from "../../assets/icons/LeftArrow"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { usePhotoStore } from "../../store/photoStore"
 type MainStackParamList = {
   EditProduct: { id: string };
+  CameraScreen: { type: string };
 };
+
+type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const EditProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = createStyles(theme, isDark)
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp>()
     const queryClient = useQueryClient()
     const route = useRoute<RouteProp<MainStackParamList, "EditProduct">>()
     const { id } = route.params
     const [selectedImages, setSelectedImages] = useState<{ uri: string; type: string; name: string }[]>([])
-
+    const [showImageOptions, setShowImageOptions] = useState(false)
+    const { editProductPhoto } = usePhotoStore()
     const { data: product, isLoading: isLoadingProduct } = useQuery({
         queryKey: ['product', id],
         queryFn: () => getProduct(id)
@@ -103,7 +109,16 @@ const EditProduct = () => {
             Alert.alert("Error", "Failed to update product. Please try again.")
         },
     })
-
+    useEffect(() => {
+        if (editProductPhoto) {
+            const imageObject = {
+                uri: editProductPhoto,
+                type: 'image/jpeg', 
+                name: 'camera_photo.jpg', 
+            };
+            setSelectedImages((prev) => [...prev, imageObject].slice(0, 5));
+        }
+    }, [editProductPhoto]);
     const handleImagePicker = async () => {
         try {
             const result = await launchImageLibrary({
@@ -241,7 +256,7 @@ const EditProduct = () => {
                         </View>
                         <Pressable
                             style={styles.imageButton}
-                            onPress={handleImagePicker}
+                            onPress={() => setShowImageOptions(true)}
                             disabled={selectedImages.length >= 5}
                         >
                             <CustomText style={styles.imageButtonText}>
@@ -263,6 +278,44 @@ const EditProduct = () => {
                     </Pressable>
                 </View>
             </ScrollView>
+            {showImageOptions && (
+                <View style={styles.modalOverlay}>
+                    <Pressable 
+                        style={{ flex: 1, width: '100%', height: '100%' }}
+                        onPress={() => setShowImageOptions(false)}
+                    >
+                        <Pressable
+                            style={styles.modalContent}
+                            onPress={(e) => e.stopPropagation()}
+                        >
+                            <CustomText style={styles.modalTitle}>Select Image Option</CustomText>
+                            <Pressable
+                                style={styles.modalButton}
+                                onPress={() => {
+                                    setShowImageOptions(false);
+                                    handleImagePicker();
+                                }}
+                            >
+                                <CustomText style={styles.modalButtonText}>Choose from Gallery</CustomText>
+                            </Pressable>
+                            <Pressable
+                                style={styles.modalButton}
+                                onPress={() => {
+                                    setShowImageOptions(false);
+                                    navigation.navigate('CameraScreen', {
+                                        type: 'editProduct'
+                                    });
+                                }}
+                            >
+                                <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
+                            </Pressable>
+                            <Pressable onPress={() => setShowImageOptions(false)}>
+                                <CustomText style={styles.cancelText}>Cancel</CustomText>
+                            </Pressable>
+                        </Pressable>
+                    </Pressable>
+                </View>
+            )}
         </LinearGradient>
     )
 }

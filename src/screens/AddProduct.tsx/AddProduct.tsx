@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AddProductField, AddProductSchema } from "./AddProduct.type"
 import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./AddProduct.style"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createProduct } from "../../api/createProduct"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { launchImageLibrary } from "react-native-image-picker"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -16,16 +16,18 @@ import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { MainStackParamList } from "../../navigation/stacks/types"
 import { usePhotoStore } from "../../store/photoStore"
-import MapView from 'react-native-maps';
-
+import { useLocationStore } from "../../store/LocationStore"
+import { getAddressFromCoordinates } from "../../api/geocode"
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const AddProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = createStyles(theme, isDark)
+    const [address, setAddress] = useState<string | null>(null)
     const navigation = useNavigation<NavigationProp>()
-    const { photo } = usePhotoStore()
+    const { productPhoto } = usePhotoStore()
+    const { location } = useLocationStore()
     const queryClient = useQueryClient()
     const [selectedImages, setSelectedImages] = useState<{ uri: string; type: string; name: string }[]>([])
     const [showImageOptions, setShowImageOptions] = useState(false)
@@ -41,13 +43,13 @@ const AddProduct = () => {
             description: "",
             price: "",
             location: {
-                name: "",
-                longitude: 0,
-                latitude: 0,
+                name: address || '',
+                longitude: location?.longitude,
+                latitude: location?.latitude,
             },
         },
     })
-
+   
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: AddProductField) => {
           const formData = new FormData();
@@ -55,12 +57,10 @@ const AddProduct = () => {
           formData.append('description', data.description);
           formData.append('price', data.price);
           formData.append('location', JSON.stringify({
-            name: 'Dummy Place',
-            longitude: 35.12345,
-            latitude: 33.56789
+            name: address || '',
+            longitude: location?.longitude,
+            latitude: location?.latitude
           }));
-          
-          
           
           selectedImages.forEach((image, index) => {
             formData.append('images', {
@@ -83,7 +83,32 @@ const AddProduct = () => {
             Alert.alert("Error", "Failed to create product. Please try again.")
         },
     })
-
+    useEffect(() => {
+        if (location) {
+            getAddressFromCoordinates(location.latitude, location.longitude).then((data) => {
+                setAddress(data.display_name);
+                reset((prev) => ({
+                    ...prev,
+                    location: {
+                        name: data.display_name,
+                        longitude: location.longitude,
+                        latitude: location.latitude,
+                    },
+                }));
+            });
+        }
+    }, [location]);
+    
+    useEffect(() => {
+        if (productPhoto) {
+            const imageObject = {
+                uri: productPhoto,
+                type: 'image/jpeg', 
+                name: 'camera_photo.jpg', 
+            };
+            setSelectedImages((prev) => [...prev, imageObject].slice(0, 5));
+        }
+    }, [productPhoto]);
     const handleImagePicker = async () => {
         try {
             const result = await launchImageLibrary({
@@ -175,18 +200,9 @@ const AddProduct = () => {
                             {errors.price.message}
                         </CustomText>
                     )}
-
-                    <Controller
-                        name="location.name"
-                        control={control}
-                        render={({ field }) => (
-                            <InputWithLabel
-                                {...field}
-                                label="Location"
-                                style={styles.input}
-                            />
-                        )}
-                    />
+                <Pressable onPress={() => navigation.navigate('Location')}>
+                        <CustomText>Location</CustomText>
+                    </Pressable>
                     {errors.location?.name && (
                         <CustomText style={styles.errorText}>
                             {errors.location.name.message}
@@ -222,7 +238,9 @@ const AddProduct = () => {
                             </CustomText>
                         </Pressable>
                     </View>
-
+        
+                    <CustomText>Address: {address}</CustomText>
+                    
                     <Pressable
                         style={[styles.button, !isValid && styles.buttonDisabled]}
                         onPress={handleSubmit(onSubmit)}
@@ -260,7 +278,9 @@ const AddProduct = () => {
                                 style={styles.modalButton}
                                 onPress={() => {
                                 setShowImageOptions(false);
-                                navigation.navigate('CameraScreen');
+                                navigation.navigate('CameraScreen', {
+                                    type: 'product'
+                                });
                                 }}
                             >
                                 <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
