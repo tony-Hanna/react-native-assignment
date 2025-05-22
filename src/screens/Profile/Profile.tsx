@@ -19,9 +19,20 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/stacks/types';
 import { usePhotoStore } from '../../store/photoStore';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  interpolate,
+  Extrapolate,
+} from 'react-native-reanimated';
+
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const Profile = () => {
+  const modalTranslateY = useSharedValue(500);
+const overlayOpacity = useSharedValue(0);
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
   const styles = createStyles(theme, isDark);
@@ -127,7 +138,26 @@ const Profile = () => {
       ],
     );
   };
-
+  useEffect(() => {
+    if (showImageOptions) {
+      overlayOpacity.value = withTiming(1, { duration: 200 });
+      modalTranslateY.value = withSpring(0, {
+        damping: 7,
+        stiffness: 120,
+      });
+    } else {
+      overlayOpacity.value = withTiming(0, { duration: 200 });
+      modalTranslateY.value = withTiming(500, { duration: 200 });
+    }
+  }, [showImageOptions]);
+  const animatedOverlayStyle = useAnimatedStyle(() => ({
+    opacity: overlayOpacity.value,
+  }));
+  
+  const animatedModalStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: modalTranslateY.value }],
+  }));
+    
   const handleImagePicker = async () => {
     try {
       const result = await launchImageLibrary({
@@ -249,46 +279,47 @@ const Profile = () => {
       </ScrollView>
 
       {showImageOptions && (
-        <View style={styles.modalOverlay}>
-          <Pressable 
-            style={{ flex: 1, width: '100%', height: '100%' }}
-            onPress={() => setShowImageOptions(false)}
-          >
-            <Pressable
-              style={styles.modalContent}
-              onPress={(e) => e.stopPropagation()}
-            >
-              <CustomText style={styles.modalTitle}>Select Image Option</CustomText>
+  <Animated.View style={[styles.modalOverlay, animatedOverlayStyle]}>
+    <Pressable
+      style={{ flex: 1, width: '100%', height: '100%' }}
+      onPress={() => setShowImageOptions(false)}
+    >
+      <Animated.View
+        style={[styles.modalContent, animatedModalStyle]}
+        onStartShouldSetResponder={() => true}
+      >
+        <CustomText style={styles.modalTitle}>Select Image Option</CustomText>
 
-              <Pressable
-                style={styles.modalButton}
-                onPress={() => {
-                  setShowImageOptions(false);
-                  handleImagePicker();
-                }}
-              >
-                <CustomText style={styles.modalButtonText}>Choose from Gallery</CustomText>
-              </Pressable>
+        <Pressable
+          style={styles.modalButton}
+          onPress={() => {
+            setShowImageOptions(false);
+            handleImagePicker();
+          }}
+        >
+          <CustomText style={styles.modalButtonText}>Choose from Gallery</CustomText>
+        </Pressable>
 
-              <Pressable
-                style={styles.modalButton}
-                onPress={() => {
-                  setShowImageOptions(false);
-                  navigation.navigate('CameraScreen', {
-                    type: 'profile'
-                  });
-                }}
-              >
-                <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
-              </Pressable>
+        <Pressable
+          style={styles.modalButton}
+          onPress={() => {
+            setShowImageOptions(false);
+            navigation.navigate('CameraScreen', {
+              type: 'profile'
+            });
+          }}
+        >
+          <CustomText style={styles.modalButtonText}>Take a Picture</CustomText>
+        </Pressable>
 
-              <Pressable onPress={() => setShowImageOptions(false)}>
-                <CustomText style={styles.cancelText}>Cancel</CustomText>
-              </Pressable>
-            </Pressable>
-          </Pressable>
-        </View>
-      )}
+        <Pressable onPress={() => setShowImageOptions(false)}>
+          <CustomText style={styles.cancelText}>Cancel</CustomText>
+        </Pressable>
+      </Animated.View>
+    </Pressable>
+  </Animated.View>
+)}
+
     </LinearGradient>
   );
 };
