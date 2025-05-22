@@ -26,9 +26,24 @@ export const createStyles = (theme: Theme, isDark: boolean) => StyleSheet.create
     },
     errorContainer: {
         flex: 1,
-        color: 'red',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 20
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 16,
+        textAlign: 'center'
+    },
+    retryButton: {
+        backgroundColor: '#2e8b57',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 8
+    },
+    retryText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600'
     }
-    
 })

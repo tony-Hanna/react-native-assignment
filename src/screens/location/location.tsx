@@ -2,12 +2,16 @@ import { View, StyleSheet, Platform, PermissionsAndroid, Alert, Pressable } from
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Region, MapPressEvent } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocationStore } from '../../store/LocationStore';
 import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
+import SearchBar from '../../components/organisms/searchPlaces/SearchPlaces';
+import ArrowLeftIcon from '../../assets/icons/LeftArrow'
 export const Location = () => {
     const { location, setLocation } = useLocationStore();
     const navigation = useNavigation();
+    const insets = useSafeAreaInsets()
   const defaultLocation: Region = {
     latitude: 37.78825,
     longitude: -122.4324,
@@ -64,27 +68,57 @@ export const Location = () => {
   useEffect(() => {
     requestLocationPermission();
   }, []);
-
+  const handleSelectPlace = (place: any) => {
+    setLocation({
+      latitude: Number(place.lat),
+      longitude: Number(place.lon),
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  };
   return (
-    <View style={StyleSheet.absoluteFill}>
-      <MapView
-        style={{ width: '100%', flex: 1 }}
-        region={location || defaultLocation}
-        onPress={handleMapPress}
-        showsUserLocation={true}
-      >
-        <Marker
-          coordinate={location || defaultLocation}
-          title="Selected Location"
-          description="Tap on the map to change this location"
-        />
-      </MapView>
-      <Pressable onPress={() => {
-            console.log('location from location screen', location)
-            navigation.goBack()
-        }}>
-            <CustomText style={{color: 'red', fontSize: 20, fontWeight: 'bold'}}>Confirm Location</CustomText>
-        </Pressable>
+    <View style={[StyleSheet.absoluteFill, { marginTop: insets.top, marginBottom: 20 }]}>
+      <View style={{ marginLeft:15}}>
+        <ArrowLeftIcon />
+      </View>
+        <SearchBar onSelect={handleSelectPlace} />
+        <MapView
+          style={{ width: '100%', flex: 1 }}
+          region={location || defaultLocation}
+          onPress={handleMapPress}
+          showsUserLocation={true}
+        >
+          <Marker
+            coordinate={location || defaultLocation}
+            title="Selected Location"
+            description="Tap on the map to change this location"
+          />
+        </MapView>
+        <Pressable
+            onPress={() => {
+              console.log('location from location screen', location);
+              navigation.goBack();
+            }}
+            style={({ pressed }) => ({
+              backgroundColor: pressed ? '#e53935' : '#f44336',
+              paddingVertical: 14,
+              paddingHorizontal: 24,
+              borderRadius: 12,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4.65,
+              elevation: 8,
+              alignItems: 'center',
+              marginTop: 20,
+              marginHorizontal: 16,
+            })}
+          >
+            <CustomText style={{ color: '#fff', fontSize: 16, fontWeight: '600'}}>
+              Confirm Location
+            </CustomText>
+          </Pressable>
+
     </View>
   );
 };

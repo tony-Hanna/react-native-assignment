@@ -42,7 +42,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             opacity: 0.5,
         },
         buttonText: {
-            color: "#fff",
+            color: theme.text,
             fontSize: normalizeWidth(16),
             fontWeight: "bold",
         },
@@ -72,7 +72,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             alignItems: "center",
         },
         imageButtonText: {
-            color: "#fff",
+            color: theme.text,
             fontSize: normalizeWidth(14),
         },
         thumbnailWrapper: {
@@ -152,5 +152,39 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             marginTop: 10,
             fontSize: 16,
           },
+          buttonBase: {
+            paddingVertical: 14,
+            paddingHorizontal: 20,
+            borderRadius: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 16,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.1,
+            shadowRadius: 6,
+            elevation: 3,
+          },
+          
+          buttonPrimary: {
+            backgroundColor: '#4a90e2',
+          },
+          
+          buttonSecondary: {
+            backgroundColor: '#f0f0f0',
+          },
+          
+          buttonTextPrimary: {
+            color: '#fff',
+            fontSize: 16,
+            fontWeight: '600',
+          },
+          
+          buttonTextSecondary: {
+            color: '#333',
+            fontSize: 16,
+            fontWeight: '500',
+          },
+          
           
     }) 

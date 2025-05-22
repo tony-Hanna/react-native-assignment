@@ -4,7 +4,7 @@ import { MainStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
 import EditProduct from '../../screens/EditProduct/EditProduct';
 import { CameraScreen } from '../../screens/Camera/CameraScreen';
-import { Location } from '../../screens/location/location';
+import { Location } from '../../screens/location/Location';
 const MainStack = createNativeStackNavigator<MainStackParamList>()
 
 export const MainStackNavigator = () => {

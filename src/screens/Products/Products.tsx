@@ -30,14 +30,16 @@ const Products = () => {
         queryKey: ['products'],
         queryFn: ({ pageParam }) => getProducts({ pageParam: pageParam as number }),
         getNextPageParam: (lastPage) => {
-            if (lastPage?.data?.pagination?.hasNextPage) {
-                return lastPage.data.pagination.currentPage + 1;
+            if (lastPage?.pagination?.hasNextPage) {
+                return lastPage.pagination.currentPage + 1;
             } 
             return undefined;
         },
-        initialPageParam: 0,
-
-        select: (data) => data.pages.flatMap(page => page.data)
+        initialPageParam: 1,
+        select: (data) => ({
+            products: data.pages.flatMap(page => page.data),
+            pagination: data.pages[data.pages.length - 1]?.pagination
+        })
     })
     console.log('products', data)
     
@@ -60,7 +62,13 @@ const Products = () => {
     if (error) {
         return (
             <View style={styles.errorContainer}>
-                <CustomText>Error loading products: {error.message}</CustomText>
+                <CustomText style={styles.errorText}>Error loading products: {error.message}</CustomText>
+                <Pressable 
+                    style={styles.retryButton} 
+                    onPress={() => refetch()}
+                >
+                    <CustomText style={styles.retryText}>Try Again</CustomText>
+                </Pressable>
             </View>
         );
     }
@@ -75,7 +83,7 @@ const Products = () => {
               translucent
             />
  
-        <View style={{paddingTop : insets.top, paddingBottom: insets.bottom}}>
+        <View style={{paddingTop : insets.top, paddingBottom: 25}}>
             <View style={styles.header}>
                 <View style={styles.logo}>
                     <Logo 
@@ -90,7 +98,7 @@ const Products = () => {
             </Pressable>
             </View>
             <FlatList
-                data={data}
+                data={data?.products}
                 renderItem={renderItem}
                 keyExtractor={item => item._id}
                 contentContainerStyle={styles.flatlist} 

@@ -138,7 +138,7 @@ const AddProduct = () => {
         }
         mutate(data)
     }
-
+   
     return (
         <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
             <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
@@ -200,7 +200,12 @@ const AddProduct = () => {
                             {errors.price.message}
                         </CustomText>
                     )}
-                <Pressable onPress={() => navigation.navigate('Location')}>
+                    <CustomText>Address: {address}</CustomText>
+                <Pressable 
+                 style={[styles.buttonBase, styles.buttonSecondary]}
+                    onPress={() => navigation.navigate('Location')
+                    
+                    }>
                         <CustomText>Location</CustomText>
                     </Pressable>
                     {errors.location?.name && (
@@ -208,9 +213,9 @@ const AddProduct = () => {
                             {errors.location.name.message}
                         </CustomText>
                     )}
-
+                    
                     <View style={styles.imageSection}>
-                        <CustomText style={styles.sectionTitle}>Images</CustomText>
+                
                         <View style={styles.imageList}>
                             {selectedImages.map((image, index) => (
                             <View key={index} style={styles.thumbnailWrapper}>
@@ -227,7 +232,10 @@ const AddProduct = () => {
                             ))}
                         </View>
                         <Pressable
-                            style={styles.imageButton}
+                            style={[
+                                styles.buttonBase,
+                                selectedImages.length >= 5 ? styles.buttonDisabled : styles.buttonSecondary,
+                              ]}
                             onPress={() => setShowImageOptions(true)}
                             disabled={selectedImages.length >= 5}
                         >
@@ -238,11 +246,12 @@ const AddProduct = () => {
                             </CustomText>
                         </Pressable>
                     </View>
-        
-                    <CustomText>Address: {address}</CustomText>
                     
                     <Pressable
-                        style={[styles.button, !isValid && styles.buttonDisabled]}
+                        style={[
+                            styles.buttonBase,
+                            isValid ? styles.buttonPrimary : styles.buttonDisabled,
+                          ]}
                         onPress={handleSubmit(onSubmit)}
                         disabled={!isValid || isPending}
                     >
