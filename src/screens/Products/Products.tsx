@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator } from "react-native"
+import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator, TextInput } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./Products.style"
@@ -11,11 +11,15 @@ import { MoonIcon } from "../../assets/icons/moon"
 import { SunIcon } from "../../assets/icons/sun"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getProducts } from "../../api/getProducts"
-
+import { useState } from "react"
+import { useDebounce } from "../../utils/Debounce"
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
     const styles = createStyles(theme, isDark)
+    const [searchTerm, setSearchTerm] = useState('')
+    const debouncedSearch = useDebounce(searchTerm)
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(undefined)
 
     const {
         data,
@@ -27,8 +31,12 @@ const Products = () => {
         refetch,
         isRefetching,
     } = useInfiniteQuery({
-        queryKey: ['products'],
-        queryFn: ({ pageParam }) => getProducts({ pageParam: pageParam as number }),
+        queryKey: ['products', sortOrder, debouncedSearch],
+        queryFn: ({ pageParam }) => getProducts({ 
+            pageParam: pageParam as number,
+            sortOrder,
+            searchTerm: debouncedSearch
+        }),
         getNextPageParam: (lastPage) => {
             if (lastPage?.pagination?.hasNextPage) {
                 return lastPage.pagination.currentPage + 1;
@@ -41,8 +49,15 @@ const Products = () => {
             pagination: data.pages[data.pages.length - 1]?.pagination
         })
     })
-    console.log('products', data)
-    
+    console.log(debouncedSearch)
+    const toggleSort = () => {
+        setSortOrder(current => {
+            if (current === undefined) return 'asc';
+            if (current === 'asc') return 'desc';
+            return undefined;
+        });
+    };
+
     const renderItem = ({item} : {item: productProp}) => <Product item={item}/>
 
     const handleLoadMore = () => {
@@ -50,14 +65,6 @@ const Products = () => {
             fetchNextPage();
         }
     };
-
-    if (isLoading) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" />
-            </View>
-        );
-    }
 
     if (error) {
         return (
@@ -76,43 +83,70 @@ const Products = () => {
     return (
         <LinearGradient
             colors={theme.gradient} 
-          >    
-        <StatusBar 
-              barStyle={isDark ? 'light-content' : 'dark-content'}
-              backgroundColor="transparent"
-              translucent
+            style={{flex:1}}
+        >    
+            <StatusBar 
+                barStyle={isDark ? 'light-content' : 'dark-content'}
+                backgroundColor="transparent"
+                translucent
             />
  
-        <View style={{paddingTop : insets.top, paddingBottom: 25}}>
-            <View style={styles.header}>
-                <View style={styles.logo}>
-                    <Logo 
-                        w={40}
-                        h={40}
-                    />
-                    <CustomText style={{fontSize:20}}>Products</CustomText>
+            <View style={{paddingTop : insets.top, paddingBottom: 25}}>
+                <View style={styles.header}>
+                    <View style={styles.logo}>
+                        <Logo 
+                            w={40}
+                            h={40}
+                        />
+                        <CustomText style={{fontSize:20}}>Products</CustomText>
+                    </View>
+
+                    <Pressable style={styles.toggleButton} onPress={toggleTheme}>
+                        <Text style={styles.toggleText}>{isDark ? <SunIcon /> : <MoonIcon />}</Text>
+                    </Pressable>
                 </View>
 
-            <Pressable style={styles.toggleButton} onPress={toggleTheme}>
-                <Text style={styles.toggleText}>{isDark ? <SunIcon /> : <MoonIcon />}</Text>
-            </Pressable>
+                <View style={styles.searchContainer}>
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search products..."
+                        placeholderTextColor={isDark ? '#666' : '#999'}
+                        value={searchTerm}
+                        onChangeText={text => setSearchTerm(text)}
+                    />
+                    <Pressable 
+                        style={styles.sortButton} 
+                        onPress={toggleSort}
+                    >
+                        <CustomText style={styles.sortButtonText}>
+                            {sortOrder === 'asc' ? '↑ Price' : 
+                             sortOrder === 'desc' ? '↓ Price' : 
+                             'Sort Price'}
+                        </CustomText>
+                    </Pressable>
+                </View>
+                { isLoading ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" />
+                    </View>
+                ) : (
+                <FlatList
+                    data={data?.products}
+                    renderItem={renderItem}
+                    keyExtractor={item => item._id}
+                    contentContainerStyle={styles.flatlist} 
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.5}
+                    ListFooterComponent={() => 
+                        isFetchingNextPage ? (
+                            <ActivityIndicator size="small"/>
+                        ) : null
+                    }
+                    refreshing={isRefetching}
+                    onRefresh={refetch}
+                />
+                )}
             </View>
-            <FlatList
-                data={data?.products}
-                renderItem={renderItem}
-                keyExtractor={item => item._id}
-                contentContainerStyle={styles.flatlist} 
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.5}
-                ListFooterComponent={() => 
-                    isFetchingNextPage ? (
-                        <ActivityIndicator size="small"/>
-                    ) : null
-                }
-                refreshing={isRefetching}
-                onRefresh={refetch}
-            />
-        </View>
         </LinearGradient>
     )
 }

@@ -45,5 +45,33 @@ export const createStyles = (theme: Theme, isDark: boolean) => StyleSheet.create
         color: 'white',
         fontSize: 16,
         fontWeight: '600'
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        padding: 10,
+        gap: 10,
+        alignItems: 'center'
+    },
+    searchInput: {
+        flex: 1,
+        height: 40,
+        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.3)',
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        color: theme.text,
+        fontSize: 16
+    },
+    sortButton: {
+        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.3)',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 8,
+        minWidth: 100,
+        alignItems: 'center'
+    },
+    sortButtonText: {
+        color: theme.text,
+        fontSize: 14,
+        fontWeight: '600'
     }
 })
