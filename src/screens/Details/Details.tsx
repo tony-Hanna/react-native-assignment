@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, Pressable, ScrollView, ActivityIndicator, FlatList, Dimensions } from "react-native";
+import { View, Image, Pressable, ScrollView, ActivityIndicator, FlatList, Dimensions, Alert } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import ArrowLeftIcon from "../../assets/icons/LeftArrow";
@@ -14,10 +14,12 @@ import { MainStackParamList } from "../../navigation/stacks/types";
 import { getProfile } from "../../api/getProfile";
 import { deleteProduct } from "../../api/deleteProduct";
 import { QueryKeys } from "../../constants/QueryKeys";
-
+import { saveImage } from "../../utils/handleLongPress";
+import { openComposer } from "react-native-email-link";
+import  EmailIcon  from "../../assets/icons/EmailIcon";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details'>;
+type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
 const Details = () => {
@@ -68,7 +70,7 @@ console.log('product images', product)
             : 'Failed to load product. Please try again.'}
         </CustomText>
         <Pressable 
-          style={[styles.button, { backgroundColor: '#2e8b57' }]} 
+          style={[styles.retryButton, { backgroundColor: '#2e8b57' }]} 
           onPress={() => refetch()}
         >
           <CustomText style={styles.buttonText}>Retry</CustomText>
@@ -82,6 +84,20 @@ console.log('product images', product)
   const handleEdit = () => {
     navigation.navigate('EditProduct', { id });
   };
+  
+console.log('product from details', product)
+
+const handleEmailOwner = async () => {
+  try {
+    await openComposer({
+      to: product.user.email,
+      subject: `Regarding your product: ${product.title}`,
+      body: `Hello,\n\nI'm interested in your product "${product.title}".\n\nBest regards,`,
+    });
+  } catch (error) {
+    Alert.alert('Error', 'Could not open email client. Please try again.');
+  }
+};
 
   return (
     <LinearGradient colors={theme.gradient} style={styles.container}>
@@ -103,11 +119,13 @@ console.log('product images', product)
             }}
             renderItem={({ item }) => (
               console.log('item', item),
-              <Image
-                source={{ uri: `https://backend-practice.eurisko.me${item.url}` }}
-                style={styles.image}
-                resizeMode="contain"
-              />
+              <Pressable onLongPress={() => saveImage(`https://backend-practice.eurisko.me${item.url}`)}>
+                <Image
+                  source={{ uri: `https://backend-practice.eurisko.me${item.url}` }}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+              </Pressable>
             )}
           />
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
@@ -130,30 +148,58 @@ console.log('product images', product)
         <CustomText style={styles.price}>${product.price}</CustomText>
 
         <CustomText style={styles.sectionTitle}>Description</CustomText>
-        <CustomText style={styles.sectionTitle}>{product.location.name}</CustomText>
         <CustomText style={styles.description}>{product.description}</CustomText>
-  
-            
+        <CustomText style={styles.sectionTitle}>{product.location.name}</CustomText>
+        <View style={styles.contactRow}>
+            <EmailIcon size={18} color={theme.text} />
+            <CustomText style={styles.contactText}>{product.user.email}</CustomText>
+          </View>
+
+        
         <View style={styles.buttonContainer}>
           {isProductOwner ? (
-            <>
+            <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
               <Pressable style={[styles.button, styles.editButton]} onPress={handleEdit}>
                 <CustomText style={styles.buttonText}>Edit</CustomText>
               </Pressable>
               <Pressable style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
                 <CustomText style={styles.buttonText}>Delete</CustomText>
               </Pressable>
-            </>
+              </View>
+              <Pressable style={[styles.button, styles.cartButton]} onPress={() => {
+                  navigation.navigate('Location', {
+                    latitude: product.location.latitude,
+                    longitude: product.location.longitude,
+                    fromProductDetails: true
+                  });
+                }}>
+                  <CustomText style={styles.buttonText}>View location on map</CustomText>
+                </Pressable>
+            </View>
           ) : (
-            <>
-            
-              <Pressable style={styles.button}>
-                <CustomText style={styles.buttonText}>Share</CustomText>
-              </Pressable>
+              <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+            <Pressable style={styles.button} onPress={handleEmailOwner}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <EmailIcon size={16} color="#fff" />
+                <CustomText style={[styles.buttonText, { marginLeft: 8 }]}>Contact Seller</CustomText>
+              </View>
+            </Pressable>
               <Pressable style={[styles.button, styles.cartButton]}>
                 <CustomText style={styles.buttonText}>Add to Cart</CustomText>
               </Pressable>
-            </>
+              </View>
+                <Pressable style={[styles.button, styles.cartButton]} onPress={() => {
+                  navigation.navigate('Location', {
+                    latitude: product.location.latitude,
+                    longitude: product.location.longitude,
+                    fromProductDetails: true
+                  });
+                }}>
+                  <CustomText style={styles.buttonText}>View location on map</CustomText>
+                </Pressable>
+              </View>
           )}
         </View>
       </ScrollView>

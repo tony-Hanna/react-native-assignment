@@ -23,9 +23,9 @@ import Animated, {
     useAnimatedStyle,
     withSpring,
     withTiming,
-    interpolate,
-    Extrapolate,
   } from 'react-native-reanimated';
+import Toast from "react-native-toast-message"
+import { Logo } from "../../assets/icons/Logo"
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -83,15 +83,20 @@ const overlayOpacity = useSharedValue(0);
           return createProduct(formData);  
         },
         onSuccess: () => {
-            Alert.alert("Success", "Product created successfully")
+            Toast.show({
+                type: 'success',
+                text1: 'product created successfully',
+              });
             queryClient.invalidateQueries({ queryKey: ['products']})
             reset()
             setSelectedImages([])
             navigation.goBack()
         },
         onError: (error) => {
-            console.error("Create product error:", error)
-            Alert.alert("Error", "Failed to create product. Please try again.")
+            Toast.show({
+                type: 'error',
+                text1: 'error creating product',
+              });
         },
     })
     useEffect(() => {
@@ -171,11 +176,20 @@ const overlayOpacity = useSharedValue(0);
    
     return (
         <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
-            <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
-                <View style={styles.header}>
-                    <CustomText style={styles.title}>Add Product</CustomText>
+             <View style={[styles.header, {paddingTop : insets.top, paddingBottom: 25}]}>
+                    <View style={styles.logo}>
+                        <Logo 
+                            w={40}
+                            h={40}
+                        />
+                        <CustomText style={{fontSize:20}}>Create Product</CustomText>
+                    </View>
+
+                  
                 </View>
 
+            <ScrollView style={[styles.container, { paddingTop: insets.top, paddingBottom: 25 }]}>
+           
                 <View style={styles.form}>
                     <Controller
                         name="title"
@@ -233,9 +247,10 @@ const overlayOpacity = useSharedValue(0);
                     <CustomText>Address: {address}</CustomText>
                 <Pressable 
                  style={[styles.buttonBase, styles.buttonSecondary]}
-                    onPress={() => navigation.navigate('Location')
-                    
-                    }>
+                    onPress={() => navigation.navigate('Location', {
+                        latitude: 0,
+                        longitude: 0
+                    })}>
                         <CustomText>Location</CustomText>
                     </Pressable>
                     {errors.location?.name && (
@@ -318,7 +333,7 @@ const overlayOpacity = useSharedValue(0);
           onPress={() => {
             setShowImageOptions(false);
             navigation.navigate('CameraScreen', {
-              type: 'profile'
+              type: 'product'
             });
           }}
         >

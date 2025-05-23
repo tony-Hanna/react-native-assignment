@@ -4,6 +4,7 @@ import { Login } from '../../screens/LoginForm/Login';
 import { Signup } from '../../screens/Signup/Signup';
 import { Verification } from '../../screens/Verification/Verification';
 import { AuthStackParamList } from './types';
+import { ForgotPassword } from '../../screens/ForgotPassword/ForgotPassword';
 const AuthStack = createNativeStackNavigator<AuthStackParamList>()
 export const AuthStackNavigator = () => {
   return (
@@ -11,6 +12,7 @@ export const AuthStackNavigator = () => {
           <AuthStack.Screen name="Login" component={Login} />
           <AuthStack.Screen name="Signup" component={Signup} />
           <AuthStack.Screen name="Verification" component={Verification} />
+          <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
     </AuthStack.Navigator>
   );
 };

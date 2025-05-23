@@ -5,26 +5,21 @@ export type AuthStackParamList = {
         email: string;
         password: string;
     };
-    // Profile: {
-    //     userID: string         //params it takes
-    // }
+    ForgotPassword: undefined
 };
-// export type MainStackParamList = {
-//     Products : undefined,
-//     Details: undefined
-// }
+
 
 export type MainStackParamList = {
     MainTabs: undefined;
     Details: { id: string };
     EditProduct: { id: string };
     CameraScreen: { type: 'profile' | 'product' | 'editProduct' };
-    Location: undefined;
+    Location: { latitude: number; longitude: number; fromProductDetails?: boolean };
     Profile: { photo: any };
+
 };
 export type TabParamList = {
     Home: undefined;
     AddProduct: undefined;
     Profile: undefined;
-    MyAds: undefined;
   };

@@ -4,14 +4,14 @@ export const verificationStyles = (theme: Theme) =>
     StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
     title: { fontSize: 20, marginBottom: 20, color: theme.text },
-    inputsRow: { flexDirection: 'row', justifyContent: 'space-between', width: '80%' },
+    inputsRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
     input: {
       borderBottomWidth: 2,
       borderColor: '#ccc',
       width: 50,
       fontSize: 24,
       textAlign: 'center',
-      marginHorizontal: 5,
+      marginHorizontal: 3,
       color: theme.text,
     },
     button: {

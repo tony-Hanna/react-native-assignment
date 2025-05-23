@@ -66,6 +66,14 @@ export const detailsStyles = StyleSheet.create({
     alignItems: "center",
     marginRight: normalizeWidth(10),
   },
+  retryButton: {
+    backgroundColor: "#333",
+    paddingVertical: normalizeHeight(12),
+    paddingHorizontal: normalizeWidth(16),
+    borderRadius: 8,
+    alignItems: "center",
+    marginRight: normalizeWidth(10),
+  },
   cartButton: {
     backgroundColor: "#2e8b57",
     marginRight: 0,
@@ -83,5 +91,31 @@ export const detailsStyles = StyleSheet.create({
     fontSize: normalizeWidth(16),
     fontWeight: "600",
   },
+  
+  ownerContainer: {
+    marginTop: 16,
+    marginHorizontal: 20,
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', // or '#f4f4f4' for light mode
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  
+  contactRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  
+  contactText: {
+    marginLeft: 10,
+    fontSize: 16,
+
+  },
+  
 });
   

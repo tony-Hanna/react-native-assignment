@@ -9,12 +9,9 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             padding: normalizeWidth(20),
             position: 'relative',
         },
-        header: {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: normalizeHeight(20),
-        },
+       
+        logo: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:7},
+        header: {display:'flex',flexDirection:'row', justifyContent:'space-between',marginTop:15 },
         title: {
             fontSize: normalizeWidth(24),
             fontWeight: "bold",

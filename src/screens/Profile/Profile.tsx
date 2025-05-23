@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/stacks/types';
 import { usePhotoStore } from '../../store/photoStore';
+import Toast from 'react-native-toast-message';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -104,7 +105,10 @@ const overlayOpacity = useSharedValue(0);
       return response;
     },
     onSuccess: (data) => {
-      Alert.alert('Success', 'Profile updated successfully');
+      Toast.show({
+        type: 'success',
+        text1: 'profile update successfully',
+      });
       // Update local state with new user data
       queryClient.invalidateQueries({ queryKey: QueryKeys.PROFILE });
       if (data.data?.user?.profileImage?.url) {
@@ -112,8 +116,10 @@ const overlayOpacity = useSharedValue(0);
       }
     },
     onError: (error) => {
-      console.error('Profile update error:', error);
-      Alert.alert('Error', 'Failed to update profile. Please try again.');
+      Toast.show({
+        type: 'error',
+        text1: JSON.stringify(error),
+      });
     },
   });
 

@@ -6,18 +6,17 @@ import { CustomText } from '../../components/atoms/CustomText/CustomText';
 import { TabParamList } from './types';
 import AddProduct from '../../screens/AddProduct.tsx/AddProduct';
 import { HomeIcon, AddIcon, ProfileIcon } from '../../assets/icons/tabBarIcons';
-
 const Tab = createBottomTabNavigator<TabParamList>();
 
 export const TabNavigator = () => {
   const { theme, isDark } = useTheme();
-
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: isDark ? theme.background : '#fff',
+          backgroundColor: isDark ? '#374151' : '#fff',
+          height:60
         },
         tabBarInactiveTintColor: theme.text,
       }}
@@ -28,7 +27,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => <HomeIcon color={color} />,
           tabBarLabel: ({ color }) => (
-            <CustomText style={{ color, fontSize: 12 }}>Home</CustomText>
+            <CustomText style={{ color, fontSize: 12, paddingBottom:20 }}>Home</CustomText>
           ),
         }}
       />
@@ -38,17 +37,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => <AddIcon color={color} />,
           tabBarLabel: ({ color }) => (
-            <CustomText style={{ color, fontSize: 12 }}>Add Product</CustomText>
-          ),
-        }}
-      />
-      <Tab.Screen 
-        name="MyAds" 
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color }) => <ProfileIcon color={color} />,
-          tabBarLabel: ({ color }) => (
-            <CustomText style={{ color, fontSize: 12 }}>My Ads</CustomText>
+            <CustomText style={{ color, fontSize: 12, paddingBottom:20 }}>Add Product</CustomText>
           ),
         }}
       />
@@ -58,7 +47,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => <ProfileIcon color={color} />,
           tabBarLabel: ({ color }) => (
-            <CustomText style={{ color, fontSize: 12 }}>Profile</CustomText>
+            <CustomText style={{ color, fontSize: 12, paddingBottom:20 }}>Profile</CustomText>
           ),
         }}
       />

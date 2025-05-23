@@ -336,7 +336,7 @@ const overlayOpacity = useSharedValue(0);
                         onPress={() => {
                             setShowImageOptions(false);
                             navigation.navigate('CameraScreen', {
-                            type: 'profile'
+                            type: 'editProduct'
                             });
                         }}
                         >

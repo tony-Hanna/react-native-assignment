@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { usePhotoStore } from '../../store/photoStore';
 import { useRoute } from '@react-navigation/native';
+import ArrowLeftIcon from '../../assets/icons/LeftArrow';
 const CameraScreen = () => {
     const { hasPermission, requestPermission } = useCameraPermission()
     const { setProfilePhoto, setProductPhoto, setEditProductPhoto } = usePhotoStore()
@@ -43,44 +44,72 @@ const CameraScreen = () => {
             console.log('No type found')
         }
     }
-    if(!hasPermission) {
-        return <CustomText>No permission to use camera <CustomText onPress={openSettings}>Click here to grant permission</CustomText></CustomText>
-    }
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Pressable onPress={openSettings}><Text>Click here to grant permission</Text></Pressable>
-        <Camera
+    if (!hasPermission) {
+        return (
+            <View style={{flex:1}}>
+                <View style={{paddingLeft:20, paddingTop:30}}>
+                    <ArrowLeftIcon />
+                </View>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
+            <CustomText style={{ textAlign: 'center', fontSize: 16 }}>
+              No permission to use camera{" "}
+              <CustomText onPress={openSettings} style={{ color: 'blue', textDecorationLine: 'underline' }}>
+                Click here to grant permission
+              </CustomText>
+            </CustomText>
+          </View>
+          </View>
+        );
+      }
+      
+      return (
+        <View style={{ flex: 1 }}>
+          {/* Camera background */}
+          <Camera
             style={StyleSheet.absoluteFill}
             ref={camera}
             device={device!}
             isActive={true}
             photo={true}
-            />
-        <View
+          />
+      
+          {/* Top-left back arrow */}
+          <View
             style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                backgroundColor: 'white',
-                position: 'absolute',
-                bottom: 30,
-                alignSelf: 'center',
-                justifyContent: 'center',
-                alignItems: 'center',
+              position: 'absolute',
+              top: 40, // Adjust for status bar
+              left: 20,
+              zIndex: 1,
+            }}>
+            <ArrowLeftIcon />
+          </View>
+      
+          {/* Capture button */}
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 30,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              backgroundColor: 'white',
             }}>
             <Pressable
-                onPress={handleTakePhoto}
-                style={{
+              onPress={handleTakePhoto}
+              style={{
                 height: 80,
                 width: 80,
                 borderRadius: 40,
                 backgroundColor: 'red',
-                }}
+              }}
             />
-            </View>
-
-    </View>
-  );
+          </View>
+        </View>
+      );
+      
 };
 
 export { CameraScreen };
