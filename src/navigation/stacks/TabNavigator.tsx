@@ -16,7 +16,7 @@ export const TabNavigator = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: isDark ? '#374151' : '#fff',
-          height:60
+          height:70
         },
         tabBarInactiveTintColor: theme.text,
       }}
