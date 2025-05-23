@@ -80,7 +80,7 @@ const overlayOpacity = useSharedValue(0);
 
   // Handle photo from camera
   useEffect(() => {
-    if (profilePhoto && userData) {
+    if (profilePhoto) {
       const imageObject = {
         uri: profilePhoto,
         type: 'image/jpeg',
@@ -94,7 +94,7 @@ const overlayOpacity = useSharedValue(0);
         profileImage: imageObject,
       });
     }
-  }, [profilePhoto, userData]);
+  }, [profilePhoto]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: ProfileField) => {
@@ -172,7 +172,7 @@ const overlayOpacity = useSharedValue(0);
         quality: 0.8,
       });
  
-      if (result.assets && result.assets[0]?.uri && userData) {
+      if (result.assets && result.assets[0]?.uri) {
         setProfileImage(result.assets[0].uri);
         console.log('result.assets[0].uri', result.assets[0].uri)
         const imageObject = {
