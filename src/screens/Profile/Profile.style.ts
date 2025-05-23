@@ -51,7 +51,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       borderRadius: normalizeWidth(10),
       alignItems: 'center',
       marginTop: normalizeHeight(20),
-      backgroundColor: 'blue '
+      backgroundColor: 'blue'
     },
     buttonDisabled: {
       opacity: 0.5,
