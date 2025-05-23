@@ -11,14 +11,13 @@ import { getProduct } from "../../api/getProduct";
 import { useAuthStore } from "../../store/AuthStore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../../navigation/stacks/types";
-import { getProfile } from "../../api/getProfile";
 import { deleteProduct } from "../../api/deleteProduct";
 import { QueryKeys } from "../../constants/QueryKeys";
 import { saveImage } from "../../utils/handleLongPress";
 import { openComposer } from "react-native-email-link";
 import  EmailIcon  from "../../assets/icons/EmailIcon";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-
+import Toast from "react-native-toast-message";
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
@@ -46,11 +45,20 @@ console.log('product images', product)
 
   const { mutate: deleteProductMutation } = useMutation({
     mutationFn: () => deleteProduct(id),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data)
       navigation.navigate('MainTabs');
+      Toast.show({
+        type: 'success',
+        text1: 'product deleted successfully',
+      });
     },
     onError: (error) => {
       console.error('Error deleting product:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'error deleting product',
+      });
     },
   });
   if (isLoading) {

@@ -20,6 +20,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/stacks/types';
 import { usePhotoStore } from '../../store/photoStore';
 import Toast from 'react-native-toast-message';
+import DefaultProfileIcon from '../../assets/icons/ProfileIcon';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -208,17 +209,21 @@ const overlayOpacity = useSharedValue(0);
       <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <CustomText style={styles.title}>Profile</CustomText>
-          <Pressable onPress={handleLogout}>
+          <Pressable onPress={handleLogout} style={styles.logoutBotton}>
             <CustomText style={styles.logoutText}>Logout</CustomText>
           </Pressable>
         </View>
 
         <View style={styles.profileImageContainer}>
           <Pressable style={styles.editImageButton} onPress={() => setShowImageOptions(true)}>
+          {profileImage ? (
             <Image
-              source={{ uri: `https://backend-practice.eurisko.me${profileImage}` || 'https://via.placeholder.com/150' }}
+              source={{ uri: `https://backend-practice.eurisko.me${profileImage}` }}
               style={styles.profileImage}
             />
+          ) : (
+            <DefaultProfileIcon size={100} />
+          )}
           </Pressable>
           <Pressable style={styles.editImageButton} onPress={() => setShowImageOptions(true)}>
             <CustomText style={styles.editImageText}>Change Photo</CustomText>

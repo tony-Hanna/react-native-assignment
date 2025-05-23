@@ -51,6 +51,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       borderRadius: normalizeWidth(10),
       alignItems: 'center',
       marginTop: normalizeHeight(20),
+      backgroundColor: 'blue '
     },
     buttonDisabled: {
       opacity: 0.5,
@@ -113,6 +114,13 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       marginTop: 10,
       fontSize: 16,
     },
+    logoutBotton: {
+      backgroundColor: '#FF3B30', // Blue for Save Changes
+      paddingVertical: 6,
+      paddingHorizontal: 24,
+      borderRadius: 8,
+      alignItems: 'center',
+    }
     
     
   }); 

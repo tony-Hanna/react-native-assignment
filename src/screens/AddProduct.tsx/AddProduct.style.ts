@@ -69,7 +69,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             alignItems: "center",
         },
         imageButtonText: {
-            color: theme.text,
+            color: 'black',
             fontSize: normalizeWidth(14),
         },
         thumbnailWrapper: {

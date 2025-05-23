@@ -111,7 +111,7 @@ const Verification = () => {
         style={{flexGrow: 1}}
       >
         <View style={styles.container}>
-          <Text style={styles.title}>Enter 4-digit Code</Text>
+          <Text style={styles.title}>Enter 6-digit Code</Text>
           <View style={styles.inputsRow}>
             {renderInput('d1', 'd2')}
             {renderInput('d2', 'd3')}

@@ -82,7 +82,7 @@ const overlayOpacity = useSharedValue(0);
           });
           return createProduct(formData);  
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             Toast.show({
                 type: 'success',
                 text1: 'product created successfully',
@@ -251,7 +251,7 @@ const overlayOpacity = useSharedValue(0);
                         latitude: 0,
                         longitude: 0
                     })}>
-                        <CustomText>Location</CustomText>
+                        <CustomText style={styles.imageButtonText}>Location</CustomText>
                     </Pressable>
                     {errors.location?.name && (
                         <CustomText style={styles.errorText}>
