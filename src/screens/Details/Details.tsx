@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { View, Image, Pressable, ScrollView, ActivityIndicator, FlatList, Dimensions, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, Image, Pressable, ScrollView, FlatList, Dimensions, Alert, Share } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import ArrowLeftIcon from "../../assets/icons/LeftArrow";
@@ -13,13 +13,13 @@ import { useCartStore } from "../../store/CartStore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../../navigation/stacks/types";
 import { deleteProduct } from "../../api/deleteProduct";
-import { QueryKeys } from "../../constants/QueryKeys";
 import { saveImage } from "../../utils/handleLongPress";
 import { openComposer } from "react-native-email-link";
 import EmailIcon from "../../assets/icons/EmailIcon";
 import Toast from "react-native-toast-message";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 import { DetailsSkeleton } from "./DetailsSkeleton";
+import ShareIcon from "../../assets/icons/ShareIcon";
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
@@ -130,13 +130,33 @@ const handleAddToCart = () => {
   });
 };
 
+const handleShare = async () => {
+  try {
+    const url = `https://firstapp.com/product/${product._id}`;
+    await Share.share({
+      message: `Check out this product: ${product.title}\n${url}`,
+      url,
+      title: product.title,
+    });
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Could not share product',
+    });
+  }
+};
+
   return (
     <LinearGradient colors={theme.gradient} style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.arrow}>
-          <ArrowLeftIcon />
+        <View style={styles.header}>
+          <View style={styles.arrow}>
+            <ArrowLeftIcon />
+          </View>
+          <Pressable style={styles.share} onPress={handleShare}>
+            <ShareIcon size={24} color="#007AFF" />
+          </Pressable>
         </View>
-
         <View style={styles.imageContainer}>
           <FlatList
             data={product.images}
@@ -211,6 +231,7 @@ const handleAddToCart = () => {
           ) : (
               <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+            
             <Pressable style={styles.button} onPress={handleEmailOwner}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <EmailIcon size={16} color="#fff" />

@@ -7,12 +7,14 @@ export const detailsStyles = StyleSheet.create({
     padding: normalizeWidth(20),
     flex: 1,
   },
+  header:{flexDirection:'row', justifyContent:'space-between'},
   imageContainer: {
     width: SCREEN_WIDTH - normalizeWidth(40),
     height: SCREEN_WIDTH - normalizeWidth(40),
     marginBottom: normalizeHeight(20),
     alignSelf: 'center',
   },
+  share: {marginVertical: normalizeHeight(20), backgroundColor: '#fff', borderRadius: 20,padding: 8, marginLeft: 8},
   image: {
     width: SCREEN_WIDTH - normalizeWidth(40), // Match FlatList item width
     height: SCREEN_WIDTH - normalizeWidth(40),
