@@ -42,4 +42,28 @@ export const ProfileIcon = ({ color }: { color: string }) => (
       />
     </Svg>
   );
+  export const CartIcon = ({ color = 'black', size = 24 }) => (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <Path
+        d="M6 6H4a1 1 0 0 0 0 2h1l1.6 7.59a2 2 0 0 0 2 1.41h9a2 2 0 0 0 2-1.6L21 8H7"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+  
   

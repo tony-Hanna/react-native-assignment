@@ -42,4 +42,15 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             color: '#2e8b57',
             fontWeight: 'bold',
         },
+        bottomRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            marginTop: 8,
+        },
+        dateText: {
+            fontSize: 12,
+            color: isDark ? 'rgba(255, 255, 255, 0.6)' : '#666',
+            fontStyle: 'italic',
+        },
     })

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { refreshToken } from './refreshToken';
 import { useAuthStore } from '../store/AuthStore';
-// import Config from 'react-native-config';
+import Config from 'react-native-config';
  
 const api = axios.create({
-  baseURL: 'https://backend-practice.eurisko.me',
+  baseURL: Config.API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

@@ -16,10 +16,11 @@ export type MainStackParamList = {
     CameraScreen: { type: 'profile' | 'product' | 'editProduct' };
     Location: { latitude: number; longitude: number; fromProductDetails?: boolean };
     Profile: { photo: any };
-
+    Product: undefined;
 };
 export type TabParamList = {
     Home: undefined;
     AddProduct: undefined;
     Profile: undefined;
+    Cart: undefined;
   };

@@ -6,7 +6,7 @@ export const getProduct = async (id: string) => {
         return response.data.data
     } catch (error) {
         console.error(error);
-        
+        throw new Error("Failed to fetch product data."); 
     }
 }
 

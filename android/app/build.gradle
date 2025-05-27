@@ -113,7 +113,9 @@ dependencies {
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
+        implementation project(':react-native-config')
     } else {
         implementation jscFlavor
     }
 }
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

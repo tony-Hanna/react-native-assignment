@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Image, Pressable, ScrollView, ActivityIndicator, FlatList, Dimensions, Alert } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
@@ -9,15 +9,17 @@ import { detailsStyles as styles } from "./Details.style";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getProduct } from "../../api/getProduct";
 import { useAuthStore } from "../../store/AuthStore";
+import { useCartStore } from "../../store/CartStore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../../navigation/stacks/types";
 import { deleteProduct } from "../../api/deleteProduct";
 import { QueryKeys } from "../../constants/QueryKeys";
 import { saveImage } from "../../utils/handleLongPress";
 import { openComposer } from "react-native-email-link";
-import  EmailIcon  from "../../assets/icons/EmailIcon";
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+import EmailIcon from "../../assets/icons/EmailIcon";
 import Toast from "react-native-toast-message";
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+import { DetailsSkeleton } from "./DetailsSkeleton";
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
@@ -28,6 +30,7 @@ const Details = () => {
   const { theme } = useTheme();
   const { userId } = useAuthStore();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   console.log('userId', userId)
   const {data: product, isLoading, error, refetch} = useQuery({
@@ -61,12 +64,11 @@ console.log('product images', product)
       });
     },
   });
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  const { addItem, isInCart, removeItem } = useCartStore();
+  const isItemInCart = isInCart(id);
+
+  if (isLoading ) {
+    return <DetailsSkeleton />;
   }
 
   if (error) {
@@ -105,6 +107,27 @@ const handleEmailOwner = async () => {
   } catch (error) {
     Alert.alert('Error', 'Could not open email client. Please try again.');
   }
+};
+
+const handleAddToCart = () => {
+  if (!product) return;
+  
+  addItem({
+    _id: product._id,
+    title: product.title,
+    price: product.price,
+    images: product.images,
+    description: product.description,
+    location: product.location,
+  });
+  
+  setShowSuccess(true);
+  setTimeout(() => setShowSuccess(false), 1500); // Reset after 1.5 seconds
+  
+  Toast.show({
+    type: 'success',
+    text1: isItemInCart ? 'Quantity updated in cart' : 'Item added to cart',
+  });
 };
 
   return (
@@ -194,17 +217,31 @@ const handleEmailOwner = async () => {
                 <CustomText style={[styles.buttonText, { marginLeft: 8 }]}>Contact Seller</CustomText>
               </View>
             </Pressable>
-              <Pressable style={[styles.button, styles.cartButton]}>
-                <CustomText style={styles.buttonText}>Add to Cart</CustomText>
+              <Pressable 
+                style={[
+                  styles.button, 
+                  styles.cartButton,
+                  isItemInCart && !showSuccess && { backgroundColor: '#2e8b57' },
+                  showSuccess && { backgroundColor: '#808080' }
+                ]} 
+                onPress={handleAddToCart}
+                disabled={showSuccess}
+              >
+                <CustomText style={styles.buttonText}>
+                  {showSuccess ? 'item added' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
+                </CustomText>
               </Pressable>
               </View>
-                <Pressable style={[styles.button, styles.cartButton]} onPress={() => {
-                  navigation.navigate('Location', {
-                    latitude: product.location.latitude,
-                    longitude: product.location.longitude,
-                    fromProductDetails: true
-                  });
-                }}>
+                <Pressable 
+                  style={[styles.button, styles.cartButton]} 
+                  onPress={() => {
+                    navigation.navigate('Location', {
+                      latitude: product.location.latitude,
+                      longitude: product.location.longitude,
+                      fromProductDetails: true
+                    });
+                  }}
+                >
                   <CustomText style={styles.buttonText}>View location on map</CustomText>
                 </Pressable>
               </View>

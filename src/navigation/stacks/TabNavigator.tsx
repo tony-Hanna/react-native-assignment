@@ -5,7 +5,8 @@ import { useTheme } from '../../store/themeContext';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
 import { TabParamList } from './types';
 import AddProduct from '../../screens/AddProduct.tsx/AddProduct';
-import { HomeIcon, AddIcon, ProfileIcon } from '../../assets/icons/tabBarIcons';
+import { HomeIcon, AddIcon, ProfileIcon, CartIcon } from '../../assets/icons/tabBarIcons';
+import { Cart } from '../../screens/Cart/Cart';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 export const TabNavigator = () => {
@@ -38,6 +39,16 @@ export const TabNavigator = () => {
           tabBarIcon: ({ color }) => <AddIcon color={color} />,
           tabBarLabel: ({ color }) => (
             <CustomText style={{ color, fontSize: 12, paddingBottom:20 }}>Add Product</CustomText>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Cart" 
+        component={Cart}
+        options={{
+          tabBarIcon: ({ color }) => <CartIcon color={color} />,
+          tabBarLabel: ({ color }) => (
+            <CustomText style={{ color, fontSize: 12, paddingBottom:20 }}>Cart</CustomText>
           ),
         }}
       />

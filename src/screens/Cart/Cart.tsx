@@ -1,0 +1,175 @@
+import React from 'react';
+import { View, FlatList, Pressable, Image, Dimensions, Animated } from "react-native";
+import { CustomText } from "../../components/atoms/CustomText/CustomText";
+import LinearGradient from "react-native-linear-gradient";
+import { useTheme } from "../../store/themeContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Logo } from "../../assets/icons/Logo";
+import { createStyles } from "./Cart.style";
+import { useCartStore } from "../../store/CartStore";
+import Config from "react-native-config";
+import Toast from "react-native-toast-message";
+import { Swipeable } from 'react-native-gesture-handler';
+import { TrashIcon } from "../../assets/icons/TrashIcon";
+import { CartItem } from "./Cart.type";
+import LottieView from 'lottie-react-native';
+const Cart: React.FC = () => {
+    const { theme, isDark } = useTheme();
+    const insets = useSafeAreaInsets();
+    const styles = createStyles(theme, isDark);
+    const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
+
+    const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
+        updateQuantity(itemId, newQuantity);
+    };
+
+    const handleRemoveItem = (itemId: string) => {
+        removeItem(itemId);
+        Toast.show({
+            type: 'success',
+            text1: 'Item removed from cart',
+        });
+    };
+
+    const handleClearCart = () => {
+        clearCart();
+        Toast.show({
+            type: 'success',
+            text1: 'Cart cleared',
+        });
+    };
+
+    const renderRightActions = (
+        itemId: string,
+        dragX: Animated.AnimatedInterpolation<number>
+    ) => {
+        const scale = dragX.interpolate({
+            inputRange: [-100, 0],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+        });
+
+        return (
+            <Animated.View style={[styles.deleteAction, { transform: [{ scale }] }]}>
+                <Pressable
+                    style={styles.deleteButton}
+                    onPress={() => handleRemoveItem(itemId)}
+                >
+                    <TrashIcon size={24} color="#fff" />
+                </Pressable>
+            </Animated.View>
+        );
+    };
+
+    const renderItem = ({ item }: { item: CartItem }) => (
+        <Swipeable
+            renderRightActions={(_: any, dragX: Animated.AnimatedInterpolation<number>) => 
+                renderRightActions(item._id, dragX)
+            }
+            rightThreshold={40}
+        >
+            <View style={styles.cartItem}>
+                {item.images && item.images[0] && (
+                    <Image
+                        source={{ uri: `${Config.API_URL}${item.images[0].url}` }}
+                        style={styles.itemImage}
+                        resizeMode="contain"
+                    />
+                )}
+                <View style={styles.itemDetails}>
+                    <CustomText style={styles.itemTitle} numberOfLines={2}>
+                        {item.title}
+                    </CustomText>
+                    <CustomText style={styles.itemPrice}>
+                        ${item.price}
+                    </CustomText>
+                    <View style={styles.quantityContainer}>
+                        <Pressable
+                            style={styles.quantityButton}
+                            onPress={() => handleUpdateQuantity(item._id, item.quantity - 1)}
+                        >
+                            <CustomText style={styles.quantityButtonText}>-</CustomText>
+                        </Pressable>
+                        <CustomText style={styles.quantityText}>
+                            {item.quantity}
+                        </CustomText>
+                        <Pressable
+                            style={styles.quantityButton}
+                            onPress={() => handleUpdateQuantity(item._id, item.quantity + 1)}
+                        >
+                            <CustomText style={styles.quantityButtonText}>+</CustomText>
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
+        </Swipeable>
+    );
+
+    return (
+        <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
+            <View style={[styles.header, { paddingTop: insets.top, paddingBottom: 25 }]}>
+                <View style={styles.logo}>
+                    <Logo w={40} h={40} />
+                    <CustomText style={{ fontSize: 20 }}>Shopping Cart</CustomText>
+                </View>
+            </View>
+
+            {items.length === 0 ? (
+                <View style={styles.emptyCart}>
+                    <LottieView
+                        source={require('../../assets/lottie/emptyCart.json')}
+                        autoPlay
+                        loop
+                        style={styles.lottieAnimation}
+                    />
+                    <CustomText style={styles.emptyCartText}>
+                        Your cart is empty
+                    </CustomText>
+                </View>
+            ) : (
+                <>
+                    <FlatList
+                        data={items}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        contentContainerStyle={styles.cartList}
+                    />
+                    <View style={styles.footer}>
+                        <View style={styles.totalContainer}>
+                            <CustomText style={styles.totalText}>Total:</CustomText>
+                            <CustomText style={styles.totalPrice}>
+                                ${getTotalPrice().toFixed(2)}
+                            </CustomText>
+                        </View>
+                        <View style={styles.footerButtons}>
+                            <Pressable
+                                style={[styles.footerButton, styles.clearButton]}
+                                onPress={handleClearCart}
+                            >
+                                <CustomText style={styles.footerButtonText}>
+                                    Clear Cart
+                                </CustomText>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.footerButton, styles.checkoutButton]}
+                                onPress={() => {
+                                    // Implement checkout functionality
+                                    Toast.show({
+                                        type: 'info',
+                                        text1: 'Checkout functionality coming soon!',
+                                    });
+                                }}
+                            >
+                                <CustomText style={styles.footerButtonText}>
+                                    Checkout
+                                </CustomText>
+                            </Pressable>
+                        </View>
+                    </View>
+                </>
+            )}
+        </LinearGradient>
+    );
+};
+
+export { Cart };

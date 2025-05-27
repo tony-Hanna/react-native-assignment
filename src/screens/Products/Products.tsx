@@ -13,6 +13,7 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { getProducts } from "../../api/getProducts"
 import { useState } from "react"
 import { useDebounce } from "../../utils/Debounce"
+import { ProductSkeleton } from "./ProductsSkeleton"
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
@@ -49,7 +50,7 @@ const Products = () => {
             pagination: data.pages[data.pages.length - 1]?.pagination
         })
     })
-    console.log(debouncedSearch)
+
     const toggleSort = () => {
         setSortOrder(current => {
             if (current === undefined) return 'asc';
@@ -65,7 +66,7 @@ const Products = () => {
             fetchNextPage();
         }
     };
-
+    console.log('products',data?.products)
     if (error) {
         return (
             <View style={styles.errorContainer}>
@@ -125,27 +126,25 @@ const Products = () => {
                         </CustomText>
                     </Pressable>
                 </View>
-                { isLoading ? (
-                    <View style={styles.loadingContainer}>
-                        <ActivityIndicator size="large" />
-                    </View>
-                ) : (
+                {isLoading ? 
+                    <ProductSkeleton />
+                 : (
                 <FlatList
                     data={data?.products}
                     renderItem={renderItem}
                     keyExtractor={item => item._id}
-                    contentContainerStyle={styles.flatlist} 
+                    contentContainerStyle={styles.flatlist}
                     onEndReached={handleLoadMore}
                     onEndReachedThreshold={0.5}
-                    ListFooterComponent={() => 
-                        isFetchingNextPage ? (
-                            <ActivityIndicator size="small"/>
-                        ) : null
+                    ListFooterComponent={() =>
+                    isFetchingNextPage ? <ActivityIndicator size="small" /> : null
                     }
                     refreshing={isRefetching}
                     onRefresh={refetch}
                 />
                 )}
+
+
             </View>
         </LinearGradient>
     )
