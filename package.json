@@ -25,7 +25,6 @@
     "react-native": "0.78.0",
     "react-native-blob-util": "^0.21.3",
     "react-native-config": "^1.5.5",
-    "react-native-dotenv": "^3.4.11",
     "react-native-email-link": "^1.16.1",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-google-places-autocomplete": "^2.5.7",

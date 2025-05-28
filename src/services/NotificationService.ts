@@ -20,7 +20,8 @@ export const sendProductNotification = async (productId: string, productName: st
         included_segments: ['All'],
         data: {
           productId: productId
-        }
+        },
+        url: `firstapp://product/${productId}`
       })
     });
 

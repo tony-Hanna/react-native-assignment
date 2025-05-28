@@ -5,11 +5,13 @@ import {RootNavigator} from './src/navigation/navigator/RootNavigator'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import { useEffect } from 'react';
 import {OneSignal, LogLevel} from 'react-native-onesignal';
+import { Linking } from 'react-native';
+import Config from 'react-native-config';
 const queryClient = new QueryClient();
 const App = () => {
-
+      console.log('COFN',Config.APP_ID)
       // Enable verbose logging for debugging (remove in production)
       OneSignal.Debug.setLogLevel(LogLevel.Verbose);   
       // Initialize with your OneSignal App ID
@@ -17,7 +19,15 @@ const App = () => {
       // Use this method to prompt for push notifications.
       // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
       OneSignal.Notifications.requestPermission(false);
-    
+      useEffect(() => {
+        // Listen for notification open events
+        OneSignal.Notifications.addEventListener('click', (event) => {
+          const url = event.notification?.launchURL;
+          if (url) {
+            Linking.openURL(url);
+          }
+        });
+      }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
