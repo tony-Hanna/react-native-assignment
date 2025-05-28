@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator, TextInput } from "react-native"
+import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator, TextInput, Button } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./Products.style"

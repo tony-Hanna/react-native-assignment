@@ -1,4 +1,9 @@
 package com.firstapp
+import com.onesignal.OneSignal
+import com.onesignal.debug.LogLevel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -36,7 +41,17 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    // Enable verbose logging for debugging (remove in production)
+    OneSignal.Debug.logLevel = LogLevel.VERBOSE
+    // Initialize with your OneSignal App ID
+    OneSignal.initWithContext(this, "82626782-21ca-44f5-b55e-090c2431cd36")
+
     SoLoader.init(this, OpenSourceMergedSoMapping)
+// Use this method to prompt for push notifications.
+    // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
+    CoroutineScope(Dispatchers.IO).launch {
+      OneSignal.Notifications.requestPermission(true)
+    }
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()

@@ -1,5 +1,5 @@
 import api from "./axios";
-
+import { sendProductNotification } from "../services/NotificationService";
 export const createProduct = async (formData: any) => {
       console.log('formData', formData)
       try {
@@ -9,6 +9,7 @@ export const createProduct = async (formData: any) => {
           },
         });
         console.log('create product response', response.data);
+        await sendProductNotification(response.data.data._id, response.data.data.title);
         return response.data;
 
       } catch (error) {
