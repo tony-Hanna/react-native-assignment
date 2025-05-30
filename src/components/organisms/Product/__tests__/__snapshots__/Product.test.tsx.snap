@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product Component matches snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "backgroundColor": "rgba(255, 255, 255, 0.3)",
+        "boxShadow": "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        "margin": 15,
+        "padding": 15,
+        "shadowColor": "#000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.1,
+        "shadowRadius": 4,
+      },
+      {
+        "borderRadius": 10,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <Text
+      ellipsizeMode="tail"
+      numberOfLines={2}
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontFamily": "Roboto-Medium",
+          },
+          {
+            "color": "#000000",
+            "fontSize": 20,
+            "fontWeight": "600",
+            "marginBottom": 4,
+            "width": "50%",
+          },
+        ]
+      }
+      testID="custom-text"
+    >
+      Test title
+    </Text>
+    <Image
+      resizeMode="contain"
+      source={
+        {
+          "uri": "undefined/images/sample.jpg",
+        }
+      }
+      style={
+        [
+          {
+            "height": 247,
+            "width": 300,
+          },
+          {
+            "borderRadius": 10,
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "flex-end",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginTop": 8,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "Roboto-Medium",
+            },
+            {
+              "color": "#2e8b57",
+              "fontSize": 18,
+              "fontWeight": "bold",
+            },
+          ]
+        }
+        testID="custom-text"
+      >
+        $
+        25.5
+      </Text>
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "Roboto-Medium",
+            },
+            {
+              "color": "#777",
+              "fontFamily": "Roboto-Regular",
+              "fontSize": 13,
+              "marginBottom": 6,
+            },
+          ]
+        }
+        testID="custom-text"
+      >
+        sample description
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#000000",
+            "fontFamily": "Roboto-Medium",
+          },
+          {
+            "color": "#666",
+            "fontSize": 12,
+            "fontStyle": "italic",
+          },
+        ]
+      }
+      testID="custom-text"
+    >
+      Jan 1, 2023
+    </Text>
+  </View>
+</View>
+`;

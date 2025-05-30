@@ -7,47 +7,70 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { primary } from "../../../globalStyles/global.style"
 import { CustomText } from "../../atoms/CustomText/CustomText"
 import { MainStackParamList } from "../../../navigation/stacks/types"
+import { memo, useMemo } from "react"
 import Config from "react-native-config"
 
-const Product = ({ item }: { item: productProp }) => {
+const Product = memo(({
+    title,
+    description,
+    price,
+    createdAt,
+    images,
+    _id
+}: Pick<productProp, 'title' | 'description' | 'price' | 'createdAt' | 'images' | '_id'>) => {
     const { theme, isDark } = useTheme()
-    const styles = createStyles(theme, isDark)
+    
+    // Memoize styles to prevent recalculation on every render
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark])
+    
     const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>()
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
+    // Memoize the formatted date
+    const formattedDate = useMemo(() => {
+        const date = new Date(createdAt);
         return date.toLocaleDateString('en-US', { 
             month: 'short', 
             day: 'numeric',
             year: 'numeric'
         });
-    };
+    }, [createdAt]);
+
+    // Memoize the image URI to prevent string concatenation on every render
+    const imageUri = useMemo(() => 
+        `${Config.API_URL}${images[0]?.url}`, 
+        [images]
+    );
+
+  
+    const handlePress = () => {
+        navigation.navigate('Details', { id: _id })
+    }
 
     return (
-        <Pressable style={[styles.card, primary.borderPrimary]} onPress={() => navigation.navigate('Details', { id: item._id })}>
+        <Pressable style={[styles.card, primary.borderPrimary]} onPress={handlePress}>
             <View style={styles.imagePriceWrap}>
                 <CustomText numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
-                    {item.title}
+                    {title}
                 </CustomText>
                 <Image
-                    source={{ uri: `${Config.API_URL}${item.images[0]?.url}` }}
+                    source={{ uri: imageUri }}
                     style={[styles.image, primary.borderPrimary]}
                     resizeMode="contain"
                 />
             </View>
             <View style={styles.bottomRow}>
                 <View>
-                    <CustomText style={styles.price}>${item.price}</CustomText>
+                    <CustomText style={styles.price}>${price}</CustomText>
                     <CustomText numberOfLines={1} ellipsizeMode="tail" style={styles.details}>
-                        {item.description}
+                        {description}
                     </CustomText>
                 </View>
                 <CustomText style={styles.dateText}>
-                    {formatDate(item.createdAt)}
+                    {formattedDate}
                 </CustomText>
             </View>
         </Pressable>
     )
-}
+})
 
 export { Product }

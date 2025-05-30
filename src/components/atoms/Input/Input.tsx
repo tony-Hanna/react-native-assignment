@@ -7,6 +7,7 @@ const Input: React.FC<InputProps> = ({ placeholder, style, onChange, onBlur, val
     const styles = inputStyles(theme)
     return (
         <TextInput 
+            testID="custom-input"
             placeholder={placeholder}
             style={[styles.input, style]}
             value={value}

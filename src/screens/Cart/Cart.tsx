@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, FlatList, Pressable, Image, Dimensions, Animated } from "react-native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import LinearGradient from "react-native-linear-gradient";
@@ -61,7 +61,7 @@ const Cart: React.FC = () => {
         );
     };
 
-    const renderItem = ({ item }: { item: CartItem }) => (
+    const renderItem = useCallback(({ item }: { item: CartItem }) => (
         <Swipeable
             renderRightActions={(_: any, dragX: Animated.AnimatedInterpolation<number>) => 
                 renderRightActions(item._id, dragX)
@@ -103,7 +103,7 @@ const Cart: React.FC = () => {
                 </View>
             </View>
         </Swipeable>
-    );
+    ),[renderRightActions, handleUpdateQuantity]);
 
     return (
         <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>

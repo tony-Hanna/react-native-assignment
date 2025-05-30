@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders CustomText correctly 1`] = `
+<Text
+  style={
+    [
+      undefined,
+      {
+        "color": "#000000",
+        "fontFamily": "Roboto-Medium",
+        "fontSize": 13,
+        "marginBottom": 4,
+      },
+    ]
+  }
+>
+  some text
+</Text>
+`;

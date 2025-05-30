@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator, TextInput, Button } from "react-native"
+import { View, Text, FlatList, Pressable, StatusBar, ActivityIndicator, TextInput } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./Products.style"
@@ -59,7 +59,7 @@ const Products = () => {
         });
     };
 
-    const renderItem = ({item} : {item: productProp}) => <Product item={item}/>
+    const renderItem = ({item} : {item: productProp}) => <Product title={item.title} price={item.price} description={item.description} images={item.images} createdAt={item.createdAt} _id={item._id}/>
 
     const handleLoadMore = () => {
         if (hasNextPage && !isFetchingNextPage) {

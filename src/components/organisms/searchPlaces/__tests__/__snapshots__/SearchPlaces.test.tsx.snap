@@ -1,0 +1,156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginHorizontal": 16,
+        "marginTop": 20,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 12,
+          "elevation": 3,
+          "flexDirection": "row",
+          "paddingHorizontal": 12,
+          "paddingVertical": 10,
+          "shadowColor": "#000",
+          "shadowOpacity": 0.05,
+          "shadowRadius": 10,
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={24}
+        bbWidth={24}
+        focusable={false}
+        height={24}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            {
+              "marginRight": 8,
+            },
+            {
+              "flex": 0,
+              "height": 24,
+              "width": 24,
+            },
+          ]
+        }
+        vbHeight={24}
+        vbWidth={24}
+        width={24}
+      >
+        <RNSVGGroup
+          fill={
+            {
+              "payload": 4278190080,
+              "type": 0,
+            }
+          }
+        >
+          <RNSVGCircle
+            cx="11"
+            cy="11"
+            fill={
+              {
+                "payload": 4278190080,
+                "type": 0,
+              }
+            }
+            propList={
+              [
+                "stroke",
+                "strokeWidth",
+              ]
+            }
+            r="8"
+            stroke={
+              {
+                "payload": 4287137928,
+                "type": 0,
+              }
+            }
+            strokeWidth="2"
+          />
+          <RNSVGLine
+            fill={
+              {
+                "payload": 4278190080,
+                "type": 0,
+              }
+            }
+            propList={
+              [
+                "stroke",
+                "strokeWidth",
+                "strokeLinecap",
+              ]
+            }
+            stroke={
+              {
+                "payload": 4287137928,
+                "type": 0,
+              }
+            }
+            strokeLinecap={1}
+            strokeWidth="2"
+            x1="16.65"
+            x2="21"
+            y1="16.65"
+            y2="21"
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+      <TextInput
+        onChangeText={[Function]}
+        placeholder="Search for a location"
+        placeholderTextColor="#999"
+        style={
+          {
+            "color": "#333",
+            "flex": 1,
+            "fontSize": 16,
+          }
+        }
+        value=""
+      />
+    </View>
+    <RCTScrollView
+      data={[]}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      keyExtractor={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onMomentumScrollBegin={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={0.0001}
+      stickyHeaderIndices={[]}
+      viewabilityConfigCallbackPairs={[]}
+    >
+      <View />
+    </RCTScrollView>
+  </View>,
+  ";",
+]
+`;

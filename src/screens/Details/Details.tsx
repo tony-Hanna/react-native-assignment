@@ -32,12 +32,11 @@ const Details = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  console.log('userId', userId)
   const {data: product, isLoading, error, refetch} = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProduct(id),
   })
-console.log('product images', product)
+
 
   // const { data: userData, isLoading: isLoadingProfile } = useQuery<User>({
   //   queryKey: QueryKeys.PROFILE,
@@ -64,7 +63,7 @@ console.log('product images', product)
       });
     },
   });
-  const { addItem, isInCart, removeItem } = useCartStore();
+  const { addItem, isInCart } = useCartStore();
   const isItemInCart = isInCart(id);
 
   if (isLoading ) {

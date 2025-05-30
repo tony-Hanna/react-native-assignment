@@ -6,7 +6,7 @@ export const CustomText = ({ style, children, ...rest }: TextProps) => {
     const {theme} = useTheme()
     const styles = CustomTextStyles(theme)
   return (
-    <Text style={[styles.defaultText, style]} {...rest}>
+    <Text style={[styles.defaultText, style]} {...rest} testID="custom-text">
       {children}
     </Text>
   );

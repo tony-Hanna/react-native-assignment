@@ -1,5 +1,5 @@
 import { View, StyleSheet, Platform, PermissionsAndroid, Alert, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import MapView, { Marker, Region, MapPressEvent } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
