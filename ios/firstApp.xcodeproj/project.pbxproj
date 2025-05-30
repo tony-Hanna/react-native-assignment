@@ -16,6 +16,8 @@
 		C122E3734653444C933C3FD0 /* Roboto-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94448C499FCB4745A5AEAA96 /* Roboto-SemiBold.ttf */; };
 		AC2BB875406A4AED8D378E6E /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9A28C7F481140B198102BB7 /* Roboto-Bold.ttf */; };
 		247959833CC74B65B44946F3 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 47A714F961B44385801A41B6 /* Config.xcconfig */; };
+		ECAC44818A54455CAD10E757 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43ECC664306F4344B3C798C8 /* BootSplash.storyboard */; };
+		81E22871F8A440D8990497D2 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9921A159D9540A0A4575A21 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		94448C499FCB4745A5AEAA96 /* Roboto-SemiBold.ttf */ = {isa = PBXFileReference; name = "Roboto-SemiBold.ttf"; path = "../src/assets/fonts/Roboto-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E9A28C7F481140B198102BB7 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; name = "Roboto-Bold.ttf"; path = "../src/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		47A714F961B44385801A41B6 /* Config.xcconfig */ = {isa = PBXFileReference; name = "Config.xcconfig"; path = "Config.xcconfig"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = text.xcconfig; explicitFileType = undefined; includeInIndex = 0; };
+		43ECC664306F4344B3C798C8 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "firstApp/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F9921A159D9540A0A4575A21 /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "firstApp/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				43ECC664306F4344B3C798C8 /* BootSplash.storyboard */,
+				F9921A159D9540A0A4575A21 /* Colors.xcassets */,
 			);
 			name = firstApp;
 			sourceTree = "<group>";
@@ -214,6 +220,8 @@
 				EC732C6C0AA4467EB926036B /* Roboto-Regular.ttf in Resources */,
 				C122E3734653444C933C3FD0 /* Roboto-SemiBold.ttf in Resources */,
 				AC2BB875406A4AED8D378E6E /* Roboto-Bold.ttf in Resources */,
+				ECAC44818A54455CAD10E757 /* BootSplash.storyboard in Resources */,
+				81E22871F8A440D8990497D2 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

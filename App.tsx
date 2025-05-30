@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import {OneSignal, LogLevel} from 'react-native-onesignal';
 import { Linking } from 'react-native';
+import BootSplash from "react-native-bootsplash";
 import Config from 'react-native-config';
 const queryClient = new QueryClient();
 const App = () => {
@@ -26,6 +27,16 @@ const App = () => {
           if (url) {
             Linking.openURL(url);
           }
+        });
+      }, []);
+      useEffect(() => {
+        const init = async () => {
+          // …do multiple sync or async tasks
+        };
+    
+        init().finally(async () => {
+          await BootSplash.hide({ fade: true });
+          console.log("BootSplash has been hidden successfully");
         });
       }, []);
   return (

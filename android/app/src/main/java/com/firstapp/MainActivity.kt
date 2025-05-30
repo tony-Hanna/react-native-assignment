@@ -1,5 +1,6 @@
 package com.firstapp
 import android.os.Bundle;
+import com.zoontek.rnbootsplash.RNBootSplash
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -12,6 +13,7 @@ class MainActivity : ReactActivity() {
    * rendering of the component.
    */
   override fun onCreate(savedInstanceState: Bundle?) {
+      RNBootSplash.init(this, R.style.BootTheme)
       super.onCreate(null)
   }
 
