@@ -120,7 +120,6 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       paddingHorizontal: 24,
       borderRadius: 8,
       alignItems: 'center',
-    }
-    
+    },
     
   }); 

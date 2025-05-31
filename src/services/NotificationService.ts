@@ -1,14 +1,14 @@
-
+import Config from "react-native-config";
 export const sendProductNotification = async (productId: string, productName: string) => {
   try {
     const response = await fetch('https://api.onesignal.com/notifications', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Key os_v2_app_qjrgparbzjcplnk6begcimong2qq3hgqcghuagfdijrxapagaeagdn5rxqmvu4dkneow3k4yd2wl6uijl4zrzm323bbjghxtmjt65yq'
+        'Authorization': `Key ${Config.API_KEY}`
       },
       body: JSON.stringify({
-        app_id: '82626782-21ca-44f5-b55e-090c2431cd36',
+        app_id: Config.APP_ID,
         target_channel: 'push',
         name: 'New Product Added',
         headings: {

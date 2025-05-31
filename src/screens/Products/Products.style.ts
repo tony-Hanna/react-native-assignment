@@ -24,28 +24,7 @@ export const createStyles = (theme: Theme, isDark: boolean) => StyleSheet.create
         justifyContent: 'center',
         alignItems: 'center'
     },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20
-    },
-    errorText: {
-        color: 'red',
-        marginBottom: 16,
-        textAlign: 'center'
-    },
-    retryButton: {
-        backgroundColor: '#2e8b57',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 8
-    },
-    retryText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600'
-    },
+
     searchContainer: {
         flexDirection: 'row',
         padding: 10,

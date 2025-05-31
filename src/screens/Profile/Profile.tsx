@@ -21,6 +21,7 @@ import { MainStackParamList } from '../../navigation/stacks/types';
 import { usePhotoStore } from '../../store/photoStore';
 import Toast from 'react-native-toast-message';
 import DefaultProfileIcon from '../../assets/icons/ProfileIcon';
+import { Refetch } from '../../components/organisms/Refetch/Refetch';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -44,7 +45,7 @@ const overlayOpacity = useSharedValue(0);
   const [showImageOptions, setShowImageOptions] = useState(false);
   const navigation = useNavigation<NavigationProp>();
   const { profilePhoto } = usePhotoStore()
-  const { data: userData, isLoading: isLoadingProfile, error: profileError } = useQuery({
+  const { data: userData, isLoading: isLoadingProfile, error: profileError, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   });
@@ -203,6 +204,9 @@ const overlayOpacity = useSharedValue(0);
       </LinearGradient>
     );
   }
+  if (profileError) {
+    return <Refetch message={profileError.message} refetch={refetch} />
+}
 
   return (
     <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>

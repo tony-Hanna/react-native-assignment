@@ -14,6 +14,7 @@ import { getProducts } from "../../api/getProducts"
 import { useState } from "react"
 import { useDebounce } from "../../utils/Debounce"
 import { ProductSkeleton } from "./ProductsSkeleton"
+import { Refetch } from "../../components/organisms/Refetch/Refetch"
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
@@ -68,17 +69,7 @@ const Products = () => {
     };
     console.log('products',data?.products)
     if (error) {
-        return (
-            <View style={styles.errorContainer}>
-                <CustomText style={styles.errorText}>Error loading products: {error.message}</CustomText>
-                <Pressable 
-                    style={styles.retryButton} 
-                    onPress={() => refetch()}
-                >
-                    <CustomText style={styles.retryText}>Try Again</CustomText>
-                </Pressable>
-            </View>
-        );
+        return <Refetch message={error.message} refetch={refetch} />
     }
 
     return (

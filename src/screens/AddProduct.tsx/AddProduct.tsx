@@ -18,6 +18,7 @@ import { MainStackParamList } from "../../navigation/stacks/types"
 import { usePhotoStore } from "../../store/photoStore"
 import { useLocationStore } from "../../store/LocationStore"
 import { getAddressFromCoordinates } from "../../api/geocode"
+
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -26,12 +27,15 @@ import Animated, {
   } from 'react-native-reanimated';
 import Toast from "react-native-toast-message"
 import { Logo } from "../../assets/icons/Logo"
+import Config from "react-native-config"
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const AddProduct = () => {
+    console.log(Config.APP_ID)
+    console.log(Config.API_KEY)
     const modalTranslateY = useSharedValue(500);
-const overlayOpacity = useSharedValue(0);
+    const overlayOpacity = useSharedValue(0);
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = createStyles(theme, isDark)

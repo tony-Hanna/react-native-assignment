@@ -12,7 +12,7 @@ import BootSplash from "react-native-bootsplash";
 import Config from 'react-native-config';
 const queryClient = new QueryClient();
 const App = () => {
-      console.log('COFN',Config.APP_ID)
+      console.log('env type',Config.ENV_TYPE)
       // Enable verbose logging for debugging (remove in production)
       OneSignal.Debug.setLogLevel(LogLevel.Verbose);   
       // Initialize with your OneSignal App ID
