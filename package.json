@@ -8,13 +8,15 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "androidStagingDebug":"react-native run-android --mode=stagingDebug --appIdSuffix=staging",
-    "androidProductionDebug":"react-native run-android --mode=productionDebug --appIdSuffix=production",
-    "androidDevelopmentDebug":"react-native run-android --mode=developmentDebug --appIdSuffix=dev"
+    "androidStagingDebug": "react-native run-android --mode=stagingDebug --appIdSuffix=staging",
+    "androidProductionDebug": "react-native run-android --mode=productionDebug --appIdSuffix=production",
+    "androidDevelopmentDebug": "react-native run-android --mode=developmentDebug --appIdSuffix=dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@react-native-community/geolocation": "^3.4.0",
+    "@react-native-firebase/app": "^22.2.0",
+    "@react-native-firebase/crashlytics": "^22.2.0",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/elements": "^2.2.6",

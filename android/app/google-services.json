@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858924742098",
+    "project_id": "lebshop-5da1c",
+    "storage_bucket": "lebshop-5da1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858924742098:android:2c36bcf556f2f941e0c40b",
+        "android_client_info": {
+          "package_name": "com.firstapp.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADCus1hqnJeFOCRjTD1RlolnRAoOoui9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
