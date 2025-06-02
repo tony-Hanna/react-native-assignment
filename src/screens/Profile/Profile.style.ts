@@ -8,6 +8,20 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       flex: 1,
       padding: normalizeWidth(20),
     },
+    lottieAnimation:{
+      width: normalizeWidth(70),
+      height: normalizeWidth(70),
+      marginBottom: normalizeHeight(20),
+    },
+    emailIconWrap: {
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'center',
+      marginBottom:18
+    },
+    email: {
+      marginLeft:5
+    },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',

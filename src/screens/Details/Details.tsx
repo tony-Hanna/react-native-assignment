@@ -275,8 +275,8 @@ const formattedDate =() => {
                   }}
                 >
                   <View style={styles.IconButtonTextWrap}>
-                  <LocationIcon color={theme.text}/>
-                  <CustomText style={styles.buttonText}>View location on map</CustomText>
+                    <LocationIcon color={theme.text}/>
+                    <CustomText style={styles.buttonText}>View location on map</CustomText>
                   </View>
                 </Pressable>
               </View>

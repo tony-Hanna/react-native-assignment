@@ -113,7 +113,14 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             shadowRadius: 6,
             elevation: 3,
           },
-          
+          IconWrap: {
+            flexDirection:'row',
+            alignItems:'center'
+          },
+          iconText:{
+              marginLeft:8
+          },
+
           buttonPrimary: {
             backgroundColor: '#4a90e2',
           },

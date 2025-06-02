@@ -18,10 +18,11 @@ import { usePhotoStore } from "../../store/photoStore"
 import { useLocationStore } from "../../store/LocationStore"
 import { getAddressFromCoordinates } from "../../api/geocode"
 import { ImageOptions } from "../../components/molecules/ImageOptions/ImageOptions"
-
+import LocationIcon from "../../assets/icons/LocationIcon"
 import Toast from "react-native-toast-message"
 import { Logo } from "../../assets/icons/Logo"
 import Config from "react-native-config"
+import CameraIcon from "../../assets/icons/CameraIcon"
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -208,7 +209,10 @@ const AddProduct = () => {
                         latitude: 0,
                         longitude: 0
                     })}>
-                        <CustomText style={styles.imageButtonText}>Location</CustomText>
+                <View style={styles.IconWrap}>
+                    <LocationIcon color={theme.text}/>
+                    <CustomText style={styles.iconText}>Location</CustomText>
+                  </View>
                     </Pressable>
                     {errors.location?.name && (
                         <CustomText style={styles.errorText}>
@@ -241,11 +245,15 @@ const AddProduct = () => {
                             onPress={() => setShowImageOptions(true)}
                             disabled={selectedImages.length >= 5}
                         >
-                            <CustomText style={styles.imageButtonText}>
-                                {selectedImages.length >= 5
-                                    ? "Maximum 5 images"
-                                    : "Add Images"}
-                            </CustomText>
+                            <View style={styles.IconWrap}>
+                                <CameraIcon />
+                                <CustomText style={styles.iconText}>
+                                    {selectedImages.length >= 5
+                                        ? "Maximum 5 images"
+                                        : "Add Images"}
+                                </CustomText>
+                            </View>
+                            
                         </Pressable>
                     </View>
                     

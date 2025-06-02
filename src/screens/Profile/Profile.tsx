@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../../store/AuthStore';
 import { createStyles } from './Profile.style';
+import EmailIcon from '../../assets/icons/EmailIcon';
 import { updateProfile } from '../../api/updateProfile';
 import { getProfile } from '../../api/getProfile';
 import { ProfileField, ProfileSchema } from '../../schema/profileSchema';
@@ -19,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/stacks/types';
 import { usePhotoStore } from '../../store/photoStore';
+import LottieView from 'lottie-react-native';
 import Toast from 'react-native-toast-message';
 import DefaultProfileIcon from '../../assets/icons/ProfileIcon';
 import { Refetch } from '../../components/organisms/Refetch/Refetch';
@@ -49,7 +51,7 @@ const overlayOpacity = useSharedValue(0);
     queryKey: ['profile'],
     queryFn: getProfile,
   });
-  console.log('profilePhoto', profilePhoto)
+
   const {
     control,
     handleSubmit,
@@ -60,7 +62,6 @@ const overlayOpacity = useSharedValue(0);
     defaultValues: {
       firstName: userData?.firstName || '',
       lastName: userData?.lastName || '',
-      email: userData?.email || '',
       profileImage: userData?.profileImage?.url || ''
     },
   });
@@ -71,7 +72,6 @@ const overlayOpacity = useSharedValue(0);
       reset({
         firstName: userData.firstName,
         lastName: userData.lastName,
-        email: userData.email,
       });
       if (userData.profileImage?.url) {
         setProfileImage(userData.profileImage.url);
@@ -91,7 +91,6 @@ const overlayOpacity = useSharedValue(0);
       mutate({
         firstName: userData?.firstName || '',
         lastName: userData?.lastName || '',
-        email: userData?.email || '',
         profileImage: imageObject,
       });
     }
@@ -185,7 +184,6 @@ const overlayOpacity = useSharedValue(0);
         mutate({
           firstName: userData?.firstName || '',
           lastName: userData?.lastName || '',
-          email: userData?.email || '',
           profileImage: imageObject,
         });
       }
@@ -197,10 +195,13 @@ const overlayOpacity = useSharedValue(0);
 
   if (isLoadingProfile) {
     return (
-      <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
-        <View style={[styles.container, { paddingTop: insets.top, justifyContent: 'center', alignItems: 'center' }]}>
-          <ActivityIndicator size="large" />
-        </View>
+      <LinearGradient colors={theme.gradient} style={{ flex: 1, alignItems:'center',justifyContent:'center' }}>
+        <LottieView
+            source={require('../../assets/lottie/loading.json')}
+            autoPlay
+            loop
+            style={styles.lottieAnimation}
+        />
       </LinearGradient>
     );
   }
@@ -233,7 +234,10 @@ const overlayOpacity = useSharedValue(0);
             <CustomText style={styles.editImageText}>Change Photo</CustomText>
           </Pressable>
         </View>
-
+        <View style={styles.emailIconWrap}>
+          <EmailIcon color={theme.text}/>
+          <CustomText style={styles.email}>{userData.email}</CustomText>
+        </View>
         <View style={styles.form}>
           <Controller
             name="firstName"
@@ -263,22 +267,6 @@ const overlayOpacity = useSharedValue(0);
           />
           {errors.lastName && (
             <CustomText style={styles.errorText}>{errors.lastName.message}</CustomText>
-          )}
-
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <InputWithLabel
-                {...field}
-                label="Email"
-                style={styles.input}
-                editable={false}
-              />
-            )}
-          />
-          {errors.email && (
-            <CustomText style={styles.errorText}>{errors.email.message}</CustomText>
           )}
 
           <Pressable
