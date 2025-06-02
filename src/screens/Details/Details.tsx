@@ -20,6 +20,7 @@ import Toast from "react-native-toast-message";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 import { DetailsSkeleton } from "./DetailsSkeleton";
 import ShareIcon from "../../assets/icons/ShareIcon";
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
@@ -146,6 +147,7 @@ const handleShare = async () => {
 };
 
   return (
+    <Animated.View entering={FadeIn.duration(900)} exiting={FadeOut} style={{ flex: 1 }}>
     <LinearGradient colors={theme.gradient} style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.header}>
@@ -269,6 +271,7 @@ const handleShare = async () => {
         </View>
       </ScrollView>
     </LinearGradient>
+    </Animated.View>
   );
 };
 
