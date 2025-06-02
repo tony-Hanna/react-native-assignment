@@ -17,6 +17,9 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.lugg.RNCConfig.RNCConfigPackage;
+import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -56,5 +59,11 @@ class MainApplication : Application(), ReactApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
+
+    // Initialize Firebase
+    FirebaseApp.initializeApp(this)
+    
+    // Enable Crashlytics data collection
+    FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
   }
 }

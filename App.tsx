@@ -6,39 +6,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useEffect } from 'react';
-import {OneSignal, LogLevel} from 'react-native-onesignal';
-import { Linking } from 'react-native';
-import BootSplash from "react-native-bootsplash";
-import Config from 'react-native-config';
+import { oneSignal } from './src/utils/onesignal';
+import { splash } from './src/utils/splash';
 const queryClient = new QueryClient();
+
 const App = () => {
-      console.log('env type',Config.ENV_TYPE)
-      // Enable verbose logging for debugging (remove in production)
-      OneSignal.Debug.setLogLevel(LogLevel.Verbose);   
-      // Initialize with your OneSignal App ID
-      OneSignal.initialize('82626782-21ca-44f5-b55e-090c2431cd36');
-      // Use this method to prompt for push notifications.
-      // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-      OneSignal.Notifications.requestPermission(false);
+
       useEffect(() => {
-        // Listen for notification open events
-        OneSignal.Notifications.addEventListener('click', (event) => {
-          const url = event.notification?.launchURL;
-          if (url) {
-            Linking.openURL(url);
-          }
-        });
+        oneSignal()    
+        splash()
       }, []);
-      useEffect(() => {
-        const init = async () => {
-          // …do multiple sync or async tasks
-        };
-    
-        init().finally(async () => {
-          await BootSplash.hide({ fade: true });
-          console.log("BootSplash has been hidden successfully");
-        });
-      }, []);
+     
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
