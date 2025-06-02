@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { View, Image, Pressable, ScrollView, FlatList, Dimensions, Alert, Share } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
@@ -21,6 +21,9 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 import { DetailsSkeleton } from "./DetailsSkeleton";
 import ShareIcon from "../../assets/icons/ShareIcon";
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { formatRelativeTime } from "../../utils/formatRelativeTime";
+import LocationIcon from "../../assets/icons/LocationIcon";
+import CartIcon from "../../assets/icons/CartIcon";
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 
@@ -37,12 +40,6 @@ const Details = () => {
     queryKey: ['product', id],
     queryFn: () => getProduct(id),
   })
-
-
-  // const { data: userData, isLoading: isLoadingProfile } = useQuery<User>({
-  //   queryKey: QueryKeys.PROFILE,
-  //   queryFn: getProfile
-  // });
 
   const isProductOwner = product?.user?._id === userId;
 
@@ -145,7 +142,10 @@ const handleShare = async () => {
     });
   }
 };
-
+const formattedDate =() => {
+  const date = new Date(product.createdAt);
+  return formatRelativeTime(date);
+}
   return (
     <Animated.View entering={FadeIn.duration(900)} exiting={FadeOut} style={{ flex: 1 }}>
     <LinearGradient colors={theme.gradient} style={styles.container}>
@@ -195,13 +195,19 @@ const handleShare = async () => {
             ))}
           </View>
         </View>
-
+          <View style={styles.titleDateWrap}>
         <CustomText style={styles.title}>{product.title}</CustomText>
+        <CustomText style={styles.dateText}> {formattedDate()} </CustomText>
+        </View>
         <CustomText style={styles.price}>${product.price}</CustomText>
 
-        <CustomText style={styles.sectionTitle}>Description</CustomText>
-        <CustomText style={styles.description}>{product.description}</CustomText>
-        <CustomText style={styles.sectionTitle}>{product.location.name}</CustomText>
+        <CustomText style={[styles.description, { fontSize: 14, color: theme.text }]}>{product.description}</CustomText>
+        <View style={styles.contactRow}>
+          <View style={{marginRight:7}}>
+            <LocationIcon />
+          </View>
+          <CustomText style={styles.sectionTitle}>{product.location.name}</CustomText>
+        </View>
         <View style={styles.contactRow}>
             <EmailIcon size={18} color={theme.text} />
             <CustomText style={styles.contactText}>{product.user.email}</CustomText>
@@ -234,9 +240,9 @@ const handleShare = async () => {
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
             
             <Pressable style={styles.button} onPress={handleEmailOwner}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <EmailIcon size={16} color="#fff" />
-                <CustomText style={[styles.buttonText, { marginLeft: 8 }]}>Contact Seller</CustomText>
+              <View style={styles.IconButtonTextWrap}>
+                <EmailIcon size={18} color="#fff" />
+                <CustomText style={styles.buttonText}>Contact Seller</CustomText>
               </View>
             </Pressable>
               <Pressable 
@@ -249,11 +255,15 @@ const handleShare = async () => {
                 onPress={handleAddToCart}
                 disabled={showSuccess}
               >
+                <View style={styles.IconButtonTextWrap}>
+                <CartIcon />
                 <CustomText style={styles.buttonText}>
                   {showSuccess ? 'item added' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
                 </CustomText>
+                </View>
               </Pressable>
               </View>
+        
                 <Pressable 
                   style={[styles.button, styles.cartButton]} 
                   onPress={() => {
@@ -264,7 +274,10 @@ const handleShare = async () => {
                     });
                   }}
                 >
+                  <View style={styles.IconButtonTextWrap}>
+                  <LocationIcon color={theme.text}/>
                   <CustomText style={styles.buttonText}>View location on map</CustomText>
+                  </View>
                 </Pressable>
               </View>
           )}

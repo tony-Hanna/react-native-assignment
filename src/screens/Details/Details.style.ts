@@ -20,7 +20,11 @@ export const detailsStyles = StyleSheet.create({
     height: SCREEN_WIDTH - normalizeWidth(40),
     borderRadius: 12,
   },
-  
+  titleDateWrap:{flexDirection:'row', justifyContent:'space-between', alignItems:'center'},
+  dateText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+},
   title: {
     fontSize: normalizeWidth(24),
     fontWeight: "700",
@@ -92,8 +96,11 @@ export const detailsStyles = StyleSheet.create({
     color: "#fff",
     fontSize: normalizeWidth(16),
     fontWeight: "600",
+    marginLeft:8
   },
-  
+  IconButtonTextWrap: {
+    flexDirection:'row', alignItems:'center'
+  },
   ownerContainer: {
     marginTop: 16,
     marginHorizontal: 20,

@@ -10,6 +10,7 @@ import { MainStackParamList } from "../../../navigation/stacks/types"
 import { memo, useMemo } from "react"
 import Config from "react-native-config"
 import Animated, { ZoomIn } from 'react-native-reanimated';
+import { formatRelativeTime } from "../../../utils/formatRelativeTime"
 
 const Product = memo(({
     title,
@@ -26,17 +27,13 @@ const Product = memo(({
     
     const navigation = useNavigation<NativeStackNavigationProp<MainStackParamList>>()
 
-    // Memoize the formatted date
+
     const formattedDate = useMemo(() => {
         const date = new Date(createdAt);
-        return date.toLocaleDateString('en-US', { 
-            month: 'short', 
-            day: 'numeric',
-            year: 'numeric'
-        });
+        return formatRelativeTime(date);
     }, [createdAt]);
 
-    // Memoize the image URI to prevent string concatenation on every render
+
     const imageUri = useMemo(() => 
         `${Config.API_URL}${images[0]?.url}`, 
         [images]
