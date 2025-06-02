@@ -9,6 +9,7 @@ import { CustomText } from "../../atoms/CustomText/CustomText"
 import { MainStackParamList } from "../../../navigation/stacks/types"
 import { memo, useMemo } from "react"
 import Config from "react-native-config"
+import Animated, { ZoomIn } from 'react-native-reanimated';
 
 const Product = memo(({
     title,
@@ -47,6 +48,9 @@ const Product = memo(({
     }
 
     return (
+        <Animated.View
+            entering={ZoomIn.springify().mass(0.4).stiffness(20)} // or use FadeInUp.springify()
+        >
         <Pressable style={[styles.card, primary.borderPrimary]} onPress={handlePress}>
             <View style={styles.imagePriceWrap}>
                 <CustomText numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
@@ -70,6 +74,7 @@ const Product = memo(({
                 </CustomText>
             </View>
         </Pressable>
+        </Animated.View>
     )
 })
 
