@@ -208,7 +208,7 @@ const AddProduct = () => {
                         longitude: 0
                     })}>
                 <View style={styles.IconWrap}>
-                    <LocationIcon color='black'/>
+                    <LocationIcon color='#A1B2FD'/>
                     <CustomText style={styles.iconText}>Location</CustomText>
                   </View>
                     </Pressable>
@@ -244,7 +244,7 @@ const AddProduct = () => {
                             disabled={selectedImages.length >= 5}
                         >
                             <View style={styles.IconWrap}>
-                                <CameraIcon />
+                                <CameraIcon color='#A1B2FD'/>
                                 <CustomText style={styles.iconText}>
                                     {selectedImages.length >= 5
                                         ? "Maximum 5 images"

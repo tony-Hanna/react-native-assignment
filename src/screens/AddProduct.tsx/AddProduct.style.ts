@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import { Theme } from "../../store/themeContext"
 import { normalizeWidth, normalizeHeight } from "../../utils/scale"
-
+import { primaryColor } from "../../constants/primaryColor"
 export const createStyles = (theme: Theme, isDark: boolean) =>
     StyleSheet.create({
         container: {
@@ -37,9 +37,10 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
         },
         buttonDisabled: {
             opacity: 0.5,
+            backgroundColor: '#A1B2FD'
         },
         buttonText: {
-            color: theme.text,
+            color: 'white',
             fontSize: normalizeWidth(16),
             fontWeight: "bold",
         },
@@ -119,7 +120,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
           },
           iconText:{
               marginLeft:8,
-              color:'black'
+              color:'white'
           },
 
           buttonPrimary: {
@@ -127,7 +128,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
           },
           
           buttonSecondary: {
-            backgroundColor: '#f0f0f0',
+            backgroundColor: primaryColor,
           },
           
           buttonTextPrimary: {

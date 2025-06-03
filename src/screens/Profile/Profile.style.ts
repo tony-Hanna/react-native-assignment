@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '../../store/themeContext';
 import { normalizeWidth, normalizeHeight } from '../../utils/scale';
-
+import { primaryColor } from '../../constants/primaryColor';
 export const createStyles = (theme: Theme, isDark: boolean) =>
   StyleSheet.create({
     container: {
@@ -68,7 +68,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       borderRadius: normalizeWidth(10),
       alignItems: 'center',
       marginTop: normalizeHeight(20),
-      backgroundColor: 'blue'
+      backgroundColor: primaryColor
     },
     buttonDisabled: {
       opacity: 0.5,
