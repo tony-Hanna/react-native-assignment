@@ -5,20 +5,18 @@ import { createStyles } from "./Products.style"
 import { productProp } from "../../components/organisms/Product/Product.type"
 import {Product} from '../../components/organisms/Product/Product'
 import LinearGradient from "react-native-linear-gradient"
-import { Logo } from "../../assets/icons/Logo"
 import { CustomText } from "../../components/atoms/CustomText/CustomText"
-import { MoonIcon } from "../../assets/icons/moon"
-import { SunIcon } from "../../assets/icons/sun"
+import { MoonIcon, SunIcon, Logo } from "../../assets/icons"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getProducts } from "../../api/getProducts"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useDebounce } from "../../utils/Debounce"
 import { ProductSkeleton } from "./ProductsSkeleton"
 import { Refetch } from "../../components/organisms/Refetch/Refetch"
 const Products = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme, toggleTheme} = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const [searchTerm, setSearchTerm] = useState('')
     const debouncedSearch = useDebounce(searchTerm)
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(undefined)
@@ -60,7 +58,7 @@ const Products = () => {
         });
     };
 
-    const renderItem = ({item} : {item: productProp}) => <Product title={item.title} price={item.price} description={item.description} images={item.images} createdAt={item.createdAt} _id={item._id}/>
+    const renderItem = ({item} : {item: productProp}) => <Product title={item.title} price={item.price} description={item.description} images={item.images} updatedAt={item.updatedAt} _id={item._id}/>
 
     const handleLoadMore = () => {
         if (hasNextPage && !isFetchingNextPage) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from 'react-native';
 import { useTheme } from '../../store/themeContext';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../../store/AuthStore';
 import { createStyles } from './Profile.style';
-import EmailIcon from '../../assets/icons/EmailIcon';
+import {EmailIcon, Logo} from '../../assets/icons';
 import { updateProfile } from '../../api/updateProfile';
 import { getProfile } from '../../api/getProfile';
 import { ProfileField, ProfileSchema } from '../../schema/profileSchema';
@@ -40,7 +40,7 @@ const Profile = () => {
 const overlayOpacity = useSharedValue(0);
   const insets = useSafeAreaInsets();
   const { theme, isDark } = useTheme();
-  const styles = createStyles(theme, isDark);
+  const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
   const { clearTokens } = useAuthStore();
   const queryClient = useQueryClient();
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -211,13 +211,16 @@ const overlayOpacity = useSharedValue(0);
 
   return (
     <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
-      <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.header}>
-          <CustomText style={styles.title}>Profile</CustomText>
-          <Pressable onPress={handleLogout} style={styles.logoutBotton}>
-            <CustomText style={styles.logoutText}>Logout</CustomText>
-          </Pressable>
+      <View style={[styles.header, { paddingTop: insets.top, paddingBottom: 25 }]}>
+        <View style={styles.logo}>
+          <Logo w={40} h={40} />
+          <CustomText style={{ fontSize: 20 }}>Profile</CustomText>
         </View>
+        <Pressable onPress={handleLogout} style={styles.logoutBotton}>
+          <CustomText style={styles.logoutText}>Logout</CustomText>
+        </Pressable>
+      </View> 
+      <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
 
         <View style={styles.profileImageContainer}>
           <Pressable style={styles.editImageButton} onPress={() => setShowImageOptions(true)}>

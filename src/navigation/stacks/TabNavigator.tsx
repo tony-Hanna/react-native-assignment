@@ -5,7 +5,7 @@ import { useTheme } from '../../store/themeContext';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
 import { TabParamList } from './types';
 import AddProduct from '../../screens/AddProduct.tsx/AddProduct';
-import { HomeIcon, AddIcon, ProfileIcon, CartIcon } from '../../assets/icons/tabBarIcons';
+import { HomeIcon, AddIcon, ProfileIcon, CartIcon } from '../../assets/icons/TabBarIcons';
 import { Cart } from '../../screens/Cart/Cart';
 const Tab = createBottomTabNavigator<TabParamList>();
 

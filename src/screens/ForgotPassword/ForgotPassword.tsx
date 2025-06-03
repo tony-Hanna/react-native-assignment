@@ -19,10 +19,11 @@ import { AuthStackParamList } from "../../navigation/stacks/types"
 import { forgotPassword } from "../../api/forgotPassword"
 import Toast from 'react-native-toast-message';
 import ArrowLeftIcon from "../../assets/icons/LeftArrow"
+import { useMemo } from "react"
 const ForgotPassword = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme} = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
     const {
       handleSubmit,

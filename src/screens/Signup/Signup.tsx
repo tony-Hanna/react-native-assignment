@@ -21,12 +21,12 @@ import { useMutation } from "@tanstack/react-query"
 import { signupUser } from "../../api/signupUser"
 import { AuthStackParamList } from "../../navigation/stacks/types"
 import { launchImageLibrary } from 'react-native-image-picker'
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 const Signup = () => {
   const insets = useSafeAreaInsets()
   const { isDark, theme } = useTheme()
-  const styles = createStyles(theme, isDark, insets)
+  const styles = useMemo(() => createStyles(theme, isDark, insets),[theme, isDark])
   const [profileImage, setProfileImage] = useState<{ uri: string; type: string; name: string } | undefined>(undefined)
  
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
@@ -34,7 +34,7 @@ const Signup = () => {
     handleSubmit,
     control,
     getValues,
-    formState: { isValid, errors }
+    formState: { errors }
   } = useForm<SignupField>({
     resolver: zodResolver(SignupSchema)
   })

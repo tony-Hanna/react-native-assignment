@@ -16,10 +16,10 @@ const Product = memo(({
     title,
     description,
     price,
-    createdAt,
+    updatedAt,
     images,
     _id
-}: Pick<productProp, 'title' | 'description' | 'price' | 'createdAt' | 'images' | '_id'>) => {
+}: Pick<productProp, 'title' | 'description' | 'price' | 'updatedAt' | 'images' | '_id'>) => {
     const { theme, isDark } = useTheme()
     
     // Memoize styles to prevent recalculation on every render
@@ -29,9 +29,9 @@ const Product = memo(({
 
 
     const formattedDate = useMemo(() => {
-        const date = new Date(createdAt);
+        const date = new Date(updatedAt);
         return formatRelativeTime(date);
-    }, [createdAt]);
+    }, [updatedAt]);
 
 
     const imageUri = useMemo(() => 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +11,6 @@ import { useMutation } from '@tanstack/react-query';
 import { verifyOtp } from '../../api/verifyotp';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { AuthStackParamList } from '../../navigation/stacks/types';
-import { useAuthStore } from '../../store/AuthStore';
 import Toast from 'react-native-toast-message';
 import { resendOtp } from '../../api/resendOtp';
 import { useNavigation } from '@react-navigation/native';
@@ -22,12 +21,11 @@ type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 const Verification = () => {
     const route = useRoute<VerificationScreenRouteProp>();
-    const {setTokens} = useAuthStore()
     const { email, password } = route.params;
     const { theme } = useTheme()
-    const styles = verificationStyles(theme)
+    const styles = useMemo(() => verificationStyles(theme),[theme])
     const navigation = useNavigation<NavigationProp>()
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm<otpField>({
+    const { control, handleSubmit, formState: { isValid } } = useForm<otpField>({
       resolver: zodResolver(otpSchema),
       defaultValues: { d1: '', d2: '', d3: '', d4: '', d5: '', d6: '' }
     });

@@ -8,7 +8,7 @@ import { useTheme } from "../../store/themeContext"
 import { createStyles } from "./AddProduct.style"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createProduct } from "../../api/createProduct"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useNavigation } from "@react-navigation/native"
@@ -18,11 +18,9 @@ import { usePhotoStore } from "../../store/photoStore"
 import { useLocationStore } from "../../store/LocationStore"
 import { getAddressFromCoordinates } from "../../api/geocode"
 import { ImageOptions } from "../../components/molecules/ImageOptions/ImageOptions"
-import LocationIcon from "../../assets/icons/LocationIcon"
 import Toast from "react-native-toast-message"
-import { Logo } from "../../assets/icons/Logo"
+import { Logo, LocationIcon, CameraIcon } from "../../assets/icons"
 import Config from "react-native-config"
-import CameraIcon from "../../assets/icons/CameraIcon"
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -31,7 +29,7 @@ const AddProduct = () => {
     console.log(Config.API_KEY)
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const [address, setAddress] = useState<string | null>(null)
     const navigation = useNavigation<NavigationProp>()
     const { productPhoto } = usePhotoStore()
@@ -210,7 +208,7 @@ const AddProduct = () => {
                         longitude: 0
                     })}>
                 <View style={styles.IconWrap}>
-                    <LocationIcon color={theme.text}/>
+                    <LocationIcon color='black'/>
                     <CustomText style={styles.iconText}>Location</CustomText>
                   </View>
                     </Pressable>

@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { View, Image, Pressable, ScrollView, FlatList, Dimensions, Alert, Share } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
-import ArrowLeftIcon from "../../assets/icons/LeftArrow";
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from "../../store/themeContext";
 import { detailsStyles as styles } from "./Details.style";
@@ -15,17 +14,13 @@ import { MainStackParamList } from "../../navigation/stacks/types";
 import { deleteProduct } from "../../api/deleteProduct";
 import { saveImage } from "../../utils/handleLongPress";
 import { openComposer } from "react-native-email-link";
-import EmailIcon from "../../assets/icons/EmailIcon";
 import Toast from "react-native-toast-message";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 import { DetailsSkeleton } from "./DetailsSkeleton";
-import ShareIcon from "../../assets/icons/ShareIcon";
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { formatRelativeTime } from "../../utils/formatRelativeTime";
-import LocationIcon from "../../assets/icons/LocationIcon";
-import CartIcon from "../../assets/icons/CartIcon";
+import {TrashIcon,EditIcon,CartIcon,LocationIcon,ShareIcon,EmailIcon,ArrowLeftIcon} from "../../assets/icons"
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
-
 
 const Details = () => {
   const route = useRoute<RouteProp<MainStackParamList, "Details">>();
@@ -143,7 +138,7 @@ const handleShare = async () => {
   }
 };
 const formattedDate =() => {
-  const date = new Date(product.createdAt);
+  const date = new Date(product.updatedAt);
   return formatRelativeTime(date);
 }
   return (
@@ -214,73 +209,68 @@ const formattedDate =() => {
           </View>
 
         
-        <View style={styles.buttonContainer}>
-          {isProductOwner ? (
-            <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
-              <Pressable style={[styles.button, styles.editButton]} onPress={handleEdit}>
-                <CustomText style={styles.buttonText}>Edit</CustomText>
-              </Pressable>
-              <Pressable style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
-                <CustomText style={styles.buttonText}>Delete</CustomText>
-              </Pressable>
-              </View>
-              <Pressable style={[styles.button, styles.cartButton]} onPress={() => {
-                  navigation.navigate('Location', {
-                    latitude: product.location.latitude,
-                    longitude: product.location.longitude,
-                    fromProductDetails: true
-                  });
-                }}>
-                  <CustomText style={styles.buttonText}>View location on map</CustomText>
-                </Pressable>
-            </View>
-          ) : (
-              <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
+        <View style={styles.buttonContainer}> 
+          <View style={{flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
-            
-            <Pressable style={styles.button} onPress={handleEmailOwner}>
+              {isProductOwner ? (
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                  <Pressable style={styles.button} onPress={handleEdit}>
+                    <View style={styles.IconButtonTextWrap}>
+                    <EditIcon color='white'/>
+                    <CustomText style={styles.buttonText}>Edit</CustomText>
+                    </View>
+                  </Pressable>
+                  <Pressable style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
+                    <View style={styles.IconButtonTextWrap}>
+                    <TrashIcon color='white'/>
+                    <CustomText style={styles.buttonText}>Delete</CustomText>
+                    </View>
+                  </Pressable>
+                </View>
+              ) : (
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                  <Pressable style={styles.button} onPress={handleEmailOwner}>
+                    <View style={styles.IconButtonTextWrap}>
+                      <EmailIcon size={18} color="#fff" />
+                      <CustomText style={styles.buttonText}>Contact Seller</CustomText>
+                    </View>
+                  </Pressable>
+                  <Pressable 
+                    style={[
+                      styles.button, 
+                      styles.cartButton,
+                      isItemInCart && !showSuccess && { backgroundColor: '#2e8b57' },
+                      showSuccess && { backgroundColor: '#808080' }
+                    ]} 
+                    onPress={handleAddToCart}
+                    disabled={showSuccess}
+                  >
+                    <View style={styles.IconButtonTextWrap}>
+                      <CartIcon />
+                      <CustomText style={styles.buttonText}>
+                        {showSuccess ? 'item added' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
+                      </CustomText>
+                    </View>
+                  </Pressable>
+                </View>
+              )}
+            </View>
+            <Pressable 
+              style={[styles.button, styles.cartButton]} 
+              onPress={() => {
+                navigation.navigate('Location', {
+                  latitude: product.location.latitude,
+                  longitude: product.location.longitude,
+                  fromProductDetails: true
+                });
+              }}
+            >
               <View style={styles.IconButtonTextWrap}>
-                <EmailIcon size={18} color="#fff" />
-                <CustomText style={styles.buttonText}>Contact Seller</CustomText>
+                <LocationIcon color='white'/>
+                <CustomText style={styles.buttonText}>View location on map</CustomText>
               </View>
             </Pressable>
-              <Pressable 
-                style={[
-                  styles.button, 
-                  styles.cartButton,
-                  isItemInCart && !showSuccess && { backgroundColor: '#2e8b57' },
-                  showSuccess && { backgroundColor: '#808080' }
-                ]} 
-                onPress={handleAddToCart}
-                disabled={showSuccess}
-              >
-                <View style={styles.IconButtonTextWrap}>
-                <CartIcon />
-                <CustomText style={styles.buttonText}>
-                  {showSuccess ? 'item added' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
-                </CustomText>
-                </View>
-              </Pressable>
-              </View>
-        
-                <Pressable 
-                  style={[styles.button, styles.cartButton]} 
-                  onPress={() => {
-                    navigation.navigate('Location', {
-                      latitude: product.location.latitude,
-                      longitude: product.location.longitude,
-                      fromProductDetails: true
-                    });
-                  }}
-                >
-                  <View style={styles.IconButtonTextWrap}>
-                    <LocationIcon color={theme.text}/>
-                    <CustomText style={styles.buttonText}>View location on map</CustomText>
-                  </View>
-                </Pressable>
-              </View>
-          )}
+          </View>
         </View>
       </ScrollView>
     </LinearGradient>

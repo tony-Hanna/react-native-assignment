@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, FlatList, Pressable, Image, Dimensions, Animated } from "react-native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../store/themeContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Logo } from "../../assets/icons/Logo";
+import { Logo } from "../../assets/icons";
 import { createStyles } from "./Cart.style";
 import { useCartStore } from "../../store/CartStore";
 import Config from "react-native-config";
@@ -16,30 +16,31 @@ import LottieView from 'lottie-react-native';
 const Cart: React.FC = () => {
     const { theme, isDark } = useTheme();
     const insets = useSafeAreaInsets();
-    const styles = createStyles(theme, isDark);
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
+
     const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
 
-    const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
+    const handleUpdateQuantity = useCallback((itemId: string, newQuantity: number) => {
         updateQuantity(itemId, newQuantity);
-    };
+    }, [updateQuantity]);
 
-    const handleRemoveItem = (itemId: string) => {
+    const handleRemoveItem = useCallback((itemId: string) => {
         removeItem(itemId);
         Toast.show({
             type: 'success',
             text1: 'Item removed from cart',
         });
-    };
+    }, [removeItem]);
 
-    const handleClearCart = () => {
+    const handleClearCart = useCallback(() => {
         clearCart();
         Toast.show({
             type: 'success',
             text1: 'Cart cleared',
         });
-    };
+    }, [clearCart]);
 
-    const renderRightActions = (
+    const renderRightActions = useCallback((
         itemId: string,
         dragX: Animated.AnimatedInterpolation<number>
     ) => {
@@ -48,7 +49,7 @@ const Cart: React.FC = () => {
             outputRange: [1, 0],
             extrapolate: 'clamp',
         });
-
+    
         return (
             <Animated.View style={[styles.deleteAction, { transform: [{ scale }] }]}>
                 <Pressable
@@ -59,7 +60,8 @@ const Cart: React.FC = () => {
                 </Pressable>
             </Animated.View>
         );
-    };
+    }, [handleRemoveItem]);
+    
 
     const renderItem = useCallback(({ item }: { item: CartItem }) => (
         <Swipeable

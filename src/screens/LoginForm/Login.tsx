@@ -1,7 +1,7 @@
 import { View, Text, Pressable, StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {InputWithLabel} from "../../components/molecules/InputWithLabel/InputWithLabel"
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { LoginSchema } from "../../schema/LoginSchema"
 import { useMutation } from "@tanstack/react-query"
 import type { LoginField } from "../../schema/LoginSchema"
@@ -20,19 +20,18 @@ import { CustomText } from "../../components/atoms/CustomText/CustomText"
 import { AuthStackParamList } from "../../navigation/stacks/types"
 import { loginUser } from "../../api/loginUser"
 import { useAuthStore } from "../../store/AuthStore"
-import { forgotPassword } from "../../api/forgotPassword"
+import { useMemo } from "react"
 const Login = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme} = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const {setTokens} = useAuthStore()
     const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
     const {
       handleSubmit,
       control,
       setError,
-      watch,
-      formState: {isValid, errors }
+      formState: {  errors }
     } = useForm<LoginField>({
       resolver: zodResolver(LoginSchema)
     })

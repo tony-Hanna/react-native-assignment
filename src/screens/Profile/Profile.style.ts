@@ -8,6 +8,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       flex: 1,
       padding: normalizeWidth(20),
     },
+    logo: {display:'flex', flexDirection:'row', alignItems:'center',marginLeft:7},
     lottieAnimation:{
       width: normalizeWidth(70),
       height: normalizeWidth(70),
@@ -26,7 +27,9 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      paddingRight: 10,
       marginBottom: normalizeHeight(20),
+      marginTop:10
     },
     title: {
       fontSize: normalizeWidth(24),

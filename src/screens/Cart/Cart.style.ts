@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Theme } from "../../store/themeContext";
 import { normalizeWidth, normalizeHeight } from "../../utils/scale"
 
 export const createStyles = (theme: Theme, isDark: boolean) =>
-    StyleSheet.create({
+     StyleSheet.create({
         container: {
             flex: 1,
         },

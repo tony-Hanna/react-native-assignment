@@ -9,7 +9,7 @@ import { createStyles } from "./EditProduct.style"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { updateProduct } from "../../api/updateProduct"
 import { getProduct } from "../../api/getProduct"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native"
@@ -28,7 +28,7 @@ type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 const EditProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
-    const styles = createStyles(theme, isDark)
+    const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const navigation = useNavigation<NavigationProp>()
     const queryClient = useQueryClient()
     const route = useRoute<RouteProp<MainStackParamList, "EditProduct">>()

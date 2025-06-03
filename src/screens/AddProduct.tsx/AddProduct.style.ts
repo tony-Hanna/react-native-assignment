@@ -118,7 +118,8 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             alignItems:'center'
           },
           iconText:{
-              marginLeft:8
+              marginLeft:8,
+              color:'black'
           },
 
           buttonPrimary: {

@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 import { normalizeWidth, normalizeHeight } from "../../utils/scale"
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window")
+const { width: SCREEN_WIDTH } = Dimensions.get("window")
 export const detailsStyles = StyleSheet.create({
   container: {
     padding: normalizeWidth(20),
@@ -37,7 +37,7 @@ export const detailsStyles = StyleSheet.create({
     marginBottom: normalizeHeight(15),
   },
   sectionTitle: {
-    fontSize: normalizeWidth(18),
+    fontSize: normalizeWidth(14),
     fontWeight: "600",
     marginBottom: normalizeHeight(5),
   },
