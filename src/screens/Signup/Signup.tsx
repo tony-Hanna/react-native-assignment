@@ -1,4 +1,4 @@
-import { View, Text, Pressable, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard, Image, Alert } from "react-native"
+import { View, Text, Pressable, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard, Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { InputWithLabel } from "../../components/molecules/InputWithLabel/InputWithLabel"
 import { useForm, Controller } from "react-hook-form"

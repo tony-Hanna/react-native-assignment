@@ -20,27 +20,24 @@ import { getAddressFromCoordinates } from "../../api/geocode"
 import { ImageOptions } from "../../components/molecules/ImageOptions/ImageOptions"
 import Toast from "react-native-toast-message"
 import { Logo, LocationIcon, CameraIcon } from "../../assets/icons"
-import Config from "react-native-config"
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
 const AddProduct = () => {
-    console.log(Config.APP_ID)
-    console.log(Config.API_KEY)
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const [address, setAddress] = useState<string | null>(null)
     const navigation = useNavigation<NavigationProp>()
     const { productPhoto } = usePhotoStore()
-    const { location } = useLocationStore()
+    const { location, clearLocation } = useLocationStore()
     const queryClient = useQueryClient()
     const [selectedImages, setSelectedImages] = useState<{ uri: string; type: string; name: string }[]>([])
     const [showImageOptions, setShowImageOptions] = useState(false)
     const {
         control,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors },
         reset
     } = useForm<AddProductField>({
         resolver: zodResolver(AddProductSchema),
@@ -83,7 +80,13 @@ const AddProduct = () => {
                 text1: 'product created successfully',
               });
             queryClient.invalidateQueries({ queryKey: ['products']})
-            reset()
+            reset({
+                title: "",
+                description: "",
+                price: "",
+            });
+           setAddress('')
+            clearLocation()
             setSelectedImages([])
             navigation.goBack()
         },
@@ -144,7 +147,10 @@ const AddProduct = () => {
                   
                 </View>
 
-            <ScrollView style={[styles.container, { paddingTop: insets.top, paddingBottom: 25 }]}>
+            <ScrollView 
+                style={[styles.container, { paddingTop: insets.top}]} 
+                contentContainerStyle={{ paddingBottom: 100, flexGrow: 1 }}
+            >
            
                 <View style={styles.form}>
                     <Controller
@@ -258,10 +264,9 @@ const AddProduct = () => {
                     <Pressable
                         style={[
                             styles.buttonBase,
-                            isValid ? styles.buttonPrimary : styles.buttonDisabled,
+                            styles.buttonPrimary,
                           ]}
                         onPress={handleSubmit(onSubmit)}
-                        disabled={!isValid || isPending}
                     >
                         <CustomText style={styles.buttonText}>
                             {isPending ? "Creating..." : "Create Product"}

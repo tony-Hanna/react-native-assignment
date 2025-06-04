@@ -18,12 +18,10 @@ export const updateProfile = async (data: UpdateProfileData) => {
     formData.append('profileImage', data.profileImage); //mare2on as object
   }
 
-console.log('profile backend', formData)
   const response = await api.put('/api/user/profile', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  console.log(response.data)
   return response.data;
 }; 

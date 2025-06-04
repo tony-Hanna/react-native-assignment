@@ -41,7 +41,6 @@ const Verification = () => {
     const { mutate: resendOtpMutate, isPending: isResending } = useMutation({
       mutationFn: () => resendOtp(email),
       onSuccess: (data) => {
-        console.log('OTP resent:', data);
         Toast.show({
           type: 'success',
           text1: 'OTP resent',
@@ -57,7 +56,7 @@ const Verification = () => {
     });
     const {mutate, isPending} = useMutation({
       mutationFn: (otp: string) => verifyOtp(email, otp, password),
-      onSuccess: (data) => {
+      onSuccess: () => {
         navigation.navigate('Login')
         Toast.show({
           type: 'success',
@@ -65,8 +64,7 @@ const Verification = () => {
           text2: 'Enter your email and password',
         });
       },
-      onError: (error) => {
-        console.log(error)
+      onError: () => {
         Toast.show({
           type: 'error',
           text1: 'Failed to verify email',

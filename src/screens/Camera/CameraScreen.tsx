@@ -27,13 +27,11 @@ const CameraScreen = () => {
     }, [handleCameraPermission])
 
     const openSettings = async () => {
-        console.log('openSettings')
         await Linking.openSettings()
     }
     const handleTakePhoto = async () => {
         const photo = await camera.current?.takePhoto({enableShutterSound: true})
         navigation.goBack()
-        console.log(photo)
         if(type === 'profile') {
             setProfilePhoto(photo?.path || '')
         } else if(type === 'product'){
@@ -41,7 +39,7 @@ const CameraScreen = () => {
         } else if(type === 'editProduct'){
             setEditProductPhoto(photo?.path || '')
         } else {
-            console.log('No type found')
+            console.error('No type found')
         }
     }
     if (!hasPermission) {

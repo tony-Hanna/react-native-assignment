@@ -40,16 +40,14 @@ const Details = () => {
 
   const { mutate: deleteProductMutation } = useMutation({
     mutationFn: () => deleteProduct(id),
-    onSuccess: (data) => {
-      console.log(data)
+    onSuccess: () => {
       navigation.navigate('MainTabs');
       Toast.show({
         type: 'success',
         text1: 'product deleted successfully',
       });
     },
-    onError: (error) => {
-      console.error('Error deleting product:', error);
+    onError: () => {
       Toast.show({
         type: 'error',
         text1: 'error deleting product',
@@ -86,8 +84,6 @@ const Details = () => {
   const handleEdit = () => {
     navigation.navigate('EditProduct', { id });
   };
-  
-console.log('product from details', product)
 
 const handleEmailOwner = async () => {
   try {
@@ -165,7 +161,6 @@ const formattedDate =() => {
               setActiveIndex(index);
             }}
             renderItem={({ item }) => (
-              console.log('item', item),
               <Pressable onLongPress={() => saveImage(`https://backend-practice.eurisko.me${item.url}`)}>
                 <Image
                   source={{ uri: `https://backend-practice.eurisko.me${item.url}` }}

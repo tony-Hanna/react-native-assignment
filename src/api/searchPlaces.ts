@@ -1,4 +1,3 @@
-// api/searchPlaces.ts
 import axios from 'axios';
 
 export const searchPlaces = async (query: string) => {

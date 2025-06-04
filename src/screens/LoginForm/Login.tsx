@@ -41,8 +41,7 @@ const Login = () => {
       onSuccess: ({accessToken,refreshToken}) => {
         setTokens(accessToken,refreshToken)
       },
-      onError: (error) => {
-        console.log(error)
+      onError: () => {
         setError('root', {message: 'Invalid email or password'})
       }
     })

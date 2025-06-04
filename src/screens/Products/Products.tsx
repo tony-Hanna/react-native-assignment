@@ -65,7 +65,6 @@ const Products = () => {
             fetchNextPage();
         }
     };
-    console.log('products',data?.products)
     if (error) {
         return <Refetch message={error.message} refetch={refetch} />
     }

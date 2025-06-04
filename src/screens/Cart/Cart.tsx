@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { View, FlatList, Pressable, Image, Dimensions, Animated } from "react-native";
+import { View, FlatList, Pressable, Image, Animated } from "react-native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../store/themeContext";

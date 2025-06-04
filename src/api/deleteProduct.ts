@@ -5,6 +5,6 @@ export const deleteProduct = async (productId: string) => {
         const response = await api.delete(`/api/products/${productId}`);
         return response.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

@@ -1,23 +1,3 @@
-// import api from "./axios"
-
-// type GetProductsParams = {
-//     pageParam: number;
-//     sortOrder?: 'asc' | 'desc';
-//     searchTerm?: string;
-// }
-
-// export const getProducts = async ({ pageParam = 1, sortOrder, searchTerm }: GetProductsParams) => {
-//     let url = `/api/products?page=${pageParam}&limit=10`;
-//     if (sortOrder) {
-//         url += `&sortBy=price&order=${sortOrder}`;
-//     }
-//     if (searchTerm) {
-//         url += `&search=${searchTerm}`
-//     }
-//     const response = await api.get(url);
-//     console.log('response', response.data)
-//     return response.data;
-// }
 import api from "./axios"
 
 type GetProductsParams = {
@@ -44,6 +24,5 @@ export const getProducts = async ({ pageParam = 1, sortOrder, searchTerm }: GetP
     }
 
     const response = await api.get(baseUrl);
-    console.log('response', response.data);
     return response.data;
 }

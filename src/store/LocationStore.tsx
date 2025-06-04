@@ -1,4 +1,3 @@
-// src/store/locationStore.ts
 import { create } from 'zustand';
 import { Region } from 'react-native-maps';
 

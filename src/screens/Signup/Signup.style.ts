@@ -4,7 +4,6 @@ import { normalizeHeight, normalizeWidth } from "../../utils/scale"
 import { Dimensions } from 'react-native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('screen');
-console.log(SCREEN_WIDTH, SCREEN_HEIGHT)
 export const createStyles = (theme: Theme, isDark: boolean, insets: { top: number; right: number; bottom: number; left: number }) =>
     StyleSheet.create({
       container: {

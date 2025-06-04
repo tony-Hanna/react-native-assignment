@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, ScrollView, Pressable, Image, Alert, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Pressable, Image, Alert } from 'react-native';
 import { useTheme } from '../../store/themeContext';
 import { CustomText } from '../../components/atoms/CustomText/CustomText';
 import { InputWithLabel } from '../../components/molecules/InputWithLabel/InputWithLabel';
@@ -65,8 +65,6 @@ const overlayOpacity = useSharedValue(0);
       profileImage: userData?.profileImage?.url || ''
     },
   });
-  console.log('profilePhoto from profile', profilePhoto)
-  // Update form values when user data is loaded
   useEffect(() => {
     if (userData) {
       reset({
@@ -174,7 +172,6 @@ const overlayOpacity = useSharedValue(0);
  
       if (result.assets && result.assets[0]?.uri) {
         setProfileImage(result.assets[0].uri);
-        console.log('result.assets[0].uri', result.assets[0].uri)
         const imageObject = {
           uri: result.assets[0].uri,
           type: result.assets[0].type || 'image/jpeg',

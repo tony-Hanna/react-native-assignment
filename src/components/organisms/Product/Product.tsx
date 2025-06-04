@@ -46,7 +46,7 @@ const Product = memo(({
 
     return (
         <Animated.View
-            entering={ZoomIn.springify().mass(0.4).stiffness(20)} // or use FadeInUp.springify()
+            entering={ZoomIn.springify().mass(0.4).stiffness(20)} 
         >
         <Pressable style={[styles.card, primary.borderPrimary]} onPress={handlePress}>
             <View style={styles.imagePriceWrap}>

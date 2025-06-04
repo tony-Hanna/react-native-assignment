@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import RNBlobUtil from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
 

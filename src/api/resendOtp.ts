@@ -6,7 +6,6 @@ export const resendOtp = async (email: string) => {
   const verifyResponse = await api.post('/api/auth/resend-verification-otp', {
     email
   })
-  console.log('verifyResponse', verifyResponse.data)
 
   return verifyResponse.data
 }
