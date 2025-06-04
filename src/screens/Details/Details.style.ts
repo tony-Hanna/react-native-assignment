@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-
+import { primaryColor } from "../../constants/primaryColor";
 import { normalizeWidth, normalizeHeight } from "../../utils/scale"
 const { width: SCREEN_WIDTH } = Dimensions.get("window")
 export const detailsStyles = StyleSheet.create({
@@ -65,7 +65,7 @@ export const detailsStyles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: "#333",
+    backgroundColor: primaryColor,
     paddingVertical: normalizeHeight(12),
     paddingHorizontal: normalizeWidth(16),
     borderRadius: 8,
@@ -81,11 +81,7 @@ export const detailsStyles = StyleSheet.create({
     marginRight: normalizeWidth(10),
   },
   cartButton: {
-    backgroundColor: "#2e8b57",
-    marginRight: 0,
-  },
-  editButton: {
-    backgroundColor: "#2e8b57",
+    backgroundColor: primaryColor,
     marginRight: 0,
   },
   deleteButton: {
@@ -113,7 +109,9 @@ export const detailsStyles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  
+  contactButton: {
+    backgroundColor: '#333'
+  },
   contactRow: {
     flexDirection: 'row',
     alignItems: 'center',

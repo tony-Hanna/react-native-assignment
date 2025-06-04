@@ -234,7 +234,7 @@ const EditProduct = () => {
                             ))}
                         </View>
                         <Pressable
-                            style={styles.imageButton}
+                            style={styles.button}
                             onPress={() => setShowImageOptions(true)}
                             disabled={selectedImages.length >= 5}
                         >

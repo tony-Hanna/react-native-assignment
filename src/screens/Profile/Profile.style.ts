@@ -37,7 +37,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
       color: theme.text,
     },
     logoutText: {
-      color: theme.text,
+      color: 'white',
       fontSize: normalizeWidth(16),
     },
     profileImageContainer: {

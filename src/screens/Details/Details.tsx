@@ -229,7 +229,7 @@ const formattedDate =() => {
                 </View>
               ) : (
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                  <Pressable style={styles.button} onPress={handleEmailOwner}>
+                  <Pressable style={[styles.button, styles.contactButton]} onPress={handleEmailOwner}>
                     <View style={styles.IconButtonTextWrap}>
                       <EmailIcon size={18} color="#fff" />
                       <CustomText style={styles.buttonText}>Contact Seller</CustomText>

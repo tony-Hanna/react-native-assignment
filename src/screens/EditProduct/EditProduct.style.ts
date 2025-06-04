@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import { Theme } from "../../store/themeContext"
 import { normalizeWidth, normalizeHeight } from "../../utils/scale"
-
+import { primaryColor } from "../../constants/primaryColor"
 export const createStyles = (theme: Theme, isDark: boolean) =>
     StyleSheet.create({
         container: {
@@ -36,7 +36,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             borderRadius: normalizeWidth(10),
             alignItems: "center",
             marginTop: normalizeHeight(20),
-            backgroundColor: "#2e8b57",
+            backgroundColor: primaryColor,
         },
         buttonDisabled: {
             opacity: 0.5,
@@ -65,12 +65,6 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             width: normalizeWidth(80),
             height: normalizeWidth(80),
             borderRadius: normalizeWidth(8),
-        },
-        imageButton: {
-            padding: normalizeWidth(10),
-            borderRadius: normalizeWidth(8),
-            alignItems: "center",
-            backgroundColor: "#2e8b57",
         },
         imageButtonText: {
             color: "#fff",
