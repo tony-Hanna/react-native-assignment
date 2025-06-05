@@ -9,7 +9,7 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             padding: normalizeWidth(20),
             position: 'relative',
         },
-       
+       address:{marginBottom:10},
         logo: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:7},
         header: {display:'flex',flexDirection:'row', justifyContent:'space-between',marginTop:15 },
         title: {

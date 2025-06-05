@@ -22,12 +22,15 @@ import { signupUser } from "../../api/signupUser"
 import { AuthStackParamList } from "../../navigation/stacks/types"
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useMemo, useState } from "react"
+import Animated from 'react-native-reanimated'
+import { useButtonAnimation } from '../../hooks/useButtonAnimation'
 
 const Signup = () => {
   const insets = useSafeAreaInsets()
   const { isDark, theme } = useTheme()
   const styles = useMemo(() => createStyles(theme, isDark, insets),[theme, isDark])
   const [profileImage, setProfileImage] = useState<{ uri: string; type: string; name: string } | undefined>(undefined)
+  const { animatedStyle, handlePressIn, handlePressOut } = useButtonAnimation();
  
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
   const {
@@ -177,15 +180,19 @@ const Signup = () => {
                 </Pressable>
               </View>
               
-              <Pressable
-                style={({ pressed }) => [
-                  styles.button,
-                  { backgroundColor: pressed ? '#0057b7' : '#007bff' }
-                ]}
-                onPress={handleSubmit(onSubmit)}
-              >
-                <Text style={styles.buttonText}>{isPending ? 'Signing Up...' : 'Sign Up'}</Text>
-              </Pressable>
+              <Animated.View style={animatedStyle}>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.button,
+                    { backgroundColor: pressed ? '#0057b7' : '#007bff' }
+                  ]}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  onPress={handleSubmit(onSubmit)}
+                >
+                  <Text style={styles.buttonText}>{isPending ? 'Signing Up...' : 'Sign Up'}</Text>
+                </Pressable>
+              </Animated.View>
               <CustomText style={styles.signupText}>
                 Already have an account?{' '}
                 <CustomText style={{ color: 'blue' }} onPress={() => navigation.navigate('Login')}>

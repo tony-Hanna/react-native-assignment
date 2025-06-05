@@ -3,7 +3,7 @@ import { TextInput, View, FlatList, Text, Pressable, ActivityIndicator } from 'r
 import { searchPlaces } from '../../../api/searchPlaces';
 import { SearchPlacesStyle as styles } from './SearchPlaces.style';
 import SearchIcon from '../../../assets/icons/SearchIcon';
-import { useDebounce } from '../../../utils/Debounce';
+import { useDebounce } from '../../../hooks/Debounce';
 import { useQuery } from '@tanstack/react-query';
 
 const SearchBar = ({ onSelect }: { onSelect: (item: any) => void }) => {

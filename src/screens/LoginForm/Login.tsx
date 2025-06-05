@@ -21,12 +21,16 @@ import { AuthStackParamList } from "../../navigation/stacks/types"
 import { loginUser } from "../../api/loginUser"
 import { useAuthStore } from "../../store/AuthStore"
 import { useMemo } from "react"
+import Animated from 'react-native-reanimated'
+import { useButtonAnimation } from '../../hooks/useButtonAnimation'
+
 const Login = () => {
     const insets = useSafeAreaInsets()
     const {isDark, theme} = useTheme()
     const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
     const {setTokens} = useAuthStore()
     const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList>>()
+    const { animatedStyle, handlePressIn, handlePressOut } = useButtonAnimation();
     const {
       handleSubmit,
       control,
@@ -105,15 +109,19 @@ const Login = () => {
       </View>
     
       
-        <Pressable
-          style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: pressed ? '#0057b7' : '#007bff' }
-          ]}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={styles.buttonText}>{isPending ? 'Logging in...' : 'Login'}</Text>
-        </Pressable>
+        <Animated.View style={animatedStyle}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.button,
+              { backgroundColor: pressed ? '#0057b7' : '#007bff' }
+            ]}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={() => handleSubmit(onSubmit)()}
+          >
+            <Text style={styles.buttonText}>{isPending ? 'Logging in...' : 'Login'}</Text>
+          </Pressable>
+        </Animated.View>
         <CustomText style={styles.signupText}>
           Don't have an account?{' '}
           <CustomText style={{ color: 'blue' }} onPress={() => navigation.navigate('Signup')}>

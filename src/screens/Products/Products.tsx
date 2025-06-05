@@ -10,7 +10,7 @@ import { MoonIcon, SunIcon, Logo } from "../../assets/icons"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getProducts } from "../../api/getProducts"
 import { useMemo, useState } from "react"
-import { useDebounce } from "../../utils/Debounce"
+import { useDebounce } from "../../hooks/Debounce"
 import { ProductSkeleton } from "./ProductsSkeleton"
 import { Refetch } from "../../components/organisms/Refetch/Refetch"
 const Products = () => {

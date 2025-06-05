@@ -20,6 +20,8 @@ import { getAddressFromCoordinates } from "../../api/geocode"
 import { ImageOptions } from "../../components/molecules/ImageOptions/ImageOptions"
 import Toast from "react-native-toast-message"
 import { Logo, LocationIcon, CameraIcon } from "../../assets/icons"
+import Animated from 'react-native-reanimated'
+import { useButtonAnimation } from '../../hooks/useButtonAnimation'
   
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
 
@@ -27,6 +29,7 @@ const AddProduct = () => {
     const insets = useSafeAreaInsets()
     const { theme, isDark } = useTheme()
     const styles = useMemo(() => createStyles(theme, isDark), [theme, isDark]);
+    const { animatedStyle, handlePressIn, handlePressOut } = useButtonAnimation();
     const [address, setAddress] = useState<string | null>(null)
     const navigation = useNavigation<NavigationProp>()
     const { productPhoto } = usePhotoStore()
@@ -206,7 +209,12 @@ const AddProduct = () => {
                             {errors.price.message}
                         </CustomText>
                     )}
-                    <CustomText>Address: {address}</CustomText>
+                    <CustomText style={styles.address}>Address: {address}</CustomText>
+                    {errors.location?.name && (
+                        <CustomText style={styles.errorText}>
+                            {errors.location.name.message}
+                        </CustomText>
+                    )}
                 <Pressable 
                  style={[styles.buttonBase, styles.buttonSecondary]}
                     onPress={() => navigation.navigate('Location', {
@@ -218,11 +226,7 @@ const AddProduct = () => {
                     <CustomText style={styles.iconText}>Location</CustomText>
                   </View>
                     </Pressable>
-                    {errors.location?.name && (
-                        <CustomText style={styles.errorText}>
-                            {errors.location.name.message}
-                        </CustomText>
-                    )}
+                    
                     
                     <View style={styles.imageSection}>
                 
@@ -261,17 +265,21 @@ const AddProduct = () => {
                         </Pressable>
                     </View>
                     
-                    <Pressable
-                        style={[
-                            styles.buttonBase,
-                            styles.buttonPrimary,
-                          ]}
-                        onPress={handleSubmit(onSubmit)}
-                    >
-                        <CustomText style={styles.buttonText}>
-                            {isPending ? "Creating..." : "Create Product"}
-                        </CustomText>
-                    </Pressable>
+                    <Animated.View style={animatedStyle}>
+                        <Pressable
+                            style={[
+                                styles.buttonBase,
+                                styles.buttonPrimary,
+                            ]}
+                            onPressIn={handlePressIn}
+                            onPressOut={handlePressOut}
+                            onPress={handleSubmit(onSubmit)}
+                        >
+                            <CustomText style={styles.buttonText}>
+                                {isPending ? "Creating..." : "Create Product"}
+                            </CustomText>
+                        </Pressable>
+                    </Animated.View>
                 </View>
             </ScrollView>
             {showImageOptions && (
