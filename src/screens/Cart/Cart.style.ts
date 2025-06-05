@@ -54,10 +54,17 @@ export const createStyles = (theme: Theme, isDark: boolean) =>
             justifyContent: 'center',
             alignItems: 'center',
         },
+        disabledButton: {
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+            opacity: 0.5,
+        },
         quantityButtonText: {
             fontSize: normalizeWidth(20),
             color: theme.text,
             fontWeight: '600',
+        },
+        disabledButtonText: {
+            color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
         },
         quantityText: {
             fontSize: normalizeWidth(16),

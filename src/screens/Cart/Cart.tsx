@@ -87,10 +87,17 @@ const Cart: React.FC = () => {
                     </CustomText>
                     <View style={styles.quantityContainer}>
                         <Pressable
-                            style={styles.quantityButton}
+                            style={[
+                                styles.quantityButton,
+                                item.quantity <= 1 && styles.disabledButton
+                            ]}
                             onPress={() => handleUpdateQuantity(item._id, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
                         >
-                            <CustomText style={styles.quantityButtonText}>-</CustomText>
+                            <CustomText style={[
+                                styles.quantityButtonText,
+                                item.quantity <= 1 && styles.disabledButtonText
+                            ]}>-</CustomText>
                         </Pressable>
                         <CustomText style={styles.quantityText}>
                             {item.quantity}
