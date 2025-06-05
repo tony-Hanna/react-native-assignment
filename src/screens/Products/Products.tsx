@@ -66,7 +66,7 @@ const Products = () => {
         }
     };
     if (error) {
-        return <Refetch message={error.message} refetch={refetch} />
+        return <Refetch message={error.message} refetch={refetch} isProducts={true}/>
     }
 
     return (

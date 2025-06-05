@@ -3,12 +3,14 @@ import { CustomText } from "../../atoms/CustomText/CustomText"
 import { refetchStyles as styles } from "./Refetch.styles"
 import { RefetchProp } from "./Refetch.type"
 import { ArrowLeftIcon } from "../../../assets/icons"
-export const Refetch = ({message, refetch}:RefetchProp) => {
+export const Refetch = ({message, refetch,isProducts=false}:RefetchProp) => {
     return (
         <View style={styles.errorContainer}>
+            { !isProducts &&
             <View style={styles.arrowContainer}>
                 <ArrowLeftIcon />
             </View>
+            }
             <CustomText style={styles.errorText}>Error loading: {message}</CustomText>
             <Pressable 
                 style={styles.retryButton} 
