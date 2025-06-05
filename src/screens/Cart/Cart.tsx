@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { View, FlatList, Pressable, Image, Animated } from "react-native";
+import { View, FlatList, Pressable, Image } from "react-native";
 import { CustomText } from "../../components/atoms/CustomText/CustomText";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "../../store/themeContext";
@@ -9,10 +9,11 @@ import { createStyles } from "./Cart.style";
 import { useCartStore } from "../../store/CartStore";
 import Config from "react-native-config";
 import Toast from "react-native-toast-message";
-import { Swipeable } from 'react-native-gesture-handler';
-import { TrashIcon } from "../../assets/icons/TrashIcon";
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { CartItem } from "./Cart.type";
 import LottieView from 'lottie-react-native';
+import { RightAction } from '../../components/molecules/RightAction/RightAction';
+
 const Cart: React.FC = () => {
     const { theme, isDark } = useTheme();
     const insets = useSafeAreaInsets();
@@ -40,35 +41,18 @@ const Cart: React.FC = () => {
         });
     }, [clearCart]);
 
-    const renderRightActions = useCallback((
-        itemId: string,
-        dragX: Animated.AnimatedInterpolation<number>
-    ) => {
-        const scale = dragX.interpolate({
-            inputRange: [-100, 0],
-            outputRange: [1, 0],
-            extrapolate: 'clamp',
-        });
-    
-        return (
-            <Animated.View style={[styles.deleteAction, { transform: [{ scale }] }]}>
-                <Pressable
-                    style={styles.deleteButton}
-                    onPress={() => handleRemoveItem(itemId)}
-                >
-                    <TrashIcon size={24} color="#fff" />
-                </Pressable>
-            </Animated.View>
-        );
-    }, [handleRemoveItem]);
-    
-
     const renderItem = useCallback(({ item }: { item: CartItem }) => (
-        <Swipeable
-            renderRightActions={(_: any, dragX: Animated.AnimatedInterpolation<number>) => 
-                renderRightActions(item._id, dragX)
-            }
+        <ReanimatedSwipeable
+            friction={2}
+            enableTrackpadTwoFingerGesture
             rightThreshold={40}
+            renderRightActions={(progress, dragX) => (
+                <RightAction
+                    progress={progress}
+                    dragX={dragX}
+                    onDelete={() => handleRemoveItem(item._id)}
+                />
+            )}
         >
             <View style={styles.cartItem}>
                 {item.images && item.images[0] && (
@@ -111,8 +95,8 @@ const Cart: React.FC = () => {
                     </View>
                 </View>
             </View>
-        </Swipeable>
-    ),[renderRightActions, handleUpdateQuantity]);
+        </ReanimatedSwipeable>
+    ), [handleRemoveItem, handleUpdateQuantity, styles]);
 
     return (
         <LinearGradient colors={theme.gradient} style={{ flex: 1 }}>
