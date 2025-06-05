@@ -15,13 +15,14 @@ const SecureStorage: StateStorage = {
 
   getItem: async name => {
     try {
-      const value = await RNSecureStorage.getItem(name);
-      return value ?? null;
-    } catch (error: any) {
-      if (error?.message?.includes(`Value for ${name} does not exist`)) {
-        //  console.log(`Secure storage item '${name}' not found on startup.`);
-         return null;
-      } 
+      const itemExists = await RNSecureStorage.exist(name);
+      if (itemExists) {
+        const value = await RNSecureStorage.getItem(name);
+        return value ?? null;
+      } else {
+        return null;
+      }
+    } catch (error) {
       console.error('Error getting secure storage item:', error);
       return null;
     }
