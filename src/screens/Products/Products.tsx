@@ -114,7 +114,7 @@ const Products = () => {
                         </CustomText>
                     </Pressable>
                 </View>
-                {isLoading ? 
+                {isLoading  ? 
                     <ProductSkeleton />
                  : (
                 <FlatList

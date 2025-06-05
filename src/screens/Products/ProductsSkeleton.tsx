@@ -21,6 +21,7 @@ export const ProductSkeleton = () => {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'flex-start',
+                            height:150,
                             children: [
                                 {
                                 key: 'titleSkeleton',

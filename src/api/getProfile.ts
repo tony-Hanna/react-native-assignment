@@ -11,9 +11,8 @@ export const getProfile = async () => {
   } catch (error) {
     Toast.show({
       type: 'error',
-      text1: JSON.stringify(error),
+      text1: 'network error',
     }); 
-    console.error(error)
-    throw new Error("Failed to fetch profile data."); 
+    throw error
   }
 }; 
