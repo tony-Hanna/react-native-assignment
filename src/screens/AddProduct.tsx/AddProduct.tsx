@@ -93,9 +93,9 @@ const AddProduct = () => {
             setSelectedImages([])
             navigation.goBack()
         },
-        onError: (error) => {
+        onError: () => {
             Toast.show({
-                type: 'error',
+                type: 'Network error',
                 text1: 'error creating product',
               });
         },

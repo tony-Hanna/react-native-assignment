@@ -10,7 +10,6 @@ const RootNavigator = () => {
     config: {
       screens: {
         Details: 'product/:id',
-        // ...other screens
       },
     },
   };

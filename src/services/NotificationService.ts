@@ -28,7 +28,6 @@ export const sendProductNotification = async (productId: string, productName: st
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Error sending notification:', error);
     throw error;
   }
 };
