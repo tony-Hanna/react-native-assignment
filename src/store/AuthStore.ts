@@ -68,7 +68,6 @@ export const useAuthStore = create<AuthState>()(
           state.setHasStoreLoaded();
         } else {
           // If state is null, something went wrong with rehydration
-          console.warn('Auth store rehydration failed');
           useAuthStore.getState().setHasStoreLoaded();
         }
       },
