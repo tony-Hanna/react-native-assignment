@@ -6,7 +6,12 @@ export const refetchStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20
+        padding: 20,
+    },
+    arrowContainer: {
+        position: 'absolute',
+        top: normalizeHeight(20),
+        left: normalizeWidth(7),
     },
     retryButton: {
         backgroundColor: '#2e8b57',
