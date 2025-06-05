@@ -5,15 +5,31 @@ import { TabNavigator } from './TabNavigator';
 import EditProduct from '../../screens/EditProduct/EditProduct';
 import { CameraScreen } from '../../screens/Camera/CameraScreen';
 import { Location } from '../../screens/location/Location';
+
 const MainStack = createNativeStackNavigator<MainStackParamList>()
 
 export const MainStackNavigator = () => {
   return (
-    <MainStack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+    <MainStack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+        animationDuration: 300,
+        presentation: 'transparentModal',
+        contentStyle: { backgroundColor: 'transparent' },
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+      }}
+    >
       <MainStack.Screen name="MainTabs" component={TabNavigator} />
-      <MainStack.Screen name="Details" component={Details} />
+      <MainStack.Screen 
+        name="Details" 
+        component={Details}
+        options={{
+          animation: 'slide_from_right',
+          presentation: 'transparentModal',
+        }}
+      />
       <MainStack.Screen name="EditProduct" component={EditProduct} />
       <MainStack.Screen name="CameraScreen" component={CameraScreen} />
       <MainStack.Screen name="Location" component={Location} />
