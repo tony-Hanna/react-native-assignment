@@ -21,6 +21,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { formatRelativeTime } from "../../utils/formatRelativeTime";
 import {TrashIcon,EditIcon,CartIcon,LocationIcon,ShareIcon,EmailIcon,ArrowLeftIcon} from "../../assets/icons"
 import { Refetch } from "../../components/organisms/Refetch/Refetch";
+import { useButtonAnimation } from '../../hooks/useButtonAnimation'
 type DetailsScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, 'Details' | 'Location'>;
 
 const Details = () => {
@@ -31,7 +32,7 @@ const Details = () => {
   const { userId } = useAuthStore();
   const [activeIndex, setActiveIndex] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
-  
+  const { animatedStyle, handlePressIn, handlePressOut } = useButtonAnimation();
   const {data: product, isLoading, error, refetch} = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProduct(id),
@@ -221,6 +222,7 @@ const formattedDate =() => {
                             <CustomText style={styles.buttonText}>Contact Seller</CustomText>
                           </View>
                         </Pressable>
+                        <Animated.View style={animatedStyle}>
                         <Pressable 
                           style={[
                             styles.button, 
@@ -230,14 +232,17 @@ const formattedDate =() => {
                           ]} 
                           onPress={handleAddToCart}
                           disabled={showSuccess}
+                          onPressIn={handlePressIn}
+                          onPressOut={handlePressOut}
                         >
                           <View style={styles.IconButtonTextWrap}>
                             <CartIcon />
                             <CustomText style={styles.buttonText}>
-                              {showSuccess ? 'item added' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
+                              {showSuccess ? 'item added   ' : (isItemInCart ? 'Add Another' : 'Add to Cart')}
                             </CustomText>
                           </View>
                         </Pressable>
+                        </Animated.View>
                       </View>
                     )}
                   </View>

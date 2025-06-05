@@ -1,8 +1,6 @@
 import {OneSignal, LogLevel} from 'react-native-onesignal';
 import { Linking } from 'react-native';
-import Config from 'react-native-config';
 export const oneSignal = () => {
-    console.log('env type',Config.ENV_TYPE)
     // Enable verbose logging for debugging (remove in production)
     OneSignal.Debug.setLogLevel(LogLevel.Verbose);   
     // Initialize with your OneSignal App ID
