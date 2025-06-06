@@ -16,7 +16,6 @@ export const Location = () => {
     const insets = useSafeAreaInsets()
     const route = useRoute<RouteProp<MainStackParamList, 'Location'>>()
     const {longitude, latitude, fromProductDetails} = route.params || {}
-    console.log('fromProductDetails', longitude, latitude)
     const defaultLocation: Region = {
       latitude: latitude ?? 37.78825,
       longitude: longitude ?? -122.4324,
@@ -42,7 +41,6 @@ export const Location = () => {
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('granted');
             getCurrentLocation();
           } else {
             Alert.alert(
@@ -112,7 +110,6 @@ export const Location = () => {
         {!fromProductDetails && 
         <Pressable
             onPress={() => {
-              console.log('location from location screen', location);
               navigation.goBack();
             }}
             style={({ pressed }) => ({
