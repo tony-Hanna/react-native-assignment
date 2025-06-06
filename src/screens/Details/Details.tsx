@@ -105,7 +105,7 @@ const handleAddToCart = () => {
 
 const handleShare = async () => {
   try {
-    const url = `https://firstapp.com/product/${product._id}`;
+    const url = `firstapp://product/${product._id}`;
     await Share.share({
       message: `Check out this product: ${product.title}\n${url}`,
       url,
