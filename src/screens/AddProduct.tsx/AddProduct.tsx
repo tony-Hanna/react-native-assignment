@@ -95,7 +95,7 @@ const AddProduct = () => {
         },
         onError: () => {
             Toast.show({
-                type: 'Network error',
+                type: 'error',
                 text1: 'error creating product',
               });
         },

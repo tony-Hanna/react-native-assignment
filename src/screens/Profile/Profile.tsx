@@ -29,8 +29,6 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
-  interpolate,
-  Extrapolate,
 } from 'react-native-reanimated';
 
 type NavigationProp = NativeStackNavigationProp<MainStackParamList>;
